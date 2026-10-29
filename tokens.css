@@ -1,0 +1,69 @@
+/* =============================================================
+   tokens.css
+   Nguồn duy nhất cho màu thương hiệu, font, spacing, bo góc, chuyển động.
+   Muốn đổi giao diện → sửa ở đây. Không viết selector trong file này.
+   ============================================================= */
+
+:root {
+  /* Màu thương hiệu */
+  --blue: #003468;
+  --green: #A5C500;
+  --plum: #810061;
+  --orange: #EC6400;
+  --yarn: #AA2620;
+  --green-hover: #B8DA10;
+
+  /* Màu ngữ nghĩa (đổi theo sáng/tối) */
+  --bg: #FAF8F3;
+  --surface: #FFFFFF;
+  --text: #252525;
+  --muted: #5C5C5C;
+  --line: #D8D3C8;
+  --on-green: #252525;
+  --wm: #003468;
+  --focus: #003468;
+  --yarn-text: var(--yarn); /* chữ màu sợi len: cần sáng hơn trong dark mode */
+
+  /* Font */
+  --serif: "Libre Baskerville",Baskerville,"Times New Roman",serif;
+  --sans: Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+
+  /* Spacing: thang 4px → 144px */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 16px;
+  --s4: 24px;
+  --s5: 32px;
+  --s6: 48px;
+  --s7: 64px;
+  --s8: 96px;
+  --s9: 144px;
+
+  /* Bo góc */
+  --r: 2px;
+
+  /* Chuyển động */
+  --ease: cubic-bezier(.2,.7,.2,1);
+  --t1: 120ms;
+  --t2: 240ms;
+
+  /* Kích thước layout */
+  --hh: 64px;
+  --wrap: 1200px;
+}
+
+/* Dark mode: bật bằng <html data-theme="dark"> */
+:root[data-theme="dark"] {
+  --bg: #0B1624;
+  --surface: #12233A;
+  --text: #EEEBE4;
+  --muted: #A7B2C0;
+  --line: #2B3F5A;
+  --blue: #8DB6E8;
+  --plum: #E3A0D2;
+  --orange: #FF8A3D;
+  --wm: #F3EFE6;
+  --focus: #A5C500;
+  --yarn-text: #F0716A;
+  color-scheme:dark;
+}
