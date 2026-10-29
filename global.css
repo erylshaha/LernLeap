@@ -1,0 +1,207 @@
+/* =============================================================
+   global.css
+   Reset, typography, layout và quy tắc dùng chung cho mọi trang.
+   ============================================================= */
+
+/* ---------- Reset, body, typography, focus, tiện ích ---------- */
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top,0px);
+  padding-bottom: env(safe-area-inset-bottom,0px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing:inherit;
+}
+
+html {
+  scroll-padding-top:calc(var(--hh) + 16px + env(safe-area-inset-top,0px));
+  scroll-behavior:smooth;
+}
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:400 17px/1.6 var(--sans);
+  -webkit-font-smoothing:antialiased;
+}
+
+body::before {
+  content:"";
+  position:fixed;
+  inset:0 0 auto;
+  height:env(safe-area-inset-top,0px);
+  background:var(--bg);
+  z-index:60;
+}
+
+h1,
+h2,
+p,
+dl,
+dd,
+ul {
+  margin:0;
+  padding:0;
+}
+
+ul {
+  list-style:none;
+}
+
+a {
+  color:inherit;
+}
+
+img {
+  display:block;
+  max-width:100%;
+  height:auto;
+}
+
+:focus-visible {
+  outline:3px solid var(--focus);
+  outline-offset:3px;
+}
+
+.skip {
+  position:absolute;
+  left:var(--s3);
+  top:-100px;
+  background:var(--green);
+  color:var(--on-green);
+  padding:var(--s2) var(--s3);
+  z-index:100;
+  font-weight:600;
+}
+
+.skip:focus {
+  top:var(--s2);
+}
+
+.muted {
+  color:var(--muted);
+}
+
+main {
+  position:relative;
+  overflow-x:clip;
+}
+
+.sec {
+  position:relative;
+  z-index:1;
+}
+
+.sec {
+  max-width:var(--wrap);
+  margin:auto;
+  padding:var(--s9) 24px 0;
+}
+
+.disp {
+  font:700 clamp(44px,7vw,92px)/1 var(--serif);
+  letter-spacing:-.02em;
+  color:var(--wm);
+}
+
+.disp2 {
+  font:700 clamp(30px,4vw,48px)/1.1 var(--serif);
+  letter-spacing:-.01em;
+  color:var(--wm);
+}
+
+@media (max-width:819px) {
+  .sec {
+    padding-top:var(--s8);
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  html {
+    scroll-behavior:auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation:none!important;
+    transition:none!important;
+  }
+}
+
+.view[hidden] {
+  display:none;
+}
+
+.view {
+  animation:vin .42s var(--ease) both;
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .view {
+    animation:none;
+  }
+}
+
+#ueber {
+  padding-bottom:var(--s6);
+}
+
+@media (max-width:600px) {
+  body {
+    font-size:16px;
+  }
+
+  .disp {
+    font-size:clamp(38px,12.5vw,56px);
+  }
+
+  .disp2 {
+    font-size:clamp(28px,8.5vw,38px);
+  }
+}
+
+/* ---------- Layout trang con (LernLab, LernCheck, trang mới) ---------- */
+.pg {
+  max-width:var(--wrap);
+  margin:0 auto;
+  padding:var(--s7) 24px 0;
+  position:relative;
+  z-index:1;
+}
+
+.pg-head p {
+  max-width:50ch;
+  margin-top:var(--s3);
+}
+
+.pg-sec {
+  margin-top:var(--s8);
+}
+
+.pg-sec .hint {
+  margin-top:var(--s2);
+  color:var(--muted);
+}
+
+@media (max-width:600px) {
+  .pg {
+    padding-left:16px;
+    padding-right:16px;
+  }
+}
+
+@keyframes vin {
+  from {
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to {
+    opacity:1;
+    transform:none;
+  }
+}
