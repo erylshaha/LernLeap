@@ -324,6 +324,41 @@ main{position:relative;overflow-x:clip}
   .cards{grid-template-columns:1fr}
 }
 @media(max-width:380px){.logo-wm{font-size:19px}.hero-wm{font-size:44px}}
+
+/* ===== v6: goal, path, dialogs ===== */
+.gchip{gap:8px}.gchip .dot{width:10px;height:10px;border-radius:50%;background:var(--yarn);flex:none}
+.pop.gp{width:min(340px,calc(100vw - 32px))}
+.gp-t{font:700 18px var(--serif);color:var(--wm)}.gp-d{margin:var(--s3) 0}.gp-d div{display:flex;justify-content:space-between;gap:var(--s3);padding:6px 0;border-top:1px solid var(--line);font-size:15px}.gp-d dt{color:var(--muted)}.gp-d dd{margin:0;font-weight:600;text-align:right}
+.gp-n{font-size:13px;color:var(--muted)}.gp-b{display:flex;gap:var(--s2);flex-wrap:wrap;margin-top:var(--s3)}
+.btn.sm{padding:10px 16px;font-size:14px}
+dialog{width:min(640px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--text);background:var(--surface);color:var(--text);border-radius:var(--r)}
+dialog::backdrop{background:rgba(11,22,36,.6)}
+.dl-in{padding:var(--s5)}.dl-in .disp2{font-size:clamp(26px,4vw,34px)}.dl-in fieldset{border:0;margin:var(--s4) 0 0;padding:0}.dl-in legend,.fl{display:block;font-weight:600;font-size:14px;color:var(--muted);margin:var(--s4) 0 var(--s2);padding:0}
+.dl-in select,.dl-in input[type=date],.dl-in textarea{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:var(--r)}
+.dl-in input[type=range]{width:100%;accent-color:var(--yarn)}.dl-in textarea{min-height:120px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--s2)}.opts.one{grid-template-columns:1fr}.opts label{position:relative}
+.opts input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opts span{display:block;height:100%;padding:10px 12px;border:1px solid var(--line);font-weight:500;font-size:15px}
+.opts small{display:block;font-weight:400;color:var(--muted);margin-top:2px}
+.opts input:hover+span{border-color:var(--text)}.opts input:checked+span{border:2px solid var(--blue);padding:9px 11px;color:var(--blue)}
+.opts input:checked+span::before{content:"\2713\00a0"}.opts input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+.err{min-height:1.4em;margin-top:var(--s3);color:var(--yarn);font-weight:600;font-size:15px}:root[data-theme=dark] .err{color:#F0716A}
+.dl-b{display:flex;gap:var(--s2);flex-wrap:wrap;margin-top:var(--s4)}.hint-s{font-size:14px;color:var(--muted);margin-top:var(--s2)}
+.plan{margin-top:var(--s5);padding:var(--s4);border:1px solid var(--line);border-left:4px solid var(--yarn);background:var(--surface);max-width:640px}
+.plan[hidden]{display:none}.plan-h{display:flex;gap:var(--s3);align-items:center;flex-wrap:wrap}.plan-h .ibtn{margin-left:auto;height:34px}
+.plan ul{margin:var(--s3) 0}.plan li{padding:6px 0;border-top:1px solid var(--line)}.plan li[aria-current=true] a{font-weight:700;color:var(--blue)}.plan p{font-size:14px}
+.ft{align-items:flex-start}.ft-brand{display:flex;flex-direction:column;gap:6px}.ft-brand .logo-wm{font-size:20px}
+.made{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}.made svg{width:18px;height:12px;flex:none}
+.lbtn{background:none;border:0;padding:0;font:500 15px var(--sans);color:var(--text);cursor:pointer}.lbtn:hover{text-decoration:underline;text-decoration-color:var(--yarn);text-underline-offset:5px;text-decoration-thickness:2px}
+@media(max-width:819px){.ibtn.gchip{width:auto;padding:0 10px}.gchip span{display:inline}.dl-in{padding:var(--s4)}}
+
+/* v7: Meo sleeps on and hugs the yarn */
+.sleepbox{aspect-ratio:950/1020}
+.sleepbox .sb-cat{width:94.7%;left:0;top:0}
+.sleepbox .sb-back{z-index:1}
+.sleepbox .sb-yarn{width:54.7%;left:45.3%;top:49%;bottom:auto;z-index:2}
+.sleepbox .sb-front{z-index:3;clip-path:polygon(42.2% 0,100% 0,100% 72.8%,80% 72.5%,71.1% 72.8%,65% 69.3%,60.6% 66.6%,55.6% 64%,50.6% 60.7%,42.2% 54.3%)}
+.sleepbox .zzz{left:73%;top:-2%;width:15.5%;z-index:4}
 </style>
 </head>
 <body>
@@ -334,6 +369,7 @@ main{position:relative;overflow-x:clip}
     <a href="#/" data-r="start" data-i18n="nav.start">Start</a><a href="#/lab" data-r="lab" data-i18n="nav.lab">LernLab</a><a href="#/check" data-r="check" data-i18n="nav.check">LernCheck</a><a href="#ueber" data-r="ueber" data-i18n="nav.about">Über LernLeap</a>
   </nav>
   <div class="hd-r">
+    <button class="ibtn gchip" id="goalBtn" type="button" aria-expanded="false" aria-controls="goalPop"><i class="dot" aria-hidden="true"></i><span id="goalTxt"></span></button><div class="pop gp" id="goalPop" role="group" data-i18n-label="goal.mine" aria-label="Mein Ziel" hidden></div>
     <button class="ibtn" id="setBtn" aria-expanded="false" aria-controls="setPop" data-i18n-label="set.btn" aria-label="Einstellungen"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M19 7h1M4 17h1M11 17h9"/><circle cx="16" cy="7" r="2.2"/><circle cx="8" cy="17" r="2.2"/></svg><span data-i18n="set.btn">Einstellungen</span></button>
     <div class="pop" id="setPop" role="group" aria-label="Einstellungen" data-i18n-label="set.btn" hidden>
       <fieldset><legend data-i18n="set.theme">Darstellung</legend><div class="seg"><label><input type="radio" name="theme" value="light"><span data-i18n="theme.light">Hell</span></label><label><input type="radio" name="theme" value="dark"><span data-i18n="theme.dark">Dunkel</span></label></div></fieldset>
@@ -345,7 +381,7 @@ main{position:relative;overflow-x:clip}
 <main id="main">
 <div class="view" id="v-start">
   <svg class="thread" id="thread" aria-hidden="true" focusable="false"><path id="tA"/><path id="tB"/></svg>
-  <svg id="thread2" aria-hidden="true" focusable="false"><defs><clipPath id="pawClip" clipPathUnits="userSpaceOnUse"><rect id="pawC"/></clipPath></defs><path id="tAc" clip-path="url(#pawClip)"/></svg>
+  <svg id="thread2" aria-hidden="true" focusable="false"><defs><clipPath id="pawClip" clipPathUnits="userSpaceOnUse"><polygon id="pawC"/></clipPath></defs><path id="tAc" clip-path="url(#pawClip)"/></svg>
 
   <section class="hero" id="start">
     <div class="hero-main">
@@ -394,7 +430,7 @@ main{position:relative;overflow-x:clip}
     <div data-picker></div></section>
 
   <section class="sx" id="ueber">
-    <div class="sx-art sleep-art" id="art5"><div class="sleepbox"><img class="sb-yarn" data-asset="yarn" alt="" aria-hidden="true"><img class="sb-cat" data-asset="scat" alt="" data-i18n-alt="alt.sleep"><img class="zzz" data-asset="zzz" alt="" aria-hidden="true"></div></div>
+    <div class="sx-art sleep-art" id="art5"><div class="sleepbox"><img class="sb-cat sb-back" data-asset="scat" alt="" data-i18n-alt="alt.sleep"><img class="sb-yarn" data-asset="yarn" alt="" aria-hidden="true"><img class="sb-cat sb-front" data-asset="scat" alt="" aria-hidden="true"><img class="zzz" data-asset="zzz" alt="" aria-hidden="true"></div></div>
     <div class="sx-body">
       <h2 class="disp2" data-i18n="end.title">Über LernLeap</h2><p data-i18n="end.text"></p><p class="fine" data-i18n="end.fine"></p>
     </div>
@@ -402,14 +438,14 @@ main{position:relative;overflow-x:clip}
 </div>
 
 <div class="view" id="v-lab" hidden><div class="pg">
-  <header class="pg-head"><h1 class="disp" data-i18n="nav.lab">LernLab</h1><p class="tag" data-i18n="lab.tag"></p><p class="muted" data-i18n="lab.desc"></p></header>
+  <header class="pg-head"><h1 class="disp" data-i18n="nav.lab">LernLab</h1><p class="tag" data-i18n="lab.tag"></p><p class="muted" data-i18n="lab.desc"></p></header><aside class="plan" data-plan hidden></aside>
   <section class="pg-sec"><h2 class="disp2" data-i18n="lv.title2"></h2><p class="hint" data-i18n="lv.hint"></p><div data-picker data-art="sit"></div></section>
   <section class="pg-sec"><div class="cards">
     <div class="card"><h3 data-i18n="lab.g"></h3><p data-i18n="lab.gd"></p><span class="soon" data-i18n="soon"></span></div>
     <div class="card"><h3 data-i18n="lab.w"></h3><p data-i18n="lab.wd"></p><span class="soon" data-i18n="soon"></span></div></div></section>
 </div></div>
 <div class="view" id="v-check" hidden><div class="pg">
-  <header class="pg-head"><h1 class="disp" data-i18n="nav.check">LernCheck</h1><p class="tag" data-i18n="chk.hook"></p><p class="muted" data-i18n="chk.desc"></p></header>
+  <header class="pg-head"><h1 class="disp" data-i18n="nav.check">LernCheck</h1><p class="tag" data-i18n="chk.hook"></p><p class="muted" data-i18n="chk.desc"></p></header><aside class="plan" data-plan hidden></aside>
   <section class="pg-sec"><h2 class="disp2" data-i18n="lv.title2"></h2><p class="hint" data-i18n="lv.hint"></p><div data-picker data-art="sit"></div></section>
   <section class="pg-sec"><div class="cards">
     <div class="card"><h3>Goethe-Zertifikat</h3><p data-i18n="chk.sk"></p><span class="soon" data-i18n="soon"></span></div>
@@ -417,7 +453,22 @@ main{position:relative;overflow-x:clip}
     <div class="card"><h3>telc</h3><p data-i18n="chk.sk"></p><span class="soon" data-i18n="soon"></span></div></div></section>
 </div></div>
 </main>
-<footer class="ft"><nav aria-label="Footer"><a href="#/lab" data-i18n="nav.lab">LernLab</a><a href="#/check" data-i18n="nav.check">LernCheck</a><a href="#ueber" data-i18n="nav.about">Über LernLeap</a></nav><span class="muted">© 2026 LernLeap</span></footer>
+<footer class="ft"><div class="ft-brand"><span class="logo-wm">LernLeap</span><span class="made"><svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><path fill="#FFCD00" d="M15 4l1.8 5.6h5.9l-4.8 3.5 1.8 5.6L15 15.2l-4.7 3.5 1.8-5.6-4.8-3.5h5.9z"/></svg>Proudly made in Vietnam</span></div><nav aria-label="Footer"><button type="button" class="lbtn" data-info="terms" data-i18n="ft.terms">Nutzungsbedingungen</button><button type="button" class="lbtn" data-info="priv" data-i18n="ft.priv">Datenschutz</button><button type="button" class="lbtn" data-info="upd" data-i18n="ft.upd">Updates</button><button type="button" class="lbtn" data-info="fb" data-i18n="ft.fb">Feedback</button></nav><span class="muted">© 2026 LernLeap</span></footer>
+<dialog id="goalDlg" aria-labelledby="gdT"><form class="dl-in" id="goalForm" novalidate><h2 class="disp2" id="gdT" data-i18n="gd.title"></h2><p class="muted" data-i18n="gd.sub"></p>
+<label class="fl" for="gdLevel" data-i18n="goal.level"></label><select id="gdLevel"></select>
+<fieldset><legend data-i18n="goal.focus"></legend><div class="opts" id="gdFocus"></div></fieldset>
+<label class="fl" for="gdDate" data-i18n="goal.by"></label><input type="date" id="gdDate" required>
+<label class="fl" for="gdWeek"><span data-i18n="goal.week"></span>: <output id="gdWeekO"></output></label><input type="range" id="gdWeek" min="1" max="7" value="4">
+<p class="err" id="gdErr" role="alert"></p><div class="dl-b"><button type="submit" class="btn" data-i18n="gd.save"></button><button type="button" class="ibtn" data-close data-i18n="cancel"></button></div></form></dialog>
+<dialog id="pathDlg" aria-labelledby="pdT"><form class="dl-in" id="pathForm" novalidate><h2 class="disp2" id="pdT" data-i18n="thread"></h2><p class="muted" id="pdLv"></p>
+<fieldset><legend data-i18n="p.s1"></legend><div class="opts" id="pCats"><label><input type="checkbox" name="cat" value="grammar"><span data-i18n="cat.grammar"></span></label><label><input type="checkbox" name="cat" value="vocab"><span data-i18n="cat.vocab"></span></label><label><input type="checkbox" name="cat" value="skills"><span data-i18n="cat.skills"></span></label><label><input type="checkbox" name="cat" value="cert"><span data-i18n="cat.cert"></span></label></div>
+<div id="pSkills" hidden><p class="fl" data-i18n="cat.skills"></p><div class="opts"><label><input type="checkbox" name="sk" value="lesen"><span data-i18n="sk.lesen"></span></label><label><input type="checkbox" name="sk" value="hoeren"><span data-i18n="sk.hoeren"></span></label><label><input type="checkbox" name="sk" value="schreiben"><span data-i18n="sk.schreiben"></span></label><label><input type="checkbox" name="sk" value="sprechen"><span data-i18n="sk.sprechen"></span></label></div></div>
+<div id="pCerts" hidden><p class="fl" data-i18n="cat.cert"></p><div class="opts one" id="pCertList"></div><p class="hint-s" data-i18n="p.certn"></p></div></fieldset>
+<fieldset><legend data-i18n="p.s2"></legend><button type="button" class="btn sm" id="pAcc" data-i18n="p.acc"></button><p class="hint-s" data-i18n="p.accd"></p><p class="hint-s" id="pAccN" role="status" hidden data-i18n="p.accn"></p>
+<div class="opts one" style="margin-top:12px"><label><input type="radio" name="auth" value="guest" checked><span data-i18n="p.guest"></span></label></div><p class="hint-s" data-i18n="p.guestn"></p></fieldset>
+<fieldset><legend data-i18n="p.s3"></legend><div class="opts"><label><input type="radio" name="fmt" value="library"><span><b data-i18n="p.lib"></b><small data-i18n="p.libd"></small></span></label><label><input type="radio" name="fmt" value="practice"><span><b data-i18n="p.prac"></b><small data-i18n="p.pracd"></small></span></label></div></fieldset>
+<p class="err" id="pErr" role="alert"></p><div class="dl-b"><button type="submit" class="btn" data-i18n="p.go"></button><button type="button" class="ibtn" data-close data-i18n="cancel"></button></div></form></dialog>
+<dialog id="infoDlg" aria-labelledby="idT"><div class="dl-in"><h2 class="disp2" id="idT"></h2><div id="idB"></div><div class="dl-b"><button type="button" class="ibtn" data-close data-i18n="close"></button></div></div></dialog>
 <script>
 (()=>{
 const D=document,R=D.documentElement,$=(s,c=D)=>c.querySelector(s),$$=(s,c=D)=>[...c.querySelectorAll(s)];
@@ -437,7 +488,7 @@ de:{skip:'Zum Inhalt','nav.label':'Hauptnavigation','nav.start':'Start','nav.lab
 'chk.hook':'Prüfungsangst? Weg damit.','chk.desc':'Aufgaben im Prüfungsformat, mit Erklärung zu jeder Antwort.','chk.sk':'Lesen · Hören · Schreiben · Sprechen',
 'lv.title':'Wo fängst du an?','lv.hint':'Zieh das Knäuel oder wähle ein Level.','lv.group':'Sprachniveau',
 lv:[{i:'Bestätigt Grundkenntnisse auf dem Niveau A1: Hören, Lesen, Schreiben und Sprechen.',b:['dich einfach verständigen, dich vorstellen und Fragen zur Person beantworten kannst, notfalls mit Gesten;','bekannte Alltagswendungen und einfache Sätze verwenden kannst, etwa zu dir und deiner Familie, zu Einkauf, Arbeit oder Schule und zum Wohnen;','kurze, einfache Gespräche in Alltagssituationen verstehst, wenn langsam und deutlich gesprochen wird.']},{i:'Bestätigt Grundkenntnisse auf dem Niveau A2: Hören, Lesen, Schreiben und Sprechen.',b:['gebräuchliche Wendungen und Ausdrücke im Alltag verstehen und verwenden kannst;','dich in einfachen, routinemäßigen Situationen über vertraute Themen wie Herkunft, Ausbildung, direkte Umgebung und Bedürfnisse verständigen kannst;','aus kurzen Texten mit häufigem Wortschatz (einfache Zeitungsartikel, Anzeigen, Aushänge) die Hauptinformationen entnehmen kannst.']},{i:'Vier Module (Hören, Lesen, Schreiben, Sprechen), einzeln oder kombiniert ablegbar.',b:['bei klarer Standardsprache die Hauptinformationen zu Alltagsthemen wie Arbeit, Schule oder Freizeit verstehst;','dich einfach, strukturiert und adressatengerecht zu bekannten Themen, Interessen, Erfahrungen, Träumen und Zielen äußern sowie Gründe und Erklärungen geben kannst;','unkomplizierte Sachtexte zu deinen Interessen und deinem Fachgebiet verstehst.']},{i:'Vier Module (Hören, Lesen, Schreiben, Sprechen), einzeln oder kombiniert ablegbar.',b:['die Hauptinhalte komplexer Texte zu konkreten und abstrakten Themen sowie Fachdiskussionen im eigenen Gebiet verstehst;','dich so spontan und flüssig verständigen kannst, dass ein normales Gespräch mit Muttersprachlern ohne große Anstrengung auf beiden Seiten möglich ist;','dich klar und detailliert zu vielen Themen äußern, einen Standpunkt zu einer aktuellen Frage erläutern und Vor- und Nachteile abwägen kannst.']},{i:'Vier Module (Hören, Lesen, Schreiben, Sprechen), einzeln oder kombiniert ablegbar.',b:['Deutsch im privaten, öffentlichen, akademischen und beruflichen Kontext flexibel und wirksam einsetzen kannst;','anspruchsvolle, lange Texte und ihre implizite Bedeutung auch zu unvertrauten Themen verstehst;','dich spontan und flüssig verständigen und einen Standpunkt vertreten kannst.']},{i:'Vier Module (Hören, Lesen, Schreiben, Sprechen). Im Schreiben kannst du ein literaturbezogenes Thema wählen.',b:['Informationen aus verschiedenen schriftlichen und mündlichen Quellen zusammenfassen und Begründungen und Erklärungen zusammenhängend wiedergeben kannst;','dich flüssig, spontan und genau ausdrücken und feine Bedeutungsunterschiede deutlich machen kannst;','praktisch alles, was du auf Deutsch liest oder hörst, mühelos verstehst.']}],
-lvNone:'Noch kein Level gewählt.',lvLead:'Mit bestandener Prüfung zeigst du, dass du …',lvCta:'Mit {l} fortfahren',lvCtaOff:'Erst ein Level wählen',saved:'{l} ist auf diesem Gerät gemerkt.',
+lvNone:'Noch kein Level gewählt.',lvLead:'Mit bestandener Prüfung zeigst du, dass du …',lvCta:'Ziel für {l} setzen',lvCtaOff:'Erst ein Level wählen',saved:'{l} ist auf diesem Gerät gemerkt.',
 'end.title':'Über LernLeap','end.text':'LernLeap ist ein Ort, um Deutsch selbstständig zu lernen. Das LernLab erklärt Grammatik und Wortschatz, der LernCheck bereitet auf Prüfungen vor.','end.fine':'MEo sorgt für den roten Faden.',
 'miau':'Miau, miau!','go.lab':'Zu LernLab','go.check':'Zu LernCheck','soon':'Bald verfügbar','lv.title2':'Wo fängst du an?','alt.sit':'MEo, eine weiße Katze, sitzt auf einem roten Wollknäuel.','alt.run':'MEo jagt einem roten Wollfaden hinterher.','alt.hug':'MEo umarmt ein rotes Wollknäuel.','pg.lab.t':'Grammatik und Wortschatz','pg.chk.t':'Prüfungstraining','alt.sleep':'MEo schläft auf einem roten Wollknäuel.','alt.ball':'Ein rotes Wollknäuel.','alt.hero2':'MEo, eine weiße Katze, schläft auf einem roten Wollknäuel.','alt.wake':'MEo wecken',snd:'MEo miauen hören','alt.lying':'MEo liegt auf dem Rücken und spielt zufrieden.','alt.sit':'MEo sitzt auf dem Wollknäuel und schaut neugierig.','alt.sleep':'MEo schläft auf dem Wollknäuel.'},
 en:{skip:'Skip to content','nav.label':'Main navigation','nav.start':'Start','nav.lab':'LernLab','nav.check':'LernCheck','nav.about':'About LernLeap',menu:'Menu','set.btn':'Settings','set.theme':'Appearance','theme.light':'Light','theme.dark':'Dark','set.lang':'Language',
@@ -446,7 +497,7 @@ en:{skip:'Skip to content','nav.label':'Main navigation','nav.start':'Start','na
 'chk.hook':'Knock exam nerves out.','chk.desc':'Exam-format tasks, with an explanation for every answer.','chk.sk':'Reading · Listening · Writing · Speaking',
 'lv.title':'Where do you start?','lv.hint':'Roll the yarn or pick a level.','lv.group':'Language level',
 lv:[{i:'Confirms basic language knowledge at level A1: listening, reading, writing and speaking.',b:['can interact in a simple way, introduce yourself and answer basic questions about personal details, falling back on gestures if needed;','can use familiar everyday phrases and simple sentences, for example about yourself and your family, shopping, work or school, and where you live;','can understand short, basic conversations in everyday situations if the other person speaks slowly and clearly.']},{i:'Confirms basic language knowledge at level A2: listening, reading, writing and speaking.',b:['can use and understand common expressions and phrases in everyday situations;','can take part in basic, routine exchanges about familiar topics such as your origin and education, your surroundings and your needs;','can pick out the main information from short texts with frequent vocabulary (simple newspaper articles, ads, notice boards).']},{i:'Four modules (listening, reading, writing, speaking), which can be taken individually or combined.',b:['can understand the main points when clear standard language is spoken about everyday topics such as work, school or leisure;','can express yourself in a simple, structured and audience-appropriate way about familiar topics, interests, experiences, dreams and goals, and give reasons and explanations;','can understand uncomplicated non-fiction texts about your interests and your field.']},{i:'Four modules (listening, reading, writing, speaking), which can be taken individually or combined.',b:['can understand the main points of complex texts on concrete and abstract topics, including professional discussions in your field;','can communicate spontaneously and fluently enough for regular interaction with a German speaker without strain on either side;','can express yourself clearly and in detail on many topics, explain a position on a current issue and weigh the advantages and disadvantages of options.']},{i:'Four modules (listening, reading, writing, speaking), which can be taken individually or combined.',b:['can use German flexibly and effectively in private, public, academic and professional contexts;','can understand demanding, long texts and their implicit meaning, even on unfamiliar topics;','can communicate spontaneously and fluently and argue a position.']},{i:'Four modules (listening, reading, writing, speaking). In the writing module you can choose a literature-related topic.',b:['can summarise information from different written and spoken sources and present reasons and explanations coherently;','can communicate fluently, spontaneously and precisely and express fine shades of meaning;','can understand practically everything you read or hear in German without effort.']}],
-lvNone:'No level selected yet.',lvLead:'Passing the exam shows that you …',lvCta:'Continue with {l}',lvCtaOff:'Choose a level first',saved:'{l} is saved on this device.',
+lvNone:'No level selected yet.',lvLead:'Passing the exam shows that you …',lvCta:'Set a goal for {l}',lvCtaOff:'Choose a level first',saved:'{l} is saved on this device.',
 'end.title':'About LernLeap','end.text':'LernLeap is a place to learn German on your own. LernLab explains grammar and vocabulary, LernCheck prepares you for exams.','end.fine':'MEo makes sure there is a thread to follow.',
 'miau':'Meow, meow!','go.lab':'Go to LernLab','go.check':'Go to LernCheck','soon':'Coming soon','lv.title2':'Where do you start?','alt.sit':'MEo, a white cat, sits on a ball of red yarn.','alt.run':'MEo chases a red thread.','alt.hug':'MEo hugs a ball of red yarn.','pg.lab.t':'Grammar and vocabulary','pg.chk.t':'Exam training','alt.sleep':'MEo sleeps on a ball of red yarn.','alt.ball':'A ball of red yarn.','alt.hero2':'MEo, a white cat, sleeps on a ball of red yarn.','alt.wake':'Wake MEo',snd:'Hear MEo meow','alt.lying':'MEo lies on its back, playing happily.','alt.sit':'MEo sits on the ball of yarn and looks curious.','alt.sleep':'MEo sleeps on the ball of yarn.'}
 };
@@ -458,7 +509,7 @@ function applyLang(){
   $$('[data-i18n-alt]').forEach(e=>e.alt=t[e.dataset.i18nAlt]);
   $$('[data-i18n-label]').forEach(e=>e.setAttribute('aria-label',t[e.dataset.i18nLabel]));
   $$('input[name=lang]').forEach(i=>i.checked=i.value===lang);
-  pickers.forEach(p=>p.refresh());
+  pickers.forEach(p=>p.refresh());if(typeof renderAll==='function')renderAll();
 }
 function applyTheme(){R.dataset.theme=theme;$$('input[name=theme]').forEach(i=>i.checked=i.value===theme)}
 $$('input[name=lang]').forEach(i=>i.addEventListener('change',()=>{lang=i.value;store.set('ll-lang',lang);applyLang()}));
@@ -478,16 +529,18 @@ const views={start:$('#v-start'),lab:$('#v-lab'),check:$('#v-check')},navA=$$('.
 let route='';
 function setCurrent(k){navA.forEach(a=>{if(a.dataset.r===k)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current')})}
 function go(){
-  const h=location.hash,r=h==='#/lab'?'lab':h==='#/check'?'check':'start',anc=r==='start'&&h.length>1&&h[1]!=='/'?h.slice(1):'';
+  const h0=location.hash,h=h0.split('?')[0],qs=new URLSearchParams(h0.split('?')[1]||''),qi=LV.indexOf((qs.get('level')||'').toUpperCase()),r=h==='#/lab'?'lab':h==='#/check'?'check':'start',anc=r==='start'&&h.length>1&&h[1]!=='/'?h.slice(1):'';
+  if(qi>=0&&qi!==sel)selectAll(qi,null);
   if(r!==route){Object.entries(views).forEach(([k,v])=>v.hidden=k!==r);route=r;if(!anc)scrollTo({top:0,behavior:'instant'});setCurrent(r==='start'&&!anc?'start':r);schedule()}
   if(anc&&$('#'+anc)){setCurrent(anc==='ueber'?'ueber':'start');requestAnimationFrame(()=>$('#'+anc).scrollIntoView({behavior:rm()?'auto':'smooth'}))}
   else if(r==='start')setCurrent('start');
+  if(typeof renderPlan==='function')renderPlan();
 }
 addEventListener('hashchange',go);
 (()=>{const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&route==='start')setCurrent(e.target.id==='ueber'?'ueber':'start')}),{rootMargin:'-40% 0px -55% 0px'});['start','ueber'].forEach(id=>io.observe($('#'+id)))})();
 
 /* ===== level picker: the yarn ball rolls along the ground and shrinks as it unwinds ===== */
-let sel=-1,savedLv=store.get('ll-level');
+let sel=-1,savedLv=store.get('ll-level'),goal=null;
 const uw=()=>Math.max(5,Math.min(7.6,.0056*innerWidth));
 function makePicker(root){
   root.innerHTML=`<div class="stage"><svg class="track" aria-hidden="true" focusable="false"><g class="ticks"></g><path class="trBg"/><path class="trFg"/></svg><div class="hit" aria-hidden="true"></div><img class="ball" data-asset="yarn" alt="" aria-hidden="true"><div class="nodes" role="radiogroup" data-i18n-label="lv.group">${LV.map(l=>`<button type="button" class="node" role="radio" aria-checked="false">${l}</button>`).join('')}</div></div><div class="lv-info"><p class="lv-code" aria-hidden="true">?</p><div class="lv-desc" aria-live="polite"></div><div class="lv-act"><button type="button" class="btn lvBtn" aria-disabled="true"></button><p class="lv-st" role="status"></p></div></div>`;
@@ -521,7 +574,7 @@ function makePicker(root){
   function info(){
     const t=T[lang];code.textContent=cand<0?'?':LV[cand];
     if(cand<0)desc.textContent=t.lvNone;else{const d=t.lv[cand];desc.innerHTML='<span class="lv-intro">'+d.i+'</span><span class="lv-lead">'+t.lvLead+'</span><ul class="lv-pts">'+d.b.map(x=>'<li>'+x+'</li>').join('')+'</ul>'}
-    btn.textContent=sel<0?t.lvCtaOff:t.lvCta.replace('{l}',LV[sel]);btn.setAttribute('aria-disabled',sel<0);
+    btn.textContent=sel<0?t.lvCtaOff:(goal&&goal.level===LV[sel]?t.thread:t.lvCta.replace('{l}',LV[sel]));btn.setAttribute('aria-disabled',sel<0);
     st.textContent=(sel>=0&&savedLv===LV[sel])?t.saved.replace('{l}',LV[sel]):'';
   }
   function show(i){cand=i;nodes.forEach((b,j)=>{b.setAttribute('aria-checked',j===i);b.tabIndex=(i<0?j===0:j===i)?0:-1;b.classList.toggle('reached',j<=i)});info()}
@@ -538,10 +591,10 @@ function makePicker(root){
   hit.addEventListener('pointermove',e=>{if(drag)mv(e)});
   const end=()=>{if(!drag)return;drag=false;stage.classList.remove('drag');selectAll(cand,P)};
   hit.addEventListener('pointerup',end);hit.addEventListener('pointercancel',end);
-  btn.addEventListener('click',()=>{if(sel<0)return;savedLv=LV[sel];store.set('ll-level',savedLv);pickers.forEach(p=>p.refresh())});
+  btn.addEventListener('click',()=>{if(sel<0)return;if(goal&&goal.level===LV[sel])openPath();else openGoal()});
   const P={layout,apply,refresh:()=>info(),stage,M,info:q('.lv-info')};pickers.push(P);return P;
 }
-function selectAll(i,src,focus){sel=i;pickers.forEach(p=>p.apply(i,p===src&&focus,p!==src))}
+function selectAll(i,src,focus){sel=i;if(i>=0){savedLv=LV[i];store.set('ll-level',savedLv)}pickers.forEach(p=>p.apply(i,p===src&&focus,p!==src))}
 $$('[data-picker]').forEach(makePicker);
 
 
@@ -591,22 +644,28 @@ function layoutThread(){
   const V={c:{x:Math.max(PAW.x-135*u-rV,xL+rW+rV+10),y:rr.t+30*u},r:rV,s:1};
   const lineY=runBot+64,D={c:{x:PAW.x-10*u,y:lineY-rD},r:rD,s:1},Wn={c:{x:xL+rW,y:lineY+rW},r:rW,s:-1};
   const CU={c:{x:CUx,y:G-M.rc},r:M.rc,s:-1};
-  const N=[{c:B1.c,r:0,s:1},{c:B2.c,r:.72*B2.r,s:-1},{c:PAW,r:rp,s:1},D,Wn,CU];
-  const S=belt(N,[null,null,[0,0],[0,0],[0,0]]),endA={uL:{x:1,y:0},P1:{x:CUx,y:G}};
-  const dA=`M${S[0].P1.x} ${S[0].P1.y}`+cub(S[0])+arc(N[1],S[0],S[1])+cub(S[1])+loopArc(N[2],S[1],S[2])+cub(S[2])+arc(N[3],S[2],S[3])+cub(S[3])+arc(N[4],S[3],S[4])+cub(S[4])+arc(N[5],S[4],endA);
+  /* paw wrap: 1.5 helical turns round the forearm (behind, in front, behind) */
+  const e1={x:.5,y:.866},e2={x:-.866,y:.5},A=rr.w*.066,bb=UW*.5,p2=UW*2.6,HS=[];
+  for(let f=0;f<=3*Math.PI+1e-6;f+=Math.PI/30){const u=-A*Math.cos(f),v=-bb*Math.sin(f)+p2*(f/Math.PI-1.5);HS.push({f,x:PAW.x+u*e1.x+v*e2.x,y:PAW.y+u*e1.y+v*e2.y})}
+  const Ps=HS[0],Pe=HS[HS.length-1],kk=UW*5;
+  const N=[{c:B1.c,r:0,s:1},{c:B2.c,r:.72*B2.r,s:-1},{c:Ps,r:0,s:1}];
+  const S=belt(N,[null,null]),SP=belt([{c:Pe,r:0,s:1},D,Wn,CU],[[0,0],[0,0],[0,0]]),endA={uL:{x:1,y:0},P1:{x:CUx,y:G}};
+  const c2a={x:Ps.x-e2.x*kk,y:Ps.y-e2.y*kk},c1b={x:Pe.x+e2.x*kk,y:Pe.y+e2.y*kk};
+  const dA=`M${S[0].P1.x} ${S[0].P1.y}`+cub(S[0])+arc(N[1],S[0],S[1])+`C${S[1].c1.x} ${S[1].c1.y} ${c2a.x} ${c2a.y} ${Ps.x} ${Ps.y}`+HS.slice(1).map(q=>`L${q.x.toFixed(1)} ${q.y.toFixed(1)}`).join('')+`C${c1b.x} ${c1b.y} ${SP[0].c2.x} ${SP[0].c2.y} ${SP[0].P2.x} ${SP[0].P2.y}`+arc(D,SP[0],SP[1])+cub(SP[1])+arc(Wn,SP[1],SP[2])+cub(SP[2])+arc(CU,SP[2],endA);
   /* from the end of the level track, down to the sleeping cat's yarn, and out into a heart */
   const xe=pad+M.xe,rE=Math.max(14,20*u),EB={c:{x:xe,y:G+rE},r:rE,s:1};
   const B5=ballOf(sbYarn,{cx:.5,cy:.5,r:.49}),body=rel(sbBody),sec=rel($('#ueber'));
   const hsz=wide?2.5:2.1,hxc=wide?body.l+Math.min(70,body.w*.3):body.l+body.w*.5;
-  const tipy=Math.max(sec.t+sec.h-18,body.t+body.h+16+29*hsz),rT=22*u,Tn={c:{x:hxc-rT,y:tipy},r:rT,s:-1};
+  const tipy=Math.max(sec.t+sec.h-18,body.t+body.h+16+37*hsz*1.12),rT=22*u,Tn={c:{x:hxc-rT,y:tipy},r:rT,s:-1};
   const S2=belt([EB,{c:B5.c,r:.72*B5.r,s:-1},Tn],[null,null]),endT={uL:{x:0,y:-1},P1:{x:hxc,y:tipy}};
-  let heart='';
-  for(let i=0;i<=120;i++){const t=Math.PI-TAU*i/120,Y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t),X=16*Math.pow(Math.sin(t),3);heart+=`L${(hxc+X*hsz).toFixed(1)} ${(tipy-(Y+17)*hsz).toFixed(1)}`}
+  const hS=hsz*1.12,hq=(x,y)=>`${(hxc+x*hS).toFixed(1)} ${(tipy+y*hS).toFixed(1)}`;
+  const heart=`C${hq(-2,-7)} ${hq(-17,-10)} ${hq(-17.5,-20)}C${hq(-17.5,-30)} ${hq(-6,-35)} ${hq(-.8,-24.8)}C${hq(3,-35.5)} ${hq(18.5,-31)} ${hq(17.5,-19.2)}C${hq(16.8,-9.5)} ${hq(3.5,-6)} ${hq(-.6,.4)}`;
   const dB=`M${xe} ${G}`+arc(EB,{uA:{x:1,y:0}},S2[0])+cub(S2[0])+arc({c:B5.c,r:.72*B5.r,s:-1},S2[0],S2[1])+cub(S2[1])+arc(Tn,S2[1],endT)+heart;
   const sw=UW.toFixed(2);[tA,tAc,tB].forEach(p=>p.setAttribute('stroke-width',sw));
   tA.setAttribute('d',dA);tAc.setAttribute('d',dA);tB.setAttribute('d',dB);
   /* front half of the loop is drawn over the cat's leg */
-  const cr=rp+UW;pawC.setAttribute('x',PAW.x-cr);pawC.setAttribute('y',PAW.y);pawC.setAttribute('width',2*cr);pawC.setAttribute('height',cr+2);
+  const hh=UW*1.2,fr=HS.filter(q=>q.f>=Math.PI&&q.f<=2*Math.PI);
+  pawC.setAttribute('points',fr.map(q=>`${(q.x+e2.x*hh).toFixed(1)},${(q.y+e2.y*hh).toFixed(1)}`).concat(fr.map(q=>`${(q.x-e2.x*hh).toFixed(1)},${(q.y-e2.y*hh).toFixed(1)}`).reverse()).join(' '));
   PS.forEach(s=>{const p=s.els[0];s.L=p.getTotalLength();s.els.forEach(e=>{e.style.strokeDasharray=`${s.L} ${s.L}`});s.ys=[];for(let l=0;l<=s.L;l+=6)s.ys.push(p.getPointAtLength(l).y)});
   calc();PS.forEach(s=>{s.cur=rm()?s.tgt:Math.min(s.cur,s.tgt)});paint();
 }
@@ -724,12 +783,98 @@ heroBox.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preven
 meowBtn.addEventListener('click',e=>{e.stopPropagation();heroAct()});
 addEventListener('pointermove',e=>{if(route==='start')rig.lookAt(e.clientX,e.clientY)},{passive:true});
 
+
+/* ===== v6: goal, learning path, dialogs ===== */
+const TX={"de": {"thread": "Fädle deinen Lernpfad ein", "goal.set": "Ziel setzen", "goal.mine": "Mein Ziel", "goal.level": "Level", "goal.focus": "Schwerpunkt", "goal.by": "Bis", "goal.week": "Einheiten pro Woche", "goal.left": "Noch", "goal.days": "Tage", "goal.over": "Frist abgelaufen", "goal.note": "Fortschritt wird noch nicht gemessen: Es sind noch keine Aktivitäten erfasst.", "goal.learn": "Weiterlernen", "goal.edit": "Ziel ändern", "goal.del": "Ziel löschen", "goal.del2": "Wirklich löschen?", "gd.title": "Level wählen und Ziel setzen", "gd.sub": "Dein Ziel erscheint oben in der Leiste, auf jeder Seite. Es bleibt in diesem Browser gespeichert.", "gd.save": "Ziel speichern", "gd.e1": "Wähle ein Datum, das nicht in der Vergangenheit liegt.", "cancel": "Abbrechen", "close": "Schließen", "foc.level": "Ein Level erreichen", "foc.grammar": "Grammatik meistern", "foc.vocab": "Wortschatz aufbauen", "foc.exam": "Auf eine Prüfung vorbereiten", "p.lv": "Dein Level: {l}", "p.s1": "Woran willst du arbeiten?", "cat.grammar": "Grammatik", "cat.vocab": "Wortschatz", "cat.skills": "Einzelne Fertigkeiten", "cat.cert": "Zertifikatsvorbereitung", "sk.lesen": "Lesen", "sk.hoeren": "Hören", "sk.schreiben": "Schreiben", "sk.sprechen": "Sprechen", "p.certn": "Die Liste richtet sich nach deinem Level. Vorbereitungsmodule sind noch in Arbeit.", "p.soon": "bald verfügbar", "p.s2": "Wie möchtest du weitermachen?", "p.acc": "Anmelden oder Konto erstellen", "p.accd": "Mit Konto speicherst du Ziel, Fortschritt und gemerkte Inhalte auf allen Geräten.", "p.accn": "Konten sind noch nicht verfügbar. Starte ohne Konto: Ziel und Plan bleiben in diesem Browser.", "p.guest": "Ohne Konto fortfahren", "p.guestn": "Deine Daten bleiben nur in diesem Browser auf diesem Gerät.", "p.s3": "Wie willst du lernen?", "p.lib": "Deine Lernbibliothek", "p.libd": "Erklärungen, Beispiele, Tabellen und PDFs zum Nachschlagen.", "p.prac": "Direkt üben", "p.pracd": "Interaktive Aufgaben mit Erklärung zu jeder Antwort.", "p.go": "Los geht’s", "p.e1": "Wähle mindestens einen Bereich.", "p.e2": "Wähle mindestens eine Fertigkeit.", "p.e3": "Wähle mindestens ein Zertifikat.", "p.e4": "Wähle, wie du lernen willst.", "fmt.library": "Lernbibliothek", "fmt.practice": "Üben", "plan.t": "Dein Lernpfad", "plan.x": "Plan entfernen", "plan.n": "Die Inhalte dieser Bereiche sind noch in Arbeit. Dein Plan bleibt gespeichert.", "ft.terms": "Nutzungsbedingungen", "ft.priv": "Datenschutz", "ft.upd": "Updates", "ft.fb": "Feedback", "i.terms": "Nutzungsbedingungen", "i.terms.b": "Platzhalter: Die Nutzungsbedingungen werden ergänzt, bevor das Angebot startet. Dieser Text ist kein verbindlicher Inhalt.", "i.priv": "Datenschutz", "i.priv.b": "Platzhalter: Die Datenschutzerklärung folgt. Bis dahin gilt: Ziel, Plan und Einstellungen liegen nur im localStorage dieses Browsers.", "i.upd": "Updates", "i.upd.b": "Noch keine Einträge. Neue Lerninhalte und Änderungen erscheinen hier, sobald es sie gibt.", "i.fb": "Feedback", "fb.cat": "Art des Feedbacks", "fb.bug": "Fehler melden", "fb.content": "Inhalt", "fb.feature": "Funktionswunsch", "fb.general": "Allgemein", "fb.msg": "Deine Nachricht", "fb.send": "Prüfen", "fb.e": "Bitte schreibe mindestens 10 Zeichen.", "fb.ok": "Nicht gesendet: Der Versand ist noch nicht eingerichtet. Dein Text bleibt in diesem Formular."}, "en": {"thread": "Thread your learning path", "goal.set": "Set a goal", "goal.mine": "My goal", "goal.level": "Level", "goal.focus": "Focus", "goal.by": "By", "goal.week": "Sessions per week", "goal.left": "Left", "goal.days": "days", "goal.over": "Deadline passed", "goal.note": "Progress is not measured yet: no activity has been recorded.", "goal.learn": "Keep learning", "goal.edit": "Change goal", "goal.del": "Delete goal", "goal.del2": "Really delete?", "gd.title": "Choose a level and set a goal", "gd.sub": "Your goal shows in the top bar on every page. It is saved in this browser.", "gd.save": "Save goal", "gd.e1": "Pick a date that is not in the past.", "cancel": "Cancel", "close": "Close", "foc.level": "Reach a level", "foc.grammar": "Master grammar", "foc.vocab": "Build vocabulary", "foc.exam": "Prepare for an exam", "p.lv": "Your level: {l}", "p.s1": "What do you want to work on?", "cat.grammar": "Grammar", "cat.vocab": "Vocabulary", "cat.skills": "Individual skills", "cat.cert": "Certificate preparation", "sk.lesen": "Reading", "sk.hoeren": "Listening", "sk.schreiben": "Writing", "sk.sprechen": "Speaking", "p.certn": "The list follows your level. Preparation modules are still in progress.", "p.soon": "coming soon", "p.s2": "How do you want to continue?", "p.acc": "Sign in or create an account", "p.accd": "An account saves your goal, progress and saved items across devices.", "p.accn": "Accounts are not available yet. Start without one: your goal and plan stay in this browser.", "p.guest": "Continue without an account", "p.guestn": "Your data stays in this browser on this device only.", "p.s3": "How do you want to learn?", "p.lib": "Your Learning Library", "p.libd": "Explanations, examples, tables and PDFs to look things up.", "p.prac": "Start practising", "p.pracd": "Interactive exercises with an explanation for every answer.", "p.go": "Let’s go", "p.e1": "Choose at least one area.", "p.e2": "Choose at least one skill.", "p.e3": "Choose at least one certificate.", "p.e4": "Choose how you want to learn.", "fmt.library": "Learning Library", "fmt.practice": "Practice", "plan.t": "Your learning path", "plan.x": "Remove plan", "plan.n": "The content in these areas is still in progress. Your plan stays saved.", "ft.terms": "Terms", "ft.priv": "Privacy", "ft.upd": "Updates", "ft.fb": "Feedback", "i.terms": "Terms", "i.terms.b": "Placeholder: the terms will be added before launch. This text is not binding content.", "i.priv": "Privacy", "i.priv.b": "Placeholder: the privacy policy is to follow. Until then: goal, plan and settings are kept only in this browser’s localStorage.", "i.upd": "Updates", "i.upd.b": "No entries yet. New learning content and changes will appear here when there are any.", "i.fb": "Feedback", "fb.cat": "Type of feedback", "fb.bug": "Bug report", "fb.content": "Content feedback", "fb.feature": "Feature suggestion", "fb.general": "General feedback", "fb.msg": "Your message", "fb.send": "Check", "fb.e": "Please write at least 10 characters.", "fb.ok": "Not sent: delivery is not set up yet. Your text stays in this form."}};Object.assign(T.de,TX.de);Object.assign(T.en,TX.en);
+const tt=k=>T[lang][k]!=null?T[lang][k]:k;
+const CERTS=[{id:'goethe',name:'Goethe-Zertifikat',levels:['A1','A2','B1','B2','C1','C2'],ready:false,route:'#/check'},{id:'telc',name:'telc Deutsch',levels:['A1','A2','B1','B2','C1'],ready:false,route:'#/check'},{id:'testdaf',name:'TestDaF',levels:['B2','C1'],ready:false,route:'#/check'}];
+const FOC=['level','grammar','vocab','exam'],DEST={grammar:'#/lab',vocab:'#/lab',skills:'#/check',cert:'#/check'};
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const fmtD=v=>new Date(v+'T00:00').toLocaleDateString(lang==='de'?'de-DE':'en-GB',{day:'2-digit',month:'2-digit',year:'numeric'});
+const rd=k=>{try{return JSON.parse(store.get(k)||'null')}catch(e){return null}};
+const okD=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&!isNaN(new Date(v));
+function loadGoal(){const g=rd('ll-goal');return g&&LV.includes(g.level)&&FOC.includes(g.focus)&&okD(g.date)&&g.perWeek>=1&&g.perWeek<=7?g:null}
+function loadPlan(){const p=rd('ll-plan');return p&&LV.includes(p.level)&&Array.isArray(p.cats)&&p.cats.every(c=>c in DEST)&&['library','practice'].includes(p.fmt)&&Array.isArray(p.skills)&&Array.isArray(p.certs)?p:null}
+goal=loadGoal();let plan=loadPlan(),delArm=false;
+const lvNow=()=>sel>=0?LV[sel]:(goal?goal.level:'');
+const gp=$('#goalPop'),gb=$('#goalBtn'),gd=$('#goalDlg'),pd=$('#pathDlg'),idg=$('#infoDlg');
+function gpOpen(o){gp.hidden=!o||!goal;gb.setAttribute('aria-expanded',String(!gp.hidden));if(gp.hidden)delArm=false}
+function renderGoal(){
+  $('#goalTxt').textContent=goal?goal.level+' · '+fmtD(goal.date):tt('goal.set');
+  gb.setAttribute('aria-label',goal?tt('goal.mine')+': '+goal.level:tt('goal.set'));
+  if(!goal){gp.innerHTML='';return}
+  const left=Math.ceil((new Date(goal.date+'T23:59:59')-Date.now())/864e5);
+  gp.innerHTML=`<p class="gp-t">${tt('goal.mine')}</p><dl class="gp-d"><div><dt>${tt('goal.level')}</dt><dd>${goal.level}</dd></div><div><dt>${tt('goal.focus')}</dt><dd>${tt('foc.'+goal.focus)}</dd></div><div><dt>${tt('goal.by')}</dt><dd>${fmtD(goal.date)}</dd></div><div><dt>${tt('goal.week')}</dt><dd>${goal.perWeek}×</dd></div><div><dt>${tt('goal.left')}</dt><dd>${left>0?left+' '+tt('goal.days'):tt('goal.over')}</dd></div></dl><p class="gp-n">${tt('goal.note')}</p><div class="gp-b"><button type="button" class="btn sm" data-act="learn">${tt('goal.learn')}</button><button type="button" class="ibtn" data-act="edit">${tt('goal.edit')}</button><button type="button" class="ibtn" data-act="del">${delArm?tt('goal.del2'):tt('goal.del')}</button></div>`;
+}
+gp.addEventListener('click',e=>{e.stopPropagation();const a=e.target.closest('[data-act]');if(!a)return;const k=a.dataset.act;
+  if(k==='learn'){gpOpen(false);openPath()}else if(k==='edit'){gpOpen(false);openGoal()}
+  else if(!delArm){delArm=true;renderGoal();$('[data-act=del]',gp).focus()}
+  else{goal=null;store.set('ll-goal','');gpOpen(false);renderAll();gb.focus()}});
+gb.addEventListener('click',()=>{popOpen(false);if(!goal){const l=$('#level');if(route==='start'&&l)l.scrollIntoView({behavior:rm()?'auto':'smooth'});else location.hash='#level';return}const o=gp.hidden;gpOpen(o);if(o)$('button',gp).focus()});
+setBtn.addEventListener('click',()=>gpOpen(false));
+D.addEventListener('keydown',e=>{if(e.key==='Escape'&&!gp.hidden){gpOpen(false);gb.focus()}});
+D.addEventListener('click',e=>{if(!gp.hidden&&!gp.contains(e.target)&&!gb.contains(e.target))gpOpen(false);
+  const c=e.target.closest('[data-close]');if(c)c.closest('dialog').close();
+  if(e.target.tagName==='DIALOG')e.target.close();
+  const i=e.target.closest('[data-info]');if(i)openInfo(i.dataset.info);
+  if(e.target.closest('[data-plan-x]')){plan=null;store.set('ll-plan','');renderPlan()}});
+/* goal dialog */
+function openGoal(){
+  const g=goal||{},l=lvNow()||'A1',d=new Date();d.setDate(d.getDate()+90);
+  $('#gdLevel').innerHTML=LV.map(x=>`<option${x===l?' selected':''}>${x}</option>`).join('');
+  $('#gdFocus').innerHTML=FOC.map(f=>`<label><input type="radio" name="gdf" value="${f}"${f===(g.focus||'level')?' checked':''}><span>${tt('foc.'+f)}</span></label>`).join('');
+  $('#gdDate').min=iso(new Date());$('#gdDate').value=g.date||iso(d);$('#gdWeek').value=g.perWeek||4;$('#gdWeekO').textContent=$('#gdWeek').value;$('#gdErr').textContent='';
+  gd.showModal();
+}
+$('#gdWeek').addEventListener('input',e=>$('#gdWeekO').textContent=e.target.value);
+$('#goalForm').addEventListener('submit',e=>{e.preventDefault();
+  const date=$('#gdDate').value,lv=$('#gdLevel').value,f=($('input[name=gdf]:checked',gd)||{}).value;
+  if(!okD(date)||date<iso(new Date())){$('#gdErr').textContent=tt('gd.e1');return}
+  if(!LV.includes(lv)||!FOC.includes(f))return;
+  goal={level:lv,focus:f,date,perWeek:+$('#gdWeek').value,updated:iso(new Date())};store.set('ll-goal',JSON.stringify(goal));
+  selectAll(LV.indexOf(lv),null);renderAll();gd.close();openPath();});
+/* path dialog */
+function openPath(){
+  const l=lvNow(),pf=$('#pathForm'),same=plan&&plan.level===l?plan:null;
+  $('#pdLv').textContent=tt('p.lv').replace('{l}',l||'–');
+  $('#pCertList').innerHTML=CERTS.filter(c=>!l||c.levels.includes(l)).map(c=>`<label><input type="checkbox" name="ce" value="${c.id}"${same&&same.certs.includes(c.id)?' checked':''}><span>${c.name} · ${c.levels[0]}–${c.levels[c.levels.length-1]}${c.ready?'':' · '+tt('p.soon')}</span></label>`).join('');
+  $$('input[name=cat]',pf).forEach(i=>i.checked=!!same&&same.cats.includes(i.value));
+  $$('input[name=sk]',pf).forEach(i=>i.checked=!!same&&same.skills.includes(i.value));
+  $$('input[name=fmt]',pf).forEach(i=>i.checked=!!same&&same.fmt===i.value);
+  $('#pAccN').hidden=true;$('#pErr').textContent='';pathToggle();pd.showModal();
+}
+function pathToggle(){const pf=$('#pathForm'),on=v=>$('input[name=cat][value='+v+']',pf).checked;$('#pSkills').hidden=!on('skills');$('#pCerts').hidden=!on('cert')}
+$('#pCats').addEventListener('change',pathToggle);
+$('#pAcc').addEventListener('click',()=>{$('#pAccN').hidden=false});
+function planHref(c){return DEST[c]+'?level='+plan.level+'&cat='+c+'&fmt='+plan.fmt+(c==='skills'?'&skills='+plan.skills.join(','):'')+(c==='cert'?'&cert='+plan.certs.join(','):'')}
+$('#pathForm').addEventListener('submit',e=>{e.preventDefault();const pf=e.target,v=n=>$$('input[name='+n+']:checked',pf).map(i=>i.value);
+  const cats=v('cat'),sk=v('sk'),ce=v('ce'),fmt=v('fmt')[0],er=!cats.length?'p.e1':cats.includes('skills')&&!sk.length?'p.e2':cats.includes('cert')&&!ce.length?'p.e3':!fmt?'p.e4':'';
+  if(er){$('#pErr').textContent=tt(er);return}
+  plan={level:lvNow(),cats,skills:cats.includes('skills')?sk:[],certs:cats.includes('cert')?ce:[],fmt,mode:'guest'};store.set('ll-plan',JSON.stringify(plan));
+  pd.close();renderPlan();location.hash=planHref(cats[0]);});
+function renderPlan(){
+  const cur=new URLSearchParams(location.hash.split('?')[1]||'').get('cat');
+  $$('[data-plan]').forEach(b=>{if(!plan){b.hidden=true;b.innerHTML='';return}b.hidden=false;
+    b.innerHTML=`<div class="plan-h"><b>${tt('plan.t')}</b><span class="muted">${plan.level} · ${tt('fmt.'+plan.fmt)}</span><button type="button" class="ibtn" data-plan-x>${tt('plan.x')}</button></div><ul>${plan.cats.map(c=>`<li${c===cur?' aria-current="true"':''}><a href="${planHref(c)}">${tt('cat.'+c)}${c==='skills'?': '+plan.skills.map(x=>tt('sk.'+x)).join(', '):''}${c==='cert'?': '+plan.certs.map(x=>(CERTS.find(z=>z.id===x)||{name:''}).name).join(', '):''}</a></li>`).join('')}</ul><p class="muted">${tt('plan.n')}</p>`});
+}
+function renderAll(){renderGoal();renderPlan();pickers.forEach(p=>p.refresh())}
+/* info dialogs */
+function openInfo(k){
+  if(!['terms','priv','upd','fb'].includes(k))return;
+  $('#idT').textContent=tt('i.'+k);const b=$('#idB');
+  if(k!=='fb')b.innerHTML='<p></p>',b.firstChild.textContent=tt('i.'+k+'.b');
+  else{b.innerHTML=`<form id="fbF" novalidate><label class="fl" for="fbC">${tt('fb.cat')}</label><select id="fbC">${['bug','content','feature','general'].map(x=>`<option value="${x}">${tt('fb.'+x)}</option>`).join('')}</select><label class="fl" for="fbM">${tt('fb.msg')}</label><textarea id="fbM"></textarea><p class="err" id="fbS" role="alert"></p><button class="btn sm" type="submit">${tt('fb.send')}</button></form>`;
+    $('#fbF').addEventListener('submit',e=>{e.preventDefault();$('#fbS').textContent=$('#fbM').value.trim().length<10?tt('fb.e'):tt('fb.ok')})}
+  idg.showModal();
+}
+
 /* ===== init ===== */
 function layoutAll(){pickers.forEach(p=>p.layout());layoutThread();onScroll()}
 let lt=0;const schedule=()=>{cancelAnimationFrame(lt);lt=requestAnimationFrame(layoutAll)};
 applyTheme();applyLang();
 pickers.forEach(p=>p.apply(-1,false,true));
-go();layoutAll();
+{const q=new URLSearchParams(location.search).get('level'),i=LV.indexOf((q||savedLv||'').toUpperCase());if(i>=0)selectAll(i,null)}
+go();renderAll();layoutAll();
 addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',schedule);addEventListener('load',schedule);
 $$('img').forEach(i=>i.complete||i.addEventListener('load',schedule));
 if(D.fonts&&D.fonts.ready)D.fonts.ready.then(schedule);
