@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LernLeap mit MEo</title>
-<script>try{var t=localStorage.getItem('ll-theme');if(!t)t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;if(localStorage.getItem('ll-lang')==='en')document.documentElement.lang='en'}catch(e){}</script>
+<script>try{var t=localStorage.getItem('ll-theme');if(!t||t==='system')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;if(localStorage.getItem('ll-lang')==='en')document.documentElement.lang='en'}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -359,6 +359,23 @@ dialog::backdrop{background:rgba(11,22,36,.6)}
 .sleepbox .sb-yarn{width:54.7%;left:45.3%;top:49%;bottom:auto;z-index:2}
 .sleepbox .sb-front{z-index:3;clip-path:polygon(42.2% 0,100% 0,100% 72.8%,80% 72.5%,71.1% 72.8%,65% 69.3%,60.6% 66.6%,55.6% 64%,50.6% 60.7%,42.2% 54.3%)}
 .sleepbox .zzz{left:73%;top:-2%;width:15.5%;z-index:4}
+
+/* v8: LernLib, tour, Meo hug, floating heart */
+.lib-count{font:700 20px var(--serif);color:var(--wm)}progress{width:100%;height:8px;accent-color:var(--yarn);margin:var(--s2) 0}
+.lib-form{display:grid;grid-template-columns:2fr 2fr 1fr auto;gap:var(--s3);align-items:end;margin-top:var(--s3)}.lib-form .fl{margin-top:0}
+.lib-form input,.lib-form select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:var(--r)}
+.lib-msg{min-height:1.5em;margin-top:var(--s2);font-weight:600;font-size:15px}.lib-h{display:flex;justify-content:space-between;align-items:center;gap:var(--s3);flex-wrap:wrap}
+.lib-list{list-style:none;margin:var(--s3) 0 0;padding:0}.lib-list li{display:grid;grid-template-columns:1.2fr 1.6fr auto auto;gap:var(--s3);align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.lib-list b{font-weight:600}.lib-list .tg{font-size:13px;color:var(--muted);border:1px solid var(--line);padding:2px 8px}.lib-empty{color:var(--muted);padding:var(--s3) 0}
+.fc{border:1px solid var(--line);padding:var(--s5) var(--s4);margin-top:var(--s3);text-align:center;min-height:150px}.fc-t{font:700 clamp(24px,5vw,32px) var(--serif);color:var(--wm)}.fc-b{margin-top:var(--s3);font-size:18px}
+#tourDlg{z-index:60;position:fixed;inset:auto 16px 16px auto;margin:0;width:min(400px,calc(100% - 32px));box-shadow:none}.tour-dots{display:flex;gap:6px;margin-top:var(--s3)}.tour-dots i{width:22px;height:4px;background:var(--line)}.tour-dots i.on{background:var(--yarn)}
+.nav a.tour-hl{outline:2px solid var(--yarn);outline-offset:3px}
+#setPop .seg:has(input[value=system]){grid-template-columns:repeat(3,1fr)}
+.sleepbox .sb-yarn{width:56%;left:41%;top:44.5%}
+#tH{transform-box:fill-box;transform-origin:50% 100%}
+@media(prefers-reduced-motion:no-preference){#tH{animation:hfloat 6.5s ease-in-out infinite alternate}}
+@keyframes hfloat{0%{transform:rotate(-2deg) scale(1)}100%{transform:rotate(2.6deg) scale(1.014)}}
+@media(max-width:819px){.lib-form{grid-template-columns:1fr}.lib-list li{grid-template-columns:1fr auto;gap:var(--s2) var(--s3)}.lib-list li span.m{grid-column:1/-1;order:3}.lib-list li .ibtn{grid-column:1/-1;order:4;justify-self:start}#tourDlg{inset:auto 12px 12px 12px;width:auto}}
 </style>
 </head>
 <body>
@@ -366,13 +383,13 @@ dialog::backdrop{background:rgba(11,22,36,.6)}
 <header class="hd"><div class="hd-in">
   <a class="logo" href="#/" aria-label="LernLeap mit MEo"><img class="logo-ball" id="logoBall" src="data:image/webp;base64,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" alt="" width="28" height="28"><span class="logo-wm">LernLeap</span><span class="logo-sub">mit <span class="meo-w">M<span class="meo-e">E<svg class="yb" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="4.3" fill="#B3261E"/><path d="M2.3 3.5c2-1.3 4.1-1 5.6.4M1.6 5.5c2.3-1 4.8-.8 6.8.6M2.7 7.5c1.6-.7 3.4-.6 4.8.2" fill="none" stroke="#7E1410" stroke-width=".8" stroke-linecap="round"/><path d="M8.3 8.3c.7.6 1.3.4 1.7-.3" fill="none" stroke="#B3261E" stroke-width=".9" stroke-linecap="round"/></svg></span>o</span></span></a>
   <nav class="nav" id="nav" data-i18n-label="nav.label" aria-label="Hauptnavigation">
-    <a href="#/" data-r="start" data-i18n="nav.start">Start</a><a href="#/lab" data-r="lab" data-i18n="nav.lab">LernLab</a><a href="#/check" data-r="check" data-i18n="nav.check">LernCheck</a><a href="#ueber" data-r="ueber" data-i18n="nav.about">Über LernLeap</a>
+    <a href="#/" data-r="start" data-i18n="nav.start">Start</a><a href="#/lab" data-r="lab" data-i18n="nav.lab">LernLab</a><a href="#/lib" data-r="lib" data-i18n="nav.lib">LernLib</a><a href="#/level" data-r="check" data-i18n="nav.check">LernLevel</a>
   </nav>
   <div class="hd-r">
     <button class="ibtn gchip" id="goalBtn" type="button" aria-expanded="false" aria-controls="goalPop"><i class="dot" aria-hidden="true"></i><span id="goalTxt"></span></button><div class="pop gp" id="goalPop" role="group" data-i18n-label="goal.mine" aria-label="Mein Ziel" hidden></div>
     <button class="ibtn" id="setBtn" aria-expanded="false" aria-controls="setPop" data-i18n-label="set.btn" aria-label="Einstellungen"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M19 7h1M4 17h1M11 17h9"/><circle cx="16" cy="7" r="2.2"/><circle cx="8" cy="17" r="2.2"/></svg><span data-i18n="set.btn">Einstellungen</span></button>
     <div class="pop" id="setPop" role="group" aria-label="Einstellungen" data-i18n-label="set.btn" hidden>
-      <fieldset><legend data-i18n="set.theme">Darstellung</legend><div class="seg"><label><input type="radio" name="theme" value="light"><span data-i18n="theme.light">Hell</span></label><label><input type="radio" name="theme" value="dark"><span data-i18n="theme.dark">Dunkel</span></label></div></fieldset>
+      <fieldset><legend data-i18n="set.theme">Darstellung</legend><div class="seg"><label><input type="radio" name="theme" value="light"><span data-i18n="theme.light">Hell</span></label><label><input type="radio" name="theme" value="dark"><span data-i18n="theme.dark">Dunkel</span></label><label><input type="radio" name="theme" value="system"><span data-i18n="theme.system">System</span></label></div></fieldset>
       <fieldset><legend data-i18n="set.lang">Sprache</legend><div class="seg"><label><input type="radio" name="lang" value="de"><span>Deutsch</span></label><label><input type="radio" name="lang" value="en"><span>English</span></label></div></fieldset>
     </div>
     <button class="ibtn menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav" data-i18n="menu">Menü</button>
@@ -380,7 +397,7 @@ dialog::backdrop{background:rgba(11,22,36,.6)}
 </div></header>
 <main id="main">
 <div class="view" id="v-start">
-  <svg class="thread" id="thread" aria-hidden="true" focusable="false"><path id="tA"/><path id="tB"/></svg>
+  <svg class="thread" id="thread" aria-hidden="true" focusable="false"><path id="tA"/><path id="tB"/><path id="tH"/></svg>
   <svg id="thread2" aria-hidden="true" focusable="false"><defs><clipPath id="pawClip" clipPathUnits="userSpaceOnUse"><polygon id="pawC"/></clipPath></defs><path id="tAc" clip-path="url(#pawClip)"/></svg>
 
   <section class="hero" id="start">
@@ -418,10 +435,10 @@ dialog::backdrop{background:rgba(11,22,36,.6)}
 
   <section class="sx sx-flip" id="lerncheck">
     <div class="sx-body">
-      <h2 class="disp" data-i18n="nav.check">LernCheck</h2><p class="chk-hook" data-i18n="chk.hook"></p><p class="muted" data-i18n="chk.desc"></p>
+      <h2 class="disp" data-i18n="nav.check">LernLevel</h2><p class="chk-hook" data-i18n="chk.hook"></p><p class="muted" data-i18n="chk.desc"></p>
       <ul class="exams"><li>Goethe-Zertifikat</li><li>TestDaF</li><li>telc</li></ul>
       <p class="chk-skills" data-i18n="chk.sk"></p>
-      <a class="link go" href="#/check" data-i18n="go.check">Zu LernCheck</a>
+      <a class="link go" href="#/level" data-i18n="go.check">Zu LernLevel</a>
     </div>
     <div class="sx-art" id="art3"><img class="a-run" data-asset="run" width="1000" height="627" alt="" data-i18n-alt="alt.run"></div>
   </section>
@@ -443,17 +460,22 @@ dialog::backdrop{background:rgba(11,22,36,.6)}
   <section class="pg-sec"><div class="cards">
     <div class="card"><h3 data-i18n="lab.g"></h3><p data-i18n="lab.gd"></p><span class="soon" data-i18n="soon"></span></div>
     <div class="card"><h3 data-i18n="lab.w"></h3><p data-i18n="lab.wd"></p><span class="soon" data-i18n="soon"></span></div></div></section>
+  <section class="pg-sec"><h2 class="disp2" data-i18n="lab.fmt"></h2><div class="cards"><div class="card"><h3 data-i18n="p.lib"></h3><p data-i18n="p.libd"></p><span class="soon" data-i18n="soon"></span></div><div class="card"><h3 data-i18n="p.prac"></h3><p data-i18n="p.pracd"></p><span class="soon" data-i18n="soon"></span></div></div></section>
 </div></div>
 <div class="view" id="v-check" hidden><div class="pg">
-  <header class="pg-head"><h1 class="disp" data-i18n="nav.check">LernCheck</h1><p class="tag" data-i18n="chk.hook"></p><p class="muted" data-i18n="chk.desc"></p></header><aside class="plan" data-plan hidden></aside>
+  <header class="pg-head"><h1 class="disp" data-i18n="nav.check">LernLevel</h1><p class="tag" data-i18n="chk.hook"></p><p class="muted" data-i18n="chk.desc"></p></header><aside class="plan" data-plan hidden></aside>
   <section class="pg-sec"><h2 class="disp2" data-i18n="lv.title2"></h2><p class="hint" data-i18n="lv.hint"></p><div data-picker data-art="sit"></div></section>
-  <section class="pg-sec"><div class="cards">
-    <div class="card"><h3>Goethe-Zertifikat</h3><p data-i18n="chk.sk"></p><span class="soon" data-i18n="soon"></span></div>
-    <div class="card"><h3>TestDaF</h3><p data-i18n="chk.sk"></p><span class="soon" data-i18n="soon"></span></div>
-    <div class="card"><h3>telc</h3><p data-i18n="chk.sk"></p><span class="soon" data-i18n="soon"></span></div></div></section>
+  <section class="pg-sec"><div class="cards" id="lvlCerts"></div><p class="hint-s" id="lvlNone" hidden data-i18n="lvl.none"></p><p class="hint-s" data-i18n="lvl.note"></p></section>
+</div></div>
+<div class="view" id="v-lib" hidden><div class="pg">
+  <header class="pg-head"><h1 class="disp" data-i18n="nav.lib">LernLib</h1><p class="tag" data-i18n="lib.tag"></p><p class="muted" data-i18n="lib.desc"></p></header><aside class="plan" data-plan hidden></aside>
+  <section class="pg-sec"><p class="lib-count" id="libCount"></p><progress id="libBar" max="500" value="0" aria-hidden="true"></progress><p class="hint-s" data-i18n="lib.guest"></p>
+  <form id="libForm" class="lib-form" novalidate><div><label class="fl" for="libTerm" data-i18n="lib.term"></label><input id="libTerm" maxlength="80" autocomplete="off"></div><div><label class="fl" for="libMean" data-i18n="lib.mean"></label><input id="libMean" maxlength="160" autocomplete="off"></div><div><label class="fl" for="libType" data-i18n="lib.type"></label><select id="libType"><option value="word" data-i18n="t.word"></option><option value="phrase" data-i18n="t.phrase"></option><option value="grammar" data-i18n="t.grammar"></option><option value="example" data-i18n="t.example"></option><option value="mistake" data-i18n="t.mistake"></option></select></div><button class="btn sm" type="submit" data-i18n="lib.add"></button></form>
+  <p class="lib-msg" id="libMsg" role="status" aria-live="polite"></p></section>
+  <section class="pg-sec"><div class="lib-h"><h2 class="disp2" data-i18n="lib.list"></h2><button type="button" class="btn sm" id="libCards" data-i18n="lib.review"></button></div><ul class="lib-list" id="libList"></ul></section>
 </div></div>
 </main>
-<footer class="ft"><div class="ft-brand"><span class="logo-wm">LernLeap</span><span class="made"><svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><path fill="#FFCD00" d="M15 4l1.8 5.6h5.9l-4.8 3.5 1.8 5.6L15 15.2l-4.7 3.5 1.8-5.6-4.8-3.5h5.9z"/></svg>Proudly made in Vietnam</span></div><nav aria-label="Footer"><button type="button" class="lbtn" data-info="terms" data-i18n="ft.terms">Nutzungsbedingungen</button><button type="button" class="lbtn" data-info="priv" data-i18n="ft.priv">Datenschutz</button><button type="button" class="lbtn" data-info="upd" data-i18n="ft.upd">Updates</button><button type="button" class="lbtn" data-info="fb" data-i18n="ft.fb">Feedback</button></nav><span class="muted">© 2026 LernLeap</span></footer>
+<footer class="ft"><div class="ft-brand"><span class="logo-wm">LernLeap</span><span class="made"><svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon fill="#FFCD00" points="15.00,4.57 16.35,8.72 20.71,8.72 17.18,11.28 18.53,15.43 15.00,12.87 11.47,15.43 12.82,11.28 9.29,8.72 13.65,8.72"/></svg>Proudly made in Vietnam</span></div><nav aria-label="Footer"><button type="button" class="lbtn" data-info="terms" data-i18n="ft.terms">Nutzungsbedingungen</button><button type="button" class="lbtn" data-info="priv" data-i18n="ft.priv">Datenschutz</button><button type="button" class="lbtn" data-info="upd" data-i18n="ft.upd">Updates</button><button type="button" class="lbtn" data-tour data-i18n="ft.tour">Tours</button><button type="button" class="lbtn" data-info="fb" data-i18n="ft.fb">Feedback</button></nav><span class="muted">© 2026 LernLeap</span></footer>
 <dialog id="goalDlg" aria-labelledby="gdT"><form class="dl-in" id="goalForm" novalidate><h2 class="disp2" id="gdT" data-i18n="gd.title"></h2><p class="muted" data-i18n="gd.sub"></p>
 <label class="fl" for="gdLevel" data-i18n="goal.level"></label><select id="gdLevel"></select>
 <fieldset><legend data-i18n="goal.focus"></legend><div class="opts" id="gdFocus"></div></fieldset>
@@ -468,6 +490,8 @@ dialog::backdrop{background:rgba(11,22,36,.6)}
 <div class="opts one" style="margin-top:12px"><label><input type="radio" name="auth" value="guest" checked><span data-i18n="p.guest"></span></label></div><p class="hint-s" data-i18n="p.guestn"></p></fieldset>
 <fieldset><legend data-i18n="p.s3"></legend><div class="opts"><label><input type="radio" name="fmt" value="library"><span><b data-i18n="p.lib"></b><small data-i18n="p.libd"></small></span></label><label><input type="radio" name="fmt" value="practice"><span><b data-i18n="p.prac"></b><small data-i18n="p.pracd"></small></span></label></div></fieldset>
 <p class="err" id="pErr" role="alert"></p><div class="dl-b"><button type="submit" class="btn" data-i18n="p.go"></button><button type="button" class="ibtn" data-close data-i18n="cancel"></button></div></form></dialog>
+<dialog id="fcDlg" aria-labelledby="fcT"><div class="dl-in"><h2 class="disp2" id="fcT" data-i18n="lib.review"></h2><p class="muted" id="fcPos" aria-live="polite"></p><div class="fc"><p class="fc-t" id="fcFront"></p><p class="fc-b" id="fcBack" hidden></p></div><div class="dl-b"><button type="button" class="btn" id="fcShow" data-i18n="fc.show"></button><button type="button" class="ibtn" id="fcAgain" hidden data-i18n="fc.again"></button><button type="button" class="btn" id="fcKnow" hidden data-i18n="fc.know"></button><button type="button" class="ibtn" data-close data-i18n="close"></button></div></div></dialog>
+<dialog id="tourDlg" aria-labelledby="trT"><div class="dl-in"><p class="muted" id="trStep" aria-live="polite"></p><h2 class="disp2" id="trT"></h2><p id="trB"></p><div class="tour-dots" id="trDots" aria-hidden="true"></div><div class="dl-b"><button type="button" class="ibtn" id="trBack" data-i18n="tour.back"></button><button type="button" class="btn sm" id="trNext"></button><a class="ibtn" id="trGo" href="#/lab" data-i18n="tour.go"></a><button type="button" class="ibtn" id="trSkip" data-i18n="tour.skip"></button><button type="button" class="ibtn" id="trX" data-i18n="close"></button></div></div></dialog>
 <dialog id="infoDlg" aria-labelledby="idT"><div class="dl-in"><h2 class="disp2" id="idT"></h2><div id="idB"></div><div class="dl-b"><button type="button" class="ibtn" data-close data-i18n="close"></button></div></div></dialog>
 <script>
 (()=>{
@@ -482,26 +506,26 @@ const fillAssets=(root=D)=>$$('img[data-asset]',root).forEach(i=>{if(!i.src)i.sr
 fillAssets();
 const MEO="<span class=\"meo-w\">M<span class=\"meo-e\">E<svg class=\"yb\" viewBox=\"0 0 10 10\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"4.3\" fill=\"#B3261E\"/><path d=\"M2.3 3.5c2-1.3 4.1-1 5.6.4M1.6 5.5c2.3-1 4.8-.8 6.8.6M2.7 7.5c1.6-.7 3.4-.6 4.8.2\" fill=\"none\" stroke=\"#7E1410\" stroke-width=\".8\" stroke-linecap=\"round\"/><path d=\"M8.3 8.3c.7.6 1.3.4 1.7-.3\" fill=\"none\" stroke=\"#B3261E\" stroke-width=\".9\" stroke-linecap=\"round\"/></svg></span>o</span>";
 const T={
-de:{skip:'Zum Inhalt','nav.label':'Hauptnavigation','nav.start':'Start','nav.lab':'LernLab','nav.check':'LernCheck','nav.about':'Über LernLeap',menu:'Menü','set.btn':'Einstellungen','set.theme':'Darstellung','theme.light':'Hell','theme.dark':'Dunkel','set.lang':'Sprache',
+de:{skip:'Zum Inhalt','nav.label':'Hauptnavigation','nav.start':'Start','nav.lab':'LernLab','nav.check':'LernLevel','nav.about':'Über LernLeap',menu:'Menü','set.btn':'Einstellungen','set.theme':'Darstellung','theme.light':'Hell','theme.dark':'Dunkel','set.lang':'Sprache',
 'hero.hook':'MEo rettet dein Deutsch.','hero.sub':'Grammatik, Wortschatz und Prüfungstraining, damit du Deutsch selbstständig und in deinem Tempo lernst.','cta.level':'Level wählen',
 'lab.tag':'Lernmaterial A1–C2','lab.desc':'Erklärungen mit Beispielen, Nachschlagewissen und Übungen, nach Themen geordnet.','lab.g':'Grammatik','lab.gd':'Grammatik meistern: mit Erklärungen, Beispielen und Übungen','lab.w':'Wortschatz','lab.wd':'Wortschatz ausbauen, Thema für Thema',
 'chk.hook':'Prüfungsangst? Weg damit.','chk.desc':'Aufgaben im Prüfungsformat, mit Erklärung zu jeder Antwort.','chk.sk':'Lesen · Hören · Schreiben · Sprechen',
 'lv.title':'Wo fängst du an?','lv.hint':'Zieh das Knäuel oder wähle ein Level.','lv.group':'Sprachniveau',
 lv:[{i:'Bestätigt Grundkenntnisse auf dem Niveau A1: Hören, Lesen, Schreiben und Sprechen.',b:['dich einfach verständigen, dich vorstellen und Fragen zur Person beantworten kannst, notfalls mit Gesten;','bekannte Alltagswendungen und einfache Sätze verwenden kannst, etwa zu dir und deiner Familie, zu Einkauf, Arbeit oder Schule und zum Wohnen;','kurze, einfache Gespräche in Alltagssituationen verstehst, wenn langsam und deutlich gesprochen wird.']},{i:'Bestätigt Grundkenntnisse auf dem Niveau A2: Hören, Lesen, Schreiben und Sprechen.',b:['gebräuchliche Wendungen und Ausdrücke im Alltag verstehen und verwenden kannst;','dich in einfachen, routinemäßigen Situationen über vertraute Themen wie Herkunft, Ausbildung, direkte Umgebung und Bedürfnisse verständigen kannst;','aus kurzen Texten mit häufigem Wortschatz (einfache Zeitungsartikel, Anzeigen, Aushänge) die Hauptinformationen entnehmen kannst.']},{i:'Vier Module (Hören, Lesen, Schreiben, Sprechen), einzeln oder kombiniert ablegbar.',b:['bei klarer Standardsprache die Hauptinformationen zu Alltagsthemen wie Arbeit, Schule oder Freizeit verstehst;','dich einfach, strukturiert und adressatengerecht zu bekannten Themen, Interessen, Erfahrungen, Träumen und Zielen äußern sowie Gründe und Erklärungen geben kannst;','unkomplizierte Sachtexte zu deinen Interessen und deinem Fachgebiet verstehst.']},{i:'Vier Module (Hören, Lesen, Schreiben, Sprechen), einzeln oder kombiniert ablegbar.',b:['die Hauptinhalte komplexer Texte zu konkreten und abstrakten Themen sowie Fachdiskussionen im eigenen Gebiet verstehst;','dich so spontan und flüssig verständigen kannst, dass ein normales Gespräch mit Muttersprachlern ohne große Anstrengung auf beiden Seiten möglich ist;','dich klar und detailliert zu vielen Themen äußern, einen Standpunkt zu einer aktuellen Frage erläutern und Vor- und Nachteile abwägen kannst.']},{i:'Vier Module (Hören, Lesen, Schreiben, Sprechen), einzeln oder kombiniert ablegbar.',b:['Deutsch im privaten, öffentlichen, akademischen und beruflichen Kontext flexibel und wirksam einsetzen kannst;','anspruchsvolle, lange Texte und ihre implizite Bedeutung auch zu unvertrauten Themen verstehst;','dich spontan und flüssig verständigen und einen Standpunkt vertreten kannst.']},{i:'Vier Module (Hören, Lesen, Schreiben, Sprechen). Im Schreiben kannst du ein literaturbezogenes Thema wählen.',b:['Informationen aus verschiedenen schriftlichen und mündlichen Quellen zusammenfassen und Begründungen und Erklärungen zusammenhängend wiedergeben kannst;','dich flüssig, spontan und genau ausdrücken und feine Bedeutungsunterschiede deutlich machen kannst;','praktisch alles, was du auf Deutsch liest oder hörst, mühelos verstehst.']}],
 lvNone:'Noch kein Level gewählt.',lvLead:'Mit bestandener Prüfung zeigst du, dass du …',lvCta:'Ziel für {l} setzen',lvCtaOff:'Erst ein Level wählen',saved:'{l} ist auf diesem Gerät gemerkt.',
-'end.title':'Über LernLeap','end.text':'LernLeap ist ein Ort, um Deutsch selbstständig zu lernen. Das LernLab erklärt Grammatik und Wortschatz, der LernCheck bereitet auf Prüfungen vor.','end.fine':'MEo sorgt für den roten Faden.',
-'miau':'Miau, miau!','go.lab':'Zu LernLab','go.check':'Zu LernCheck','soon':'Bald verfügbar','lv.title2':'Wo fängst du an?','alt.sit':'MEo, eine weiße Katze, sitzt auf einem roten Wollknäuel.','alt.run':'MEo jagt einem roten Wollfaden hinterher.','alt.hug':'MEo umarmt ein rotes Wollknäuel.','pg.lab.t':'Grammatik und Wortschatz','pg.chk.t':'Prüfungstraining','alt.sleep':'MEo schläft auf einem roten Wollknäuel.','alt.ball':'Ein rotes Wollknäuel.','alt.hero2':'MEo, eine weiße Katze, schläft auf einem roten Wollknäuel.','alt.wake':'MEo wecken',snd:'MEo miauen hören','alt.lying':'MEo liegt auf dem Rücken und spielt zufrieden.','alt.sit':'MEo sitzt auf dem Wollknäuel und schaut neugierig.','alt.sleep':'MEo schläft auf dem Wollknäuel.'},
-en:{skip:'Skip to content','nav.label':'Main navigation','nav.start':'Start','nav.lab':'LernLab','nav.check':'LernCheck','nav.about':'About LernLeap',menu:'Menu','set.btn':'Settings','set.theme':'Appearance','theme.light':'Light','theme.dark':'Dark','set.lang':'Language',
+'end.title':'Über LernLeap','end.text':'LernLeap ist ein Ort, um Deutsch selbstständig zu lernen. Das LernLab erklärt Grammatik und Wortschatz, der LernLevel bereitet auf Prüfungen vor.','end.fine':'MEo sorgt für den roten Faden.',
+'miau':'Miau, miau!','go.lab':'Zu LernLab','go.check':'Zu LernLevel','soon':'Bald verfügbar','lv.title2':'Wo fängst du an?','alt.sit':'MEo, eine weiße Katze, sitzt auf einem roten Wollknäuel.','alt.run':'MEo jagt einem roten Wollfaden hinterher.','alt.hug':'MEo umarmt ein rotes Wollknäuel.','pg.lab.t':'Grammatik und Wortschatz','pg.chk.t':'Prüfungstraining','alt.sleep':'MEo schläft auf einem roten Wollknäuel.','alt.ball':'Ein rotes Wollknäuel.','alt.hero2':'MEo, eine weiße Katze, schläft auf einem roten Wollknäuel.','alt.wake':'MEo wecken',snd:'MEo miauen hören','alt.lying':'MEo liegt auf dem Rücken und spielt zufrieden.','alt.sit':'MEo sitzt auf dem Wollknäuel und schaut neugierig.','alt.sleep':'MEo schläft auf dem Wollknäuel.'},
+en:{skip:'Skip to content','nav.label':'Main navigation','nav.start':'Start','nav.lab':'LernLab','nav.check':'LernLevel','nav.about':'About LernLeap',menu:'Menu','set.btn':'Settings','set.theme':'Appearance','theme.light':'Light','theme.dark':'Dark','set.lang':'Language',
 'hero.hook':'MEo to the rescue for your German.','hero.sub':'Grammar, vocabulary and exam practice, so you can learn German on your own and at your own pace.','cta.level':'Choose your level',
 'lab.tag':'Learning materials A1–C2','lab.desc':'Explanations with examples, reference material and exercises, organised by topic.','lab.g':'Grammar','lab.gd':'Master Grammatik with explanations, examples and exercises','lab.w':'Vocabulary','lab.wd':'Boost your vocab, topic by topic',
 'chk.hook':'Knock exam nerves out.','chk.desc':'Exam-format tasks, with an explanation for every answer.','chk.sk':'Reading · Listening · Writing · Speaking',
 'lv.title':'Where do you start?','lv.hint':'Roll the yarn or pick a level.','lv.group':'Language level',
 lv:[{i:'Confirms basic language knowledge at level A1: listening, reading, writing and speaking.',b:['can interact in a simple way, introduce yourself and answer basic questions about personal details, falling back on gestures if needed;','can use familiar everyday phrases and simple sentences, for example about yourself and your family, shopping, work or school, and where you live;','can understand short, basic conversations in everyday situations if the other person speaks slowly and clearly.']},{i:'Confirms basic language knowledge at level A2: listening, reading, writing and speaking.',b:['can use and understand common expressions and phrases in everyday situations;','can take part in basic, routine exchanges about familiar topics such as your origin and education, your surroundings and your needs;','can pick out the main information from short texts with frequent vocabulary (simple newspaper articles, ads, notice boards).']},{i:'Four modules (listening, reading, writing, speaking), which can be taken individually or combined.',b:['can understand the main points when clear standard language is spoken about everyday topics such as work, school or leisure;','can express yourself in a simple, structured and audience-appropriate way about familiar topics, interests, experiences, dreams and goals, and give reasons and explanations;','can understand uncomplicated non-fiction texts about your interests and your field.']},{i:'Four modules (listening, reading, writing, speaking), which can be taken individually or combined.',b:['can understand the main points of complex texts on concrete and abstract topics, including professional discussions in your field;','can communicate spontaneously and fluently enough for regular interaction with a German speaker without strain on either side;','can express yourself clearly and in detail on many topics, explain a position on a current issue and weigh the advantages and disadvantages of options.']},{i:'Four modules (listening, reading, writing, speaking), which can be taken individually or combined.',b:['can use German flexibly and effectively in private, public, academic and professional contexts;','can understand demanding, long texts and their implicit meaning, even on unfamiliar topics;','can communicate spontaneously and fluently and argue a position.']},{i:'Four modules (listening, reading, writing, speaking). In the writing module you can choose a literature-related topic.',b:['can summarise information from different written and spoken sources and present reasons and explanations coherently;','can communicate fluently, spontaneously and precisely and express fine shades of meaning;','can understand practically everything you read or hear in German without effort.']}],
 lvNone:'No level selected yet.',lvLead:'Passing the exam shows that you …',lvCta:'Set a goal for {l}',lvCtaOff:'Choose a level first',saved:'{l} is saved on this device.',
-'end.title':'About LernLeap','end.text':'LernLeap is a place to learn German on your own. LernLab explains grammar and vocabulary, LernCheck prepares you for exams.','end.fine':'MEo makes sure there is a thread to follow.',
-'miau':'Meow, meow!','go.lab':'Go to LernLab','go.check':'Go to LernCheck','soon':'Coming soon','lv.title2':'Where do you start?','alt.sit':'MEo, a white cat, sits on a ball of red yarn.','alt.run':'MEo chases a red thread.','alt.hug':'MEo hugs a ball of red yarn.','pg.lab.t':'Grammar and vocabulary','pg.chk.t':'Exam training','alt.sleep':'MEo sleeps on a ball of red yarn.','alt.ball':'A ball of red yarn.','alt.hero2':'MEo, a white cat, sleeps on a ball of red yarn.','alt.wake':'Wake MEo',snd:'Hear MEo meow','alt.lying':'MEo lies on its back, playing happily.','alt.sit':'MEo sits on the ball of yarn and looks curious.','alt.sleep':'MEo sleeps on the ball of yarn.'}
+'end.title':'About LernLeap','end.text':'LernLeap is a place to learn German on your own. LernLab explains grammar and vocabulary, LernLevel prepares you for exams.','end.fine':'MEo makes sure there is a thread to follow.',
+'miau':'Meow, meow!','go.lab':'Go to LernLab','go.check':'Go to LernLevel','soon':'Coming soon','lv.title2':'Where do you start?','alt.sit':'MEo, a white cat, sits on a ball of red yarn.','alt.run':'MEo chases a red thread.','alt.hug':'MEo hugs a ball of red yarn.','pg.lab.t':'Grammar and vocabulary','pg.chk.t':'Exam training','alt.sleep':'MEo sleeps on a ball of red yarn.','alt.ball':'A ball of red yarn.','alt.hero2':'MEo, a white cat, sleeps on a ball of red yarn.','alt.wake':'Wake MEo',snd:'Hear MEo meow','alt.lying':'MEo lies on its back, playing happily.','alt.sit':'MEo sits on the ball of yarn and looks curious.','alt.sleep':'MEo sleeps on the ball of yarn.'}
 };
-let lang=store.get('ll-lang')==='en'?'en':'de',theme=R.dataset.theme||'light';
+let lang=store.get('ll-lang')==='en'?'en':'de',theme=['light','dark','system'].includes(store.get('ll-theme'))?store.get('ll-theme'):'system';
 const pickers=[];
 function applyLang(){
   const t=T[lang];R.lang=lang;
@@ -511,7 +535,8 @@ function applyLang(){
   $$('input[name=lang]').forEach(i=>i.checked=i.value===lang);
   pickers.forEach(p=>p.refresh());if(typeof renderAll==='function')renderAll();
 }
-function applyTheme(){R.dataset.theme=theme;$$('input[name=theme]').forEach(i=>i.checked=i.value===theme)}
+matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{if(theme==='system')applyTheme()});
+function applyTheme(){R.dataset.theme=theme==='system'?(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'):theme;$$('input[name=theme]').forEach(i=>i.checked=i.value===theme)}
 $$('input[name=lang]').forEach(i=>i.addEventListener('change',()=>{lang=i.value;store.set('ll-lang',lang);applyLang()}));
 $$('input[name=theme]').forEach(i=>i.addEventListener('change',()=>{theme=i.value;store.set('ll-theme',theme);applyTheme()}));
 /* settings popover and mobile menu */
@@ -525,19 +550,19 @@ nav.addEventListener('click',e=>{if(e.target.closest('a')){nav.classList.remove(
 
 
 /* ===== router ===== */
-const views={start:$('#v-start'),lab:$('#v-lab'),check:$('#v-check')},navA=$$('.nav a');
+const views={start:$('#v-start'),lab:$('#v-lab'),check:$('#v-check'),lib:$('#v-lib')},navA=$$('.nav a');
 let route='';
 function setCurrent(k){navA.forEach(a=>{if(a.dataset.r===k)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current')})}
 function go(){
-  const h0=location.hash,h=h0.split('?')[0],qs=new URLSearchParams(h0.split('?')[1]||''),qi=LV.indexOf((qs.get('level')||'').toUpperCase()),r=h==='#/lab'?'lab':h==='#/check'?'check':'start',anc=r==='start'&&h.length>1&&h[1]!=='/'?h.slice(1):'';
+  const h0=location.hash,h=h0.split('?')[0],qs=new URLSearchParams(h0.split('?')[1]||''),qi=LV.indexOf((qs.get('level')||'').toUpperCase()),r=h==='#/lab'?'lab':h==='#/lib'?'lib':(h==='#/level'||h==='#/check')?'check':'start',anc=r==='start'&&h.length>1&&h[1]!=='/'?h.slice(1):'';
   if(qi>=0&&qi!==sel)selectAll(qi,null);
   if(r!==route){Object.entries(views).forEach(([k,v])=>v.hidden=k!==r);route=r;if(!anc)scrollTo({top:0,behavior:'instant'});setCurrent(r==='start'&&!anc?'start':r);schedule()}
-  if(anc&&$('#'+anc)){setCurrent(anc==='ueber'?'ueber':'start');requestAnimationFrame(()=>$('#'+anc).scrollIntoView({behavior:rm()?'auto':'smooth'}))}
+  if(anc&&$('#'+anc)){setCurrent('start');requestAnimationFrame(()=>$('#'+anc).scrollIntoView({behavior:rm()?'auto':'smooth'}))}
   else if(r==='start')setCurrent('start');
   if(typeof renderPlan==='function')renderPlan();
 }
 addEventListener('hashchange',go);
-(()=>{const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&route==='start')setCurrent(e.target.id==='ueber'?'ueber':'start')}),{rootMargin:'-40% 0px -55% 0px'});['start','ueber'].forEach(id=>io.observe($('#'+id)))})();
+(()=>{const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&route==='start')setCurrent('start')}),{rootMargin:'-40% 0px -55% 0px'});['start','ueber'].forEach(id=>io.observe($('#'+id)))})();
 
 /* ===== level picker: the yarn ball rolls along the ground and shrinks as it unwinds ===== */
 let sel=-1,savedLv=store.get('ll-level'),goal=null;
@@ -602,8 +627,8 @@ $$('[data-picker]').forEach(makePicker);
    A belt of tangent lines between "pulleys" (yarn balls, the cat's paw, small curls). Every join shares a tangent direction. */
 const startV=views.start,svg=$('#thread'),heroBox=$('#heroBox'),logoBall=$('#logoBall');
 const art2=$('#art2 img'),artRun=$('#art3 img'),sbYarn=$('#art5 .sb-yarn'),sbBody=$('#ueber .sx-body'),pk=pickers[0];
-const tA=$('#tA'),tB=$('#tB'),tAc=$('#tAc'),pawC=$('#pawC'),svg2=$('#thread2');
-const PS=[{els:[tA,tAc],L:0,ys:[],cur:0,tgt:0},{els:[tB],L:0,ys:[],cur:0,tgt:0}];
+const tA=$('#tA'),tB=$('#tB'),tH=$('#tH'),tAc=$('#tAc'),pawC=$('#pawC'),svg2=$('#thread2');
+const PS=[{els:[tA,tAc],L:0,ys:[],cur:0,tgt:0},{els:[tB],L:0,ys:[],cur:0,tgt:0},{els:[tH],L:0,ys:[],cur:0,tgt:0}];
 let raf=0,mt=0;
 const rel=el=>{const r=el.getBoundingClientRect(),m=startV.getBoundingClientRect();return{l:r.left-m.left,t:r.top-m.top,w:r.width,h:r.height}};
 const TAU=Math.PI*2,mod=a=>((a%TAU)+TAU)%TAU,vec=a=>({x:Math.cos(a),y:Math.sin(a)}),rot90=u=>({x:-u.y,y:u.x});
@@ -658,20 +683,21 @@ function layoutThread(){
   const hsz=wide?2.5:2.1,hxc=wide?body.l+Math.min(70,body.w*.3):body.l+body.w*.5;
   const tipy=Math.max(sec.t+sec.h-18,body.t+body.h+16+37*hsz*1.12),rT=22*u,Tn={c:{x:hxc-rT,y:tipy},r:rT,s:-1};
   const S2=belt([EB,{c:B5.c,r:.72*B5.r,s:-1},Tn],[null,null]),endT={uL:{x:0,y:-1},P1:{x:hxc,y:tipy}};
-  const hS=hsz*1.12,hq=(x,y)=>`${(hxc+x*hS).toFixed(1)} ${(tipy+y*hS).toFixed(1)}`;
-  const heart=`C${hq(-2,-7)} ${hq(-17,-10)} ${hq(-17.5,-20)}C${hq(-17.5,-30)} ${hq(-6,-35)} ${hq(-.8,-24.8)}C${hq(3,-35.5)} ${hq(18.5,-31)} ${hq(17.5,-19.2)}C${hq(16.8,-9.5)} ${hq(3.5,-6)} ${hq(-.6,.4)}`;
-  const dB=`M${xe} ${G}`+arc(EB,{uA:{x:1,y:0}},S2[0])+cub(S2[0])+arc({c:B5.c,r:.72*B5.r,s:-1},S2[0],S2[1])+cub(S2[1])+arc(Tn,S2[1],endT)+heart;
-  const sw=UW.toFixed(2);[tA,tAc,tB].forEach(p=>p.setAttribute('stroke-width',sw));
-  tA.setAttribute('d',dA);tAc.setAttribute('d',dA);tB.setAttribute('d',dB);
+  const hS=hsz*1.12,th=8*Math.PI/180,hq=(x,y)=>{const X=x*Math.cos(th)-y*Math.sin(th),Y=x*Math.sin(th)+y*Math.cos(th);return `${(hxc+X*hS).toFixed(1)} ${(tipy+Y*hS).toFixed(1)}`};
+  const heart=`C${hq(-1,-7)} ${hq(-16.5,-9)} ${hq(-17.5,-19.5)}C${hq(-18.5,-30.5)} ${hq(-5.5,-36)} ${hq(-1.4,-25)}C${hq(1.5,-33.5)} ${hq(17.5,-32)} ${hq(17.2,-20.5)}C${hq(16.8,-10.5)} ${hq(4.5,-6.5)} ${hq(-1,1.4)}`;
+  const dB=`M${xe} ${G}`+arc(EB,{uA:{x:1,y:0}},S2[0])+cub(S2[0])+arc({c:B5.c,r:.72*B5.r,s:-1},S2[0],S2[1])+cub(S2[1])+arc(Tn,S2[1],endT);
+  const sw=UW.toFixed(2);[tA,tAc,tB,tH].forEach(p=>p.setAttribute('stroke-width',sw));
+  tA.setAttribute('d',dA);tAc.setAttribute('d',dA);tB.setAttribute('d',dB);tH.setAttribute('d',`M${hxc} ${tipy}`+heart);
   /* front half of the loop is drawn over the cat's leg */
   const hh=UW*1.2,fr=HS.filter(q=>q.f>=Math.PI&&q.f<=2*Math.PI);
   pawC.setAttribute('points',fr.map(q=>`${(q.x+e2.x*hh).toFixed(1)},${(q.y+e2.y*hh).toFixed(1)}`).concat(fr.map(q=>`${(q.x-e2.x*hh).toFixed(1)},${(q.y-e2.y*hh).toFixed(1)}`).reverse()).join(' '));
   PS.forEach(s=>{const p=s.els[0];s.L=p.getTotalLength();s.els.forEach(e=>{e.style.strokeDasharray=`${s.L} ${s.L}`});s.ys=[];for(let l=0;l<=s.L;l+=6)s.ys.push(p.getPointAtLength(l).y)});
-  calc();PS.forEach(s=>{s.cur=rm()?s.tgt:Math.min(s.cur,s.tgt)});paint();
+  calc();PS.forEach(s=>{s.cur=rm()?s.tgt:Math.min(s.cur,s.tgt)});paint();if(!raf&&!rm())raf=requestAnimationFrame(tick);
 }
 function calc(){
   const line=scrollY+innerHeight*.72-mt,ex=[pk.stage,sbYarn];
   PS.forEach((s,i)=>{
+    if(i===2){s.tgt=(rm()||PS[1].cur>=PS[1].L-.6)?s.L:0;return}
     if(rm()){s.tgt=s.L;return}
     let k=0;while(k<s.ys.length&&s.ys[k]<=line)k++;
     s.tgt=k>=s.ys.length?s.L:(k===0?0:Math.max(40,Math.min(s.L,k*6)));
@@ -680,7 +706,7 @@ function calc(){
   });
 }
 function paint(){PS.forEach(s=>s.els.forEach(e=>{e.style.strokeDashoffset=s.L-s.cur;e.style.opacity=s.cur<2?0:1}))}
-function tick(){let busy=false;PS.forEach(s=>{s.cur+=(s.tgt-s.cur)*.14;if(Math.abs(s.tgt-s.cur)<.5)s.cur=s.tgt;else busy=true});paint();raf=busy?requestAnimationFrame(tick):0}
+function tick(){let busy=false;PS.forEach(s=>{s.cur+=(s.tgt-s.cur)*.14;if(Math.abs(s.tgt-s.cur)<.5)s.cur=s.tgt;else busy=true});{const ht=(rm()||PS[1].cur>=PS[1].L-.6)?PS[2].L:0;if(ht!==PS[2].tgt){PS[2].tgt=ht;busy=true}if(PS[2].cur!==PS[2].tgt)busy=true}paint();raf=busy?requestAnimationFrame(tick):0}
 function onScroll(){if(route!=='start')return;calc();if(!raf)raf=requestAnimationFrame(tick);if(!rm())logoBall.style.transform=`rotate(${scrollY*.35}deg)`}
 
 (function(root){
@@ -787,8 +813,8 @@ addEventListener('pointermove',e=>{if(route==='start')rig.lookAt(e.clientX,e.cli
 /* ===== v6: goal, learning path, dialogs ===== */
 const TX={"de": {"thread": "Fädle deinen Lernpfad ein", "goal.set": "Ziel setzen", "goal.mine": "Mein Ziel", "goal.level": "Level", "goal.focus": "Schwerpunkt", "goal.by": "Bis", "goal.week": "Einheiten pro Woche", "goal.left": "Noch", "goal.days": "Tage", "goal.over": "Frist abgelaufen", "goal.note": "Fortschritt wird noch nicht gemessen: Es sind noch keine Aktivitäten erfasst.", "goal.learn": "Weiterlernen", "goal.edit": "Ziel ändern", "goal.del": "Ziel löschen", "goal.del2": "Wirklich löschen?", "gd.title": "Level wählen und Ziel setzen", "gd.sub": "Dein Ziel erscheint oben in der Leiste, auf jeder Seite. Es bleibt in diesem Browser gespeichert.", "gd.save": "Ziel speichern", "gd.e1": "Wähle ein Datum, das nicht in der Vergangenheit liegt.", "cancel": "Abbrechen", "close": "Schließen", "foc.level": "Ein Level erreichen", "foc.grammar": "Grammatik meistern", "foc.vocab": "Wortschatz aufbauen", "foc.exam": "Auf eine Prüfung vorbereiten", "p.lv": "Dein Level: {l}", "p.s1": "Woran willst du arbeiten?", "cat.grammar": "Grammatik", "cat.vocab": "Wortschatz", "cat.skills": "Einzelne Fertigkeiten", "cat.cert": "Zertifikatsvorbereitung", "sk.lesen": "Lesen", "sk.hoeren": "Hören", "sk.schreiben": "Schreiben", "sk.sprechen": "Sprechen", "p.certn": "Die Liste richtet sich nach deinem Level. Vorbereitungsmodule sind noch in Arbeit.", "p.soon": "bald verfügbar", "p.s2": "Wie möchtest du weitermachen?", "p.acc": "Anmelden oder Konto erstellen", "p.accd": "Mit Konto speicherst du Ziel, Fortschritt und gemerkte Inhalte auf allen Geräten.", "p.accn": "Konten sind noch nicht verfügbar. Starte ohne Konto: Ziel und Plan bleiben in diesem Browser.", "p.guest": "Ohne Konto fortfahren", "p.guestn": "Deine Daten bleiben nur in diesem Browser auf diesem Gerät.", "p.s3": "Wie willst du lernen?", "p.lib": "Deine Lernbibliothek", "p.libd": "Erklärungen, Beispiele, Tabellen und PDFs zum Nachschlagen.", "p.prac": "Direkt üben", "p.pracd": "Interaktive Aufgaben mit Erklärung zu jeder Antwort.", "p.go": "Los geht’s", "p.e1": "Wähle mindestens einen Bereich.", "p.e2": "Wähle mindestens eine Fertigkeit.", "p.e3": "Wähle mindestens ein Zertifikat.", "p.e4": "Wähle, wie du lernen willst.", "fmt.library": "Lernbibliothek", "fmt.practice": "Üben", "plan.t": "Dein Lernpfad", "plan.x": "Plan entfernen", "plan.n": "Die Inhalte dieser Bereiche sind noch in Arbeit. Dein Plan bleibt gespeichert.", "ft.terms": "Nutzungsbedingungen", "ft.priv": "Datenschutz", "ft.upd": "Updates", "ft.fb": "Feedback", "i.terms": "Nutzungsbedingungen", "i.terms.b": "Platzhalter: Die Nutzungsbedingungen werden ergänzt, bevor das Angebot startet. Dieser Text ist kein verbindlicher Inhalt.", "i.priv": "Datenschutz", "i.priv.b": "Platzhalter: Die Datenschutzerklärung folgt. Bis dahin gilt: Ziel, Plan und Einstellungen liegen nur im localStorage dieses Browsers.", "i.upd": "Updates", "i.upd.b": "Noch keine Einträge. Neue Lerninhalte und Änderungen erscheinen hier, sobald es sie gibt.", "i.fb": "Feedback", "fb.cat": "Art des Feedbacks", "fb.bug": "Fehler melden", "fb.content": "Inhalt", "fb.feature": "Funktionswunsch", "fb.general": "Allgemein", "fb.msg": "Deine Nachricht", "fb.send": "Prüfen", "fb.e": "Bitte schreibe mindestens 10 Zeichen.", "fb.ok": "Nicht gesendet: Der Versand ist noch nicht eingerichtet. Dein Text bleibt in diesem Formular."}, "en": {"thread": "Thread your learning path", "goal.set": "Set a goal", "goal.mine": "My goal", "goal.level": "Level", "goal.focus": "Focus", "goal.by": "By", "goal.week": "Sessions per week", "goal.left": "Left", "goal.days": "days", "goal.over": "Deadline passed", "goal.note": "Progress is not measured yet: no activity has been recorded.", "goal.learn": "Keep learning", "goal.edit": "Change goal", "goal.del": "Delete goal", "goal.del2": "Really delete?", "gd.title": "Choose a level and set a goal", "gd.sub": "Your goal shows in the top bar on every page. It is saved in this browser.", "gd.save": "Save goal", "gd.e1": "Pick a date that is not in the past.", "cancel": "Cancel", "close": "Close", "foc.level": "Reach a level", "foc.grammar": "Master grammar", "foc.vocab": "Build vocabulary", "foc.exam": "Prepare for an exam", "p.lv": "Your level: {l}", "p.s1": "What do you want to work on?", "cat.grammar": "Grammar", "cat.vocab": "Vocabulary", "cat.skills": "Individual skills", "cat.cert": "Certificate preparation", "sk.lesen": "Reading", "sk.hoeren": "Listening", "sk.schreiben": "Writing", "sk.sprechen": "Speaking", "p.certn": "The list follows your level. Preparation modules are still in progress.", "p.soon": "coming soon", "p.s2": "How do you want to continue?", "p.acc": "Sign in or create an account", "p.accd": "An account saves your goal, progress and saved items across devices.", "p.accn": "Accounts are not available yet. Start without one: your goal and plan stay in this browser.", "p.guest": "Continue without an account", "p.guestn": "Your data stays in this browser on this device only.", "p.s3": "How do you want to learn?", "p.lib": "Your Learning Library", "p.libd": "Explanations, examples, tables and PDFs to look things up.", "p.prac": "Start practising", "p.pracd": "Interactive exercises with an explanation for every answer.", "p.go": "Let’s go", "p.e1": "Choose at least one area.", "p.e2": "Choose at least one skill.", "p.e3": "Choose at least one certificate.", "p.e4": "Choose how you want to learn.", "fmt.library": "Learning Library", "fmt.practice": "Practice", "plan.t": "Your learning path", "plan.x": "Remove plan", "plan.n": "The content in these areas is still in progress. Your plan stays saved.", "ft.terms": "Terms", "ft.priv": "Privacy", "ft.upd": "Updates", "ft.fb": "Feedback", "i.terms": "Terms", "i.terms.b": "Placeholder: the terms will be added before launch. This text is not binding content.", "i.priv": "Privacy", "i.priv.b": "Placeholder: the privacy policy is to follow. Until then: goal, plan and settings are kept only in this browser’s localStorage.", "i.upd": "Updates", "i.upd.b": "No entries yet. New learning content and changes will appear here when there are any.", "i.fb": "Feedback", "fb.cat": "Type of feedback", "fb.bug": "Bug report", "fb.content": "Content feedback", "fb.feature": "Feature suggestion", "fb.general": "General feedback", "fb.msg": "Your message", "fb.send": "Check", "fb.e": "Please write at least 10 characters.", "fb.ok": "Not sent: delivery is not set up yet. Your text stays in this form."}};Object.assign(T.de,TX.de);Object.assign(T.en,TX.en);
 const tt=k=>T[lang][k]!=null?T[lang][k]:k;
-const CERTS=[{id:'goethe',name:'Goethe-Zertifikat',levels:['A1','A2','B1','B2','C1','C2'],ready:false,route:'#/check'},{id:'telc',name:'telc Deutsch',levels:['A1','A2','B1','B2','C1'],ready:false,route:'#/check'},{id:'testdaf',name:'TestDaF',levels:['B2','C1'],ready:false,route:'#/check'}];
-const FOC=['level','grammar','vocab','exam'],DEST={grammar:'#/lab',vocab:'#/lab',skills:'#/check',cert:'#/check'};
+const CERTS=[{id:'goethe',name:'Goethe-Zertifikat',levels:['A1','A2','B1','B2','C1','C2'],ready:false,route:'#/level'},{id:'telc',name:'telc Deutsch',levels:['A1','A2','B1','B2','C1'],ready:false,route:'#/level'},{id:'testdaf',name:'TestDaF',levels:['B2','C1'],ready:false,route:'#/level'}];
+const FOC=['level','grammar','vocab','exam'],DEST={grammar:'#/lab',vocab:'#/lab',skills:'#/level',cert:'#/level'};
 const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const fmtD=v=>new Date(v+'T00:00').toLocaleDateString(lang==='de'?'de-DE':'en-GB',{day:'2-digit',month:'2-digit',year:'numeric'});
 const rd=k=>{try{return JSON.parse(store.get(k)||'null')}catch(e){return null}};
@@ -857,7 +883,7 @@ function renderPlan(){
   $$('[data-plan]').forEach(b=>{if(!plan){b.hidden=true;b.innerHTML='';return}b.hidden=false;
     b.innerHTML=`<div class="plan-h"><b>${tt('plan.t')}</b><span class="muted">${plan.level} · ${tt('fmt.'+plan.fmt)}</span><button type="button" class="ibtn" data-plan-x>${tt('plan.x')}</button></div><ul>${plan.cats.map(c=>`<li${c===cur?' aria-current="true"':''}><a href="${planHref(c)}">${tt('cat.'+c)}${c==='skills'?': '+plan.skills.map(x=>tt('sk.'+x)).join(', '):''}${c==='cert'?': '+plan.certs.map(x=>(CERTS.find(z=>z.id===x)||{name:''}).name).join(', '):''}</a></li>`).join('')}</ul><p class="muted">${tt('plan.n')}</p>`});
 }
-function renderAll(){renderGoal();renderPlan();pickers.forEach(p=>p.refresh())}
+function renderAll(){renderGoal();renderPlan();pickers.forEach(p=>p.refresh());if(typeof renderLib==='function'){renderLib();renderLvlCerts();if(tr.open)renderTour()}}
 /* info dialogs */
 function openInfo(k){
   if(!['terms','priv','upd','fb'].includes(k))return;
@@ -867,6 +893,54 @@ function openInfo(k){
     $('#fbF').addEventListener('submit',e=>{e.preventDefault();$('#fbS').textContent=$('#fbM').value.trim().length<10?tt('fb.e'):tt('fb.ok')})}
   idg.showModal();
 }
+
+
+/* ===== v8: LernLib, tour, level certificates ===== */
+const TX2={"de": {"nav.lib": "LernLib", "lib.tag": "Deine persönliche Bibliothek.", "lib.desc": "Speichere Wörter, Phrasen, Grammatikpunkte, Beispiele und Fehler und wiederhole sie mit Karteikarten.", "lib.guest": "Ohne Konto bleiben Einträge nur in diesem Browser auf diesem Gerät. Es gibt keine Synchronisierung zwischen Geräten.", "lib.term": "Wort, Phrase oder Eintrag", "lib.mean": "Bedeutung oder Übersetzung", "lib.type": "Art", "lib.add": "Speichern", "t.word": "Wort", "t.phrase": "Phrase", "t.grammar": "Grammatik", "t.example": "Beispiel", "t.mistake": "Fehler", "lib.list": "Gespeichert", "lib.review": "Karteikarten", "lib.empty": "Noch nichts gespeichert. Füge oben deinen ersten Eintrag hinzu.", "lib.count": "{n} von 500 belegt · {r} frei", "lib.m.ok": "Gespeichert.", "lib.m.dup": "Das gibt es schon in deiner LernLib.", "lib.m.full": "Die LernLib ist voll (500 Einträge). Entferne zuerst einen Eintrag.", "lib.m.empty": "Bitte gib einen Eintrag ein.", "lib.m.rm": "Entfernt.", "lib.rm": "Entfernen", "fc.pos": "Karte {i} von {n}", "fc.show": "Antwort zeigen", "fc.again": "Nochmal", "fc.know": "Gewusst", "fc.done": "Fertig. Gewusst: {k} von {n}.", "fc.nomean": "(keine Bedeutung gespeichert)", "ft.tour": "Touren", "tour.step": "Schritt {i} von {n}", "tour.back": "Zurück", "tour.next": "Weiter", "tour.done": "Fertig", "tour.skip": "Überspringen", "tour.go": "Zeig mir", "tour.lab.t": "LernLab", "tour.lab.b": "Hier lernst du Grammatik und Wortschatz: zum Nachschlagen in deiner Lernbibliothek oder direkt mit interaktiven Übungen.", "tour.lib.t": "LernLib", "tour.lib.b": "Deine persönliche Bibliothek: Speichere bis zu 500 Einträge und wiederhole sie mit Karteikarten.", "tour.lvl.t": "LernLevel", "tour.lvl.b": "Modelltests und Prüfungsvorbereitung. Übungsergebnisse sind keine offiziellen Zertifikate.", "lvl.note": "Übungsergebnisse, geschätztes Level, Modelltest-Ergebnisse und offizielle Zertifikate sind verschiedene Dinge. Ein Ergebnis hier ersetzt kein Zertifikat.", "lvl.none": "Für dieses Level steht keine Prüfung in der Liste.", "theme.system": "System", "lab.fmt": "Zwei Wege zu lernen"}, "en": {"nav.lib": "LernLib", "lib.tag": "Your personal library.", "lib.desc": "Save words, phrases, grammar points, examples and mistakes, and review them with flashcards.", "lib.guest": "Without an account, entries stay in this browser on this device only. There is no sync between devices.", "lib.term": "Word, phrase or entry", "lib.mean": "Meaning or translation", "lib.type": "Type", "lib.add": "Save", "t.word": "Word", "t.phrase": "Phrase", "t.grammar": "Grammar", "t.example": "Example", "t.mistake": "Mistake", "lib.list": "Saved", "lib.review": "Flashcards", "lib.empty": "Nothing saved yet. Add your first entry above.", "lib.count": "{n} of 500 used · {r} left", "lib.m.ok": "Saved.", "lib.m.dup": "This already exists in your LernLib.", "lib.m.full": "LernLib is full (500 entries). Remove an entry first.", "lib.m.empty": "Please enter something.", "lib.m.rm": "Removed.", "lib.rm": "Remove", "fc.pos": "Card {i} of {n}", "fc.show": "Show answer", "fc.again": "Again", "fc.know": "Got it", "fc.done": "Done. Got it: {k} of {n}.", "fc.nomean": "(no meaning saved)", "ft.tour": "Tours", "tour.step": "Step {i} of {n}", "tour.back": "Back", "tour.next": "Next", "tour.done": "Done", "tour.skip": "Skip", "tour.go": "Show me", "tour.lab.t": "LernLab", "tour.lab.b": "Learn grammar and vocabulary here: look things up in your Learning Library or practise with interactive exercises.", "tour.lib.t": "LernLib", "tour.lib.b": "Your personal library: save up to 500 entries and review them with flashcards.", "tour.lvl.t": "LernLevel", "tour.lvl.b": "Model tests and exam preparation. Practice results are not official certificates.", "lvl.note": "Practice results, an estimated level, model-test results and official certificates are different things. A result here does not replace a certificate.", "lvl.none": "No exam in the list applies to this level.", "theme.system": "System", "lab.fmt": "Two ways to learn"}};Object.assign(T.de,TX2.de);Object.assign(T.en,TX2.en);
+const LIB_MAX=500,LIB_T=['word','phrase','grammar','example','mistake'];
+function loadLib(){const a=rd('ll-lib');return Array.isArray(a)?a.filter(x=>x&&typeof x.term==='string'&&x.term.trim()&&LIB_T.includes(x.type)).slice(0,LIB_MAX).map(x=>({id:String(x.id||Math.random()),term:x.term.slice(0,80),meaning:String(x.meaning||'').slice(0,160),type:x.type,source:String(x.source||'manual').slice(0,20)})):[]}
+let lib=loadLib();const normL=v=>v.trim().replace(/\s+/g,' ').toLowerCase();
+function libAdd(term,meaning,type,source){term=String(term||'').trim().replace(/\s+/g,' ');
+  if(!term)return'empty';if(!LIB_T.includes(type))return'empty';if(lib.length>=LIB_MAX)return'full';
+  if(lib.some(x=>normL(x.term)===normL(term)&&x.type===type))return'dup';
+  lib.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),term:term.slice(0,80),meaning:String(meaning||'').trim().slice(0,160),type,source:source||'manual'});
+  store.set('ll-lib',JSON.stringify(lib));renderLib();return'ok'}
+window.LernLib={add:libAdd,count:()=>lib.length}; /* hook for future games/tests: LernLib.add(term,meaning,type,source) */
+const libMsg=t=>{$('#libMsg').textContent=tt(t)};
+function renderLib(){
+  $('#libCount').textContent=tt('lib.count').replace('{n}',lib.length).replace('{r}',LIB_MAX-lib.length);$('#libBar').value=lib.length;
+  $('#libCards').disabled=!lib.length;
+  const ul=$('#libList');ul.innerHTML='';
+  if(!lib.length){const li=document.createElement('li');li.className='lib-empty';li.textContent=tt('lib.empty');ul.append(li);return}
+  lib.forEach(x=>{const li=document.createElement('li'),b=document.createElement('b'),m=document.createElement('span'),g=document.createElement('span'),r=document.createElement('button');
+    b.textContent=x.term;m.className='m';m.textContent=x.meaning;g.className='tg';g.textContent=tt('t.'+x.type);r.type='button';r.className='ibtn';r.textContent=tt('lib.rm');r.dataset.rm=x.id;li.append(b,m,g,r);ul.append(li)})
+}
+$('#libForm').addEventListener('submit',e=>{e.preventDefault();const r=libAdd($('#libTerm').value,$('#libMean').value,$('#libType').value,'manual');libMsg('lib.m.'+r);if(r==='ok'){$('#libTerm').value='';$('#libMean').value='';$('#libTerm').focus()}});
+$('#libList').addEventListener('click',e=>{const b=e.target.closest('[data-rm]');if(!b)return;lib=lib.filter(x=>x.id!==b.dataset.rm);store.set('ll-lib',JSON.stringify(lib));renderLib();libMsg('lib.m.rm');$('#libTerm').focus()});
+/* flashcards */
+const fc=$('#fcDlg');let deck=[],fcN=0,fcK=0,fcS=false;
+function fcDraw(){const c=deck[0];$('#fcPos').textContent=c?tt('fc.pos').replace('{i}',fcK+1).replace('{n}',fcN):tt('fc.done').replace('{k}',fcK).replace('{n}',fcN);
+  $('#fcFront').textContent=c?c.term:'';$('#fcBack').textContent=c?(c.meaning||tt('fc.nomean')):'';$('#fcBack').hidden=!fcS||!c;
+  $('#fcShow').hidden=fcS||!c;$('#fcAgain').hidden=$('#fcKnow').hidden=!fcS||!c}
+$('#libCards').addEventListener('click',()=>{if(!lib.length)return;deck=lib.slice().sort(()=>Math.random()-.5);fcN=deck.length;fcK=0;fcS=false;fcDraw();fc.showModal();$('#fcShow').focus()});
+$('#fcShow').addEventListener('click',()=>{fcS=true;fcDraw();$('#fcKnow').focus()});
+$('#fcAgain').addEventListener('click',()=>{deck.push(deck.shift());fcS=false;fcDraw();$('#fcShow').focus()});
+$('#fcKnow').addEventListener('click',()=>{deck.shift();fcK++;fcS=false;fcDraw();(deck.length?$('#fcShow'):fc.querySelector('[data-close]')).focus()});
+/* LernLevel: certificates from the central CERTS config */
+function renderLvlCerts(){const l=lvNow(),list=CERTS.filter(c=>!l||c.levels.includes(l)),box=$('#lvlCerts');
+  box.innerHTML='';list.forEach(c=>{const d=document.createElement('div'),h=document.createElement('h3'),p=document.createElement('p'),t=document.createElement('span');d.className='card';h.textContent=c.name;p.textContent=c.levels[0]+'–'+c.levels[c.levels.length-1];t.className='soon';t.textContent=c.ready?'':tt('soon');d.append(h,p,t);box.append(d)});
+  $('#lvlNone').hidden=!!list.length}
+/* tour */
+const tr=$('#tourDlg'),TS=[{k:'lab',r:'lab',h:'#/lab'},{k:'lib',r:'lib',h:'#/lib'},{k:'lvl',r:'check',h:'#/level'}];let ti=0;
+function renderTour(){const s=TS[ti];$('#trStep').textContent=tt('tour.step').replace('{i}',ti+1).replace('{n}',TS.length);$('#trT').textContent=tt('tour.'+s.k+'.t');$('#trB').textContent=tt('tour.'+s.k+'.b');$('#trBack').disabled=ti===0;$('#trNext').textContent=ti===TS.length-1?tt('tour.done'):tt('tour.next');$('#trGo').setAttribute('href',s.h);
+  $$('.nav a').forEach(a=>a.classList.toggle('tour-hl',a.dataset.r===s.r));$$('#trDots i').forEach((d,j)=>d.classList.toggle('on',j===ti))}
+function openTour(){ti=0;$('#trDots').innerHTML=TS.map(()=>'<i></i>').join('');renderTour();if(!tr.open)tr.show();$('#trNext').focus()}
+function closeTour(done){if(tr.open)tr.close();$$('.nav a').forEach(a=>a.classList.remove('tour-hl'));if(done)store.set('ll-tour','done')}
+$('#trBack').addEventListener('click',()=>{if(ti>0){ti--;renderTour()}});
+$('#trNext').addEventListener('click',()=>{if(ti===TS.length-1)closeTour(true);else{ti++;renderTour()}});
+$('#trSkip').addEventListener('click',()=>closeTour(true));$('#trX').addEventListener('click',()=>closeTour(false));$('#trGo').addEventListener('click',()=>closeTour(true));
+D.addEventListener('keydown',e=>{if(e.key==='Escape'&&tr.open)closeTour(false)});
+D.addEventListener('click',e=>{if(e.target.closest('[data-tour]'))openTour()});
 
 /* ===== init ===== */
 function layoutAll(){pickers.forEach(p=>p.layout());layoutThread();onScroll()}
