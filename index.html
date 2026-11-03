@@ -483,6 +483,48 @@ dialog::backdrop{background:rgba(11,22,36,.6)}
 }
 @media(max-width:420px){.logo-wm{display:none}.hd-in{padding:0 12px}.gchip{padding:0 8px}}
 .ddp{grid-template-columns:1fr;width:min(380px,calc(100vw - 32px))}
+
+/* ===== final refinement ===== */
+.ball:not([data-sz]){visibility:hidden}.ball2[hidden],.lvUnsure[hidden],.lbl[hidden],.lvEdit[hidden],.ibtn[hidden],.btn[hidden]{display:none!important}
+.hg2{border:0;padding:0;height:auto;gap:var(--s1)}
+.hg2 .nav{gap:var(--s1)}
+.hg1{gap:var(--s3)}.hg3{justify-content:flex-end}
+.moreBtn{width:32px;height:32px;padding:0;justify-content:center;border:0;border-radius:var(--r);color:var(--muted)}
+.moreBtn:hover{background:var(--surface);color:var(--text);border:0}.moreBtn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.streak{height:32px;padding:0 10px;gap:4px;border:0;background:var(--surface);color:var(--text);font-weight:600}
+.streak:hover{background:var(--line)}.streak .stx{display:none}.streak svg{width:16px;height:16px}
+@media(min-width:820px){.hd-in{display:grid;grid-template-columns:1fr auto 1fr;gap:var(--s4)}}
+.lvUnsure{height:auto;min-height:32px;padding:0;border-color:transparent;font-size:14px;color:var(--muted);text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--line)}.lvUnsure:hover{color:var(--text);border-color:transparent}
+#fbF .fl{margin:var(--s3) 0 var(--s1)}#fbF .fl:first-child{margin-top:0}#fbF textarea{min-height:96px}#fbF .err{margin:var(--s2) 0 0;min-height:0}
+.fb-act{display:flex;justify-content:flex-end;gap:var(--s2);margin-top:var(--s3)}
+.fb-act>*{flex:0 0 132px;height:40px;padding:0 16px;display:inline-flex;align-items:center;justify-content:center;font:600 14px var(--sans)}
+@media(max-width:480px){.fb-act{flex-direction:column-reverse}.fb-act>*{flex:none;width:100%}}
+
+/* ---- spacing, gutters, donate clearance ---- */
+:root{--gut:clamp(24px,4.5vw,72px)}
+@media(min-width:820px){
+ .hero,.sx,.pk-sec,.pg,.ft{padding-left:var(--gut);padding-right:max(var(--gut),64px)}
+ .sx{padding-top:var(--s8)}.pk-sec{padding-top:var(--s8)}.ft{margin-top:var(--s8)}
+ .lv-info{min-height:12rem;gap:var(--s4)}
+}
+.sx-body>*+*{margin-top:var(--s3)}.sx-body>p{line-height:1.6}.sx-body .disp,.sx-body h2{margin-bottom:var(--s2)}
+.pk-sec .hint{margin-top:var(--s3)}.lv-desc{line-height:1.6}
+@media(max-width:819px){.sx{padding-top:var(--s7)}.pk-sec{padding-top:var(--s7)}}
+/* ---- tour spotlight ---- */
+#trVeil{position:fixed;inset:0;z-index:55}#trVeil[hidden]{display:none}
+#trVeil i{position:absolute;background:rgba(11,22,36,.38);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+#trRing{position:absolute;border:2px solid var(--yarn);border-radius:6px;box-sizing:border-box}
+.nav .tour-hl,.nav a.tour-hl,.nav [data-r].tour-hl{outline:0}
+#tourDlg{width:min(340px,calc(100vw - 24px));border-radius:8px;box-shadow:0 10px 30px rgba(11,22,36,.22)}
+#tourDlg .dl-in{padding:16px 18px}
+#trStep{font:600 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;margin:0 0 6px}
+#tourDlg #trT{font:700 19px/1.25 var(--serif);margin:0 0 8px}
+#trB,#trB p{font-size:14px;line-height:1.55;color:var(--muted);margin:0}#trB ul{margin:8px 0 0;font-size:14px}#trB .lv-pts li{padding:3px 0 3px 18px}#trB .lv-pts li::before{width:7px;height:7px;top:.8em}
+#tourDlg .tour-dots{margin-top:12px}
+#tourDlg .dl-b{align-items:center;gap:8px;margin-top:12px}
+#tourDlg .btn.sm,#tourDlg .ibtn{white-space:nowrap;height:36px;padding:0 14px;display:inline-flex;align-items:center;font:600 13px var(--sans)}
+#tourDlg{width:min(380px,calc(100vw - 24px))}#tourDlg .dl-b{flex-wrap:nowrap}#trBack[disabled],#trBack[hidden]{display:none}
+#tourDlg #trX{margin-right:auto;order:-1;border-color:transparent;color:var(--muted);padding:0 8px}#tourDlg #trX:hover{color:var(--text)}
 </style>
 </head>
 <body>
@@ -491,9 +533,9 @@ dialog::backdrop{background:rgba(11,22,36,.6)}
   <div class="hg hg1"><a class="logo" href="#/" aria-label="LernLeap mit MEo"><img class="logo-ball" id="logoBall" src="data:image/webp;base64,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" alt="" width="28" height="28"><span class="logo-wm">LernLeap</span><span class="logo-sub">mit <span class="meo-w">M<span class="meo-e">E<svg class="yb" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="4.3" fill="#B3261E"/><path d="M2.3 3.5c2-1.3 4.1-1 5.6.4M1.6 5.5c2.3-1 4.8-.8 6.8.6M2.7 7.5c1.6-.7 3.4-.6 4.8.2" fill="none" stroke="#7E1410" stroke-width=".8" stroke-linecap="round"/><path d="M8.3 8.3c.7.6 1.3.4 1.7-.3" fill="none" stroke="#B3261E" stroke-width=".9" stroke-linecap="round"/></svg></span>o</span></span></a>
   <div class="hd-goal"><button class="ibtn gchip empty" id="goalBtn" type="button" aria-expanded="false" aria-controls="goalPop"><i class="dot" aria-hidden="true"></i><span id="goalTxt" class="gfull"></span><span id="goalShort" class="gshort"></span></button><div class="pop gp" id="goalPop" role="group" data-i18n-label="goal.mine" aria-label="Mein Ziel" hidden></div></div><div class="hd-st"><button type="button" class="streak" id="streak" aria-expanded="false" aria-controls="stPop" data-done="0"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 .3 1.2 1 1.8 1.8 2C10.5 8 11 5.5 12 3z"/></svg><span><span id="stN">0</span><span class="stx" id="stX"></span></span></button><div class="pop gp" id="stPop" hidden></div><span id="stLive" role="status" aria-live="polite" style="position:absolute;left:-9999px"></span></div></div>
   <div class="hg hg2"><nav class="nav" id="nav" data-i18n-label="nav.label" aria-label="Hauptnavigation">
-    <a href="#/" data-r="start" data-i18n="nav.start">Start</a><div class="dd"><button type="button" class="ddb" id="labBtn" data-r="lab" aria-expanded="false" aria-controls="labMenu"><span data-i18n="nav.lab">LernLab</span><svg class="chev" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button><div class="ddp" id="labMenu" hidden></div></div><a href="#/level" data-r="check" data-i18n="nav.check">LernLevel</a><a href="#/lib" data-r="lib" data-i18n="nav.lib">LernLib</a>
+    <a href="#/" data-r="start" data-i18n="nav.start">Start</a><div class="dd"><button type="button" class="ddb" id="labBtn" data-r="lab" aria-expanded="false" aria-controls="labMenu"><span data-i18n="nav.lab">LernLab</span><svg class="chev" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button><div class="ddp" id="labMenu" hidden></div></div><a href="#/level" data-r="check" data-i18n="nav.check">LernLevel</a><a href="#/lib" data-r="lib" data-i18n="nav.lib">LernLib</a><button class="ibtn moreBtn" id="moreBtn" type="button" aria-expanded="false" aria-controls="hdMore" aria-haspopup="true" data-i18n-label="hd.more" aria-label="Mehr"><svg class="chev" viewBox="0 0 12 12" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
   </nav>
-  <button class="ibtn moreBtn" id="moreBtn" type="button" aria-expanded="false" aria-controls="hdMore" data-i18n-label="hd.more" aria-label="Mehr"><span data-i18n="hd.more">Mehr</span><svg class="chev" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button></div>
+  </div>
   <div class="hg hg3 hd-r">
     <button class="ibtn donate-h" type="button" data-donate data-i18n-label="don.nav" aria-label="Buy MEo a meal"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg></button>
         <button class="ibtn" id="setBtn" aria-expanded="false" aria-controls="setPop" data-i18n-label="set.btn" aria-label="Einstellungen"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M19 7h1M4 17h1M11 17h9"/><circle cx="16" cy="7" r="2.2"/><circle cx="8" cy="17" r="2.2"/></svg></button>
@@ -602,8 +644,9 @@ dialog::backdrop{background:rgba(11,22,36,.6)}
 <fieldset hidden><legend data-i18n="p.s3"></legend><div class="opts"><label><input type="radio" name="fmt" value="library"><span><b data-i18n="p.lib"></b><small data-i18n="p.libd"></small></span></label><label><input type="radio" name="fmt" value="practice"><span><b data-i18n="p.prac"></b><small data-i18n="p.pracd"></small></span></label></div></fieldset>
 <p class="err" id="pErr" role="alert"></p><div class="dl-b"><button type="submit" class="btn" data-i18n="p.go"></button><button type="button" class="ibtn" data-close data-i18n="cancel"></button></div></form></dialog>
 <dialog id="fcDlg" aria-labelledby="fcT"><div class="dl-in"><h2 class="disp2" id="fcT" data-i18n="lib.review"></h2><p class="muted" id="fcPos" aria-live="polite"></p><div class="fc"><p class="fc-t" id="fcFront"></p><p class="fc-b" id="fcBack" hidden></p></div><div class="dl-b"><button type="button" class="btn" id="fcShow" data-i18n="fc.show"></button><button type="button" class="ibtn" id="fcAgain" hidden data-i18n="fc.again"></button><button type="button" class="btn" id="fcKnow" hidden data-i18n="fc.know"></button><button type="button" class="ibtn" data-close data-i18n="close"></button></div></div></dialog>
-<dialog id="tourDlg" aria-labelledby="trT"><div class="dl-in"><p class="muted" id="trStep" aria-live="polite"></p><h2 class="disp2" id="trT"></h2><div id="trB" class="tour-dd"></div><div class="tour-dots" id="trDots" aria-hidden="true"></div><div class="dl-b"><button type="button" class="ibtn" id="trBack" data-i18n="tour.back"></button><button type="button" class="btn sm" id="trNext"></button><a class="ibtn" id="trGo" href="#/lab" data-i18n="tour.go"></a><button type="button" class="ibtn" id="trSkip" data-i18n="tour.skip"></button><button type="button" class="ibtn" id="trX" data-i18n="close"></button></div></div></dialog>
-<dialog id="infoDlg" aria-labelledby="idT"><div class="dl-in"><h2 class="disp2" id="idT"></h2><div id="idB"></div><div class="dl-b"><button type="button" class="ibtn" data-close data-i18n="close"></button></div></div></dialog>
+<div id="trVeil" hidden aria-hidden="true"><i></i><i></i><i></i><i></i><b id="trRing"></b></div>
+<dialog id="tourDlg" aria-labelledby="trT"><div class="dl-in"><p class="muted" id="trStep" aria-live="polite"></p><h2 class="disp2" id="trT"></h2><div id="trB" class="tour-dd"></div><div class="tour-dots" id="trDots" aria-hidden="true"></div><div class="dl-b"><button type="button" class="ibtn" id="trBack" data-i18n="tour.back"></button><button type="button" class="btn sm" id="trNext"></button><a class="ibtn" id="trGo" href="#/lab" data-i18n="tour.go"></a><button type="button" class="ibtn" id="trX" data-i18n="close"></button></div></div></dialog>
+<dialog id="infoDlg" aria-labelledby="idT"><div class="dl-in"><h2 class="disp2" id="idT"></h2><div id="idB"></div><div class="dl-b" id="idAct"><button type="button" class="ibtn" data-close data-i18n="close"></button></div></div></dialog>
 <script type="application/json" id="cefr-hours">{"A1": {"A2": 80}, "A2": {"B1": 150}, "B1": {"B2": 200}, "B2": {"C1": 250}, "C1": {"C2": 300}}</script>
 <script>
 (()=>{
@@ -700,16 +743,16 @@ function greenYarn(){
 }
 const levelHTML=(t,i)=>{const d=t.lv[i];return '<span class="lv-intro">'+d.i+'</span><span class="lv-lead">'+t.lvLead+'</span><ul class="lv-pts">'+d.b.map(x=>'<li>'+x+'</li>').join('')+'</ul>'};
 function makePicker(root){
-  root.innerHTML=`<div class="stage"><svg class="track" aria-hidden="true" focusable="false"><g class="ticks"></g><path class="trBg"/><path class="trFg"/><path class="trTo"/><path class="trT"/></svg><div class="hit" aria-hidden="true"></div><img class="ball" data-asset="yarn" alt="" aria-hidden="true"><img class="ball ball2" alt="" aria-hidden="true" hidden><span class="lbl lblC" hidden></span><span class="lbl lblT" hidden></span><div class="nodes" role="radiogroup" data-i18n-label="lv.group">${LV.map(l=>`<button type="button" class="node" role="radio" aria-checked="false">${l}</button>`).join('')}</div></div><div class="lv-info"><p class="lv-code" aria-hidden="true">?</p><div class="lv-desc" aria-live="polite"></div><div class="lv-act"><button type="button" class="btn lvBtn" aria-disabled="true"></button><button type="button" class="ibtn lvEdit" hidden></button><p class="lv-st" role="status"></p></div></div>`;
+  root.innerHTML=`<div class="stage"><svg class="track" aria-hidden="true" focusable="false"><g class="ticks"></g><path class="trBg"/><path class="trFg"/><path class="trTo"/><path class="trT"/></svg><div class="hit" aria-hidden="true"></div><img class="ball" data-asset="yarn" alt="" aria-hidden="true"><img class="ball ball2" alt="" aria-hidden="true" hidden><span class="lbl lblC" hidden></span><span class="lbl lblT" hidden></span><div class="nodes" role="radiogroup" data-i18n-label="lv.group">${LV.map(l=>`<button type="button" class="node" role="radio" aria-checked="false">${l}</button>`).join('')}</div></div><div class="lv-info"><p class="lv-code" aria-hidden="true">?</p><div class="lv-desc" aria-live="polite"></div><div class="lv-act"><button type="button" class="btn lvBtn" aria-disabled="true"></button><a class="ibtn lvUnsure" href="#/level"></a><button type="button" class="ibtn lvEdit" hidden></button><p class="lv-st" role="status"></p></div></div>`;
   fillAssets(root);
-  const q=s=>$(s,root),stage=q('.stage'),ticks=q('.ticks'),trBg=q('.trBg'),trFg=q('.trFg'),trTo=q('.trTo'),trT=q('.trT'),hit=q('.hit'),ball=q('.ball'),ball2=q('.ball2'),lblC=q('.lblC'),lblT=q('.lblT'),nodes=$$('.node',root),code=q('.lv-code'),desc=q('.lv-desc'),btn=q('.lvBtn'),edit=q('.lvEdit'),st=q('.lv-st');
+  const q=s=>$(s,root),stage=q('.stage'),ticks=q('.ticks'),trBg=q('.trBg'),trFg=q('.trFg'),trTo=q('.trTo'),trT=q('.trT'),hit=q('.hit'),ball=q('.ball'),ball2=q('.ball2'),lblC=q('.lblC'),lblT=q('.lblT'),nodes=$$('.node',root),code=q('.lv-code'),desc=q('.lv-desc'),btn=q('.lvBtn'),uns=q('.lvUnsure'),edit=q('.lvEdit'),st=q('.lv-st');
   greenYarn().then(u=>{if(u)ball2.src=u;else{ball2.src=ASSET.yarn;ball2.style.filter='hue-rotate(68deg) saturate(1.1)'}});
   const M={W:0,Hs:0,gx:0,x0:0,xe:0,G:0,R0:0,Rm:0,rc:0,pad:0};
   let cur=0,tgt=0,tcur=0,ttgt=0,raf=0,drag=false,cand=-1,tcand=-1;
   const xAt=f=>M.x0+(M.xe-M.x0)*f/5,rAt=f=>M.R0+(M.Rm-M.R0)*f/5;
   /* a ball keeps its own size/rotation; once the level is locked both shrink so they never overlap */
   function ballAt(img,f){const x=xAt(f),r0=rAt(f),k=(M.R0-M.Rm)/(M.xe-M.x0),ang=Math.log(M.R0/r0)/k*180/Math.PI,cap=locked?(M.xe-M.x0)/5*.46:1e9,r=Math.min(r0,cap);
-    img.style.width=2*r+'px';img.style.left=(x-r)+'px';img.style.top=(M.G-2*r)+'px';img.style.transform=`rotate(${ang.toFixed(2)}deg)`;return{x,r}}
+    img.dataset.sz='1';img.style.width=2*r+'px';img.style.left=(x-r)+'px';img.style.top=(M.G-2*r)+'px';img.style.transform=`rotate(${ang.toFixed(2)}deg)`;return{x,r}}
   function draw(){
     if(!M.W)return;
     const a=ballAt(ball,cur);trFg.setAttribute('d',`M${M.gx} ${M.G}L${a.x} ${M.G}`);
@@ -734,7 +777,7 @@ function makePicker(root){
   }
   function marks(){const sh=locked?tcand:cand;nodes.forEach((b,j)=>{const off=locked&&j<=sel;b.setAttribute('aria-checked',j===sh);b.setAttribute('aria-disabled',String(off));b.tabIndex=(sh<0?j===0:j===sh)?0:-1;b.classList.toggle('reached',locked?j<=sel:j<=sh);b.classList.toggle('here',locked&&j===sel)})}
   function info(){
-    const t=T[lang];
+    const t=T[lang];uns.textContent=t.lvUnsure;uns.hidden=locked;
     if(!locked){
       code.textContent=cand<0?'?':LV[cand];desc.innerHTML=cand<0?t.lvNone:levelHTML(t,cand);
       btn.textContent=sel<0?t.lvCtaOff:sel>=5?t.lvTop:t.lvConfirm.replace('{l}',LV[sel]);btn.setAttribute('aria-disabled',String(sel<0||sel>=5));
@@ -749,7 +792,7 @@ function makePicker(root){
   /* full sync from the shared state (sel / locked / tsel) */
   function sync(instant){
     tgt=sel<0?0:sel;cand=sel;tcand=tsel;const on=locked&&tsel>=0;ttgt=on?tsel:tgt;
-    ball2.hidden=lblC.hidden=lblT.hidden=!on;marks();info();
+    if(on&&M.W){ballAt(ball2,tcur);draw()}ball2.hidden=lblC.hidden=lblT.hidden=!on;marks();info();
     if(instant){cur=tgt;tcur=ttgt;draw()}else kick();
   }
   const P={layout,refresh:info,stage,M,info:q('.lv-info'),
@@ -851,7 +894,7 @@ function layoutThread(){
   const hh=UW*1.2,fr=HS.filter(q=>q.f>=Math.PI&&q.f<=2*Math.PI);
   pawC.setAttribute('points',fr.map(q=>`${(q.x+e2.x*hh).toFixed(1)},${(q.y+e2.y*hh).toFixed(1)}`).concat(fr.map(q=>`${(q.x-e2.x*hh).toFixed(1)},${(q.y-e2.y*hh).toFixed(1)}`).reverse()).join(' '));
   PS.forEach(s=>{const p=s.els[0];s.L=p.getTotalLength();s.els.forEach(e=>{e.style.strokeDasharray=`${s.L} ${s.L}`});s.ys=[];for(let l=0;l<=s.L;l+=6)s.ys.push(p.getPointAtLength(l).y)});
-  calc();PS.forEach(s=>{s.cur=rm()?s.tgt:Math.min(s.cur,s.tgt)});paint();if(!raf&&!rm())raf=requestAnimationFrame(tick);
+  calc();PS.forEach(s=>{s.cur=rm()?s.tgt:Math.min(s.cur,s.tgt)});paint();if(!rm())kickT();
 }
 function calc(){
   const line=scrollY+innerHeight*.72-mt,ex=[pk.stage,sbYarn];
@@ -864,9 +907,10 @@ function calc(){
     if(i===0?r.top<innerHeight*.92:r.bottom<innerHeight*.95)s.tgt=s.L;
   });
 }
+function kickT(){cancelAnimationFrame(raf);raf=requestAnimationFrame(ttick)}
 function paint(){PS.forEach(s=>s.els.forEach(e=>{e.style.strokeDashoffset=s.L-s.cur;e.style.opacity=s.cur<2?0:1}))}
-function tick(){let busy=false;PS.forEach(s=>{s.cur+=(s.tgt-s.cur)*.14;if(Math.abs(s.tgt-s.cur)<.5)s.cur=s.tgt;else busy=true});{const ht=(rm()||PS[1].cur>=PS[1].L-.6)?PS[2].L:0;if(ht!==PS[2].tgt){PS[2].tgt=ht;busy=true}if(PS[2].cur!==PS[2].tgt)busy=true}paint();raf=busy?requestAnimationFrame(tick):0}
-function onScroll(){if(route!=='start')return;calc();if(!raf)raf=requestAnimationFrame(tick);if(!rm())logoBall.style.transform=`rotate(${scrollY*.35}deg)`}
+function ttick(){let busy=false;PS.forEach(s=>{s.cur+=(s.tgt-s.cur)*.14;if(Math.abs(s.tgt-s.cur)<.5)s.cur=s.tgt;else busy=true});{const ht=(rm()||PS[1].cur>=PS[1].L-.6)?PS[2].L:0;if(ht!==PS[2].tgt){PS[2].tgt=ht;busy=true}if(PS[2].cur!==PS[2].tgt)busy=true}paint();raf=busy?requestAnimationFrame(ttick):0}
+function onScroll(){if(route!=='start')return;calc();kickT();if(!rm())logoBall.style.transform=`rotate(${scrollY*.35}deg)`}
 
 (function(root){
 function MeoRig(svg,opt){
@@ -1080,8 +1124,8 @@ function renderAll(){renderGoal();renderPlan();if(typeof renderLabMenu==='functi
 function openInfo(k){
   if(!['terms','priv','upd','fb','acc'].includes(k))return;
   $('#idT').textContent=tt('i.'+k);const b=$('#idB');
-  if(k!=='fb')b.innerHTML='<p></p>',b.firstChild.textContent=tt('i.'+k+'.b');
-  else{b.innerHTML=`<form id="fbF" novalidate><label class="fl" for="fbC">${tt('fb.cat')}</label><select id="fbC">${['bug','content','feature','general'].map(x=>`<option value="${x}">${tt('fb.'+x)}</option>`).join('')}</select><label class="fl" for="fbM">${tt('fb.msg')}</label><textarea id="fbM"></textarea><p class="err" id="fbS" role="alert"></p><button class="btn sm" type="submit">${tt('fb.send')}</button></form>`;
+  $('#idAct').hidden=false;if(k!=='fb')b.innerHTML='<p></p>',b.firstChild.textContent=tt('i.'+k+'.b');
+  else{b.innerHTML=`<form id="fbF" novalidate><label class="fl" for="fbC">${tt('fb.cat')}</label><select id="fbC">${['bug','content','feature','general'].map(x=>`<option value="${x}">${tt('fb.'+x)}</option>`).join('')}</select><label class="fl" for="fbM">${tt('fb.msg')}</label><textarea id="fbM"></textarea><p class="err" id="fbS" role="alert"></p><div class="fb-act"><button type="button" class="ibtn" data-close>${tt('close')}</button><button class="btn sm" type="submit">${tt('fb.send')}</button></div></form>`;$('#idAct').hidden=true;
     $('#fbF').addEventListener('submit',e=>{e.preventDefault();$('#fbS').textContent=$('#fbM').value.trim().length<10?tt('fb.e'):tt('fb.ok')})}
   idg.showModal();
 }
@@ -1125,12 +1169,24 @@ function renderLvlCerts(){const l=lvNow(),list=CERTS.filter(c=>!l||c.levels.incl
 /* tour */
 const tr=$('#tourDlg'),TS=[{k:'goal',r:'start',h:'#level'},{k:'lab',r:'lab',h:'#/lab'},{k:'lvl',r:'check',h:'#/level'},{k:'lib',r:'lib',h:'#/lib'}];let ti=0;
 function renderTour(){const s=TS[ti];$('#trStep').textContent=tt('tour.step').replace('{i}',ti+1).replace('{n}',TS.length);$('#trT').textContent=tt('tour.'+s.k+'.t');$('#trB').innerHTML=tt('tour.'+s.k+'.b');$('#trBack').disabled=ti===0;$('#trNext').textContent=ti===TS.length-1?tt('tour.done'):tt('tour.next');$('#trGo').setAttribute('href',s.h);
-  $$('.nav [data-r]').forEach(a=>a.classList.toggle('tour-hl',a.dataset.r===s.r));$$('#trDots i').forEach((d,j)=>d.classList.toggle('on',j===ti))}
-function openTour(){ti=0;$('#trDots').innerHTML=TS.map(()=>'<i></i>').join('');renderTour();if(!tr.open)tr.show();$('#trNext').focus()}
-function closeTour(done){if(tr.open)tr.close();$$('.nav [data-r]').forEach(a=>a.classList.remove('tour-hl'));if(done)store.set('ll-tour','done')}
+  $$('.nav [data-r]').forEach(a=>a.classList.toggle('tour-hl',a.dataset.r===s.r));$$('#trDots i').forEach((d,j)=>d.classList.toggle('on',j===ti));if(tr.open)placeTour()}
+function placeTour(){
+  const V=$('#trVeil'),s=TS[ti],el=$(s.k==='goal'?'#goalBtn':'.nav [data-r="'+s.r+'"]'),r=el&&el.getBoundingClientRect(),ok=r&&r.width>0&&r.height>0,w=innerWidth,h=innerHeight,p=6,[a,b,c,d]=V.children,ring=$('#trRing');
+  const set=(e,l,t,wd,ht)=>Object.assign(e.style,{left:l+'px',top:t+'px',width:Math.max(0,wd)+'px',height:Math.max(0,ht)+'px'});
+  V.hidden=false;
+  if(!ok){set(a,0,0,w,h);[b,c,d].forEach(e=>set(e,0,0,0,0));ring.style.display='none';tr.style.cssText='';return}
+  const x=r.left-p,y=r.top-p,wd=r.width+2*p,ht=r.height+2*p;
+  set(a,0,0,w,y);set(b,0,y+ht,w,h-y-ht);set(c,0,y,x,ht);set(d,x+wd,y,w-x-wd,ht);ring.style.display='';set(ring,x,y,wd,ht);
+  if(w<820){tr.style.cssText='';return}
+  const dw=tr.offsetWidth||340,left=Math.min(Math.max(12,r.left+r.width/2-dw/2),w-dw-12);
+  tr.style.cssText='inset:auto;right:auto;bottom:auto;top:'+(y+ht+12)+'px;left:'+left+'px';
+}
+addEventListener('resize',()=>{if(tr.open)placeTour()});
+function openTour(){ti=0;$('#trDots').innerHTML=TS.map(()=>'<i></i>').join('');renderTour();if(!tr.open)tr.show();placeTour();$('#trNext').focus()}
+function closeTour(done){if(tr.open)tr.close();$('#trVeil').hidden=true;tr.style.cssText='';$$('.nav [data-r]').forEach(a=>a.classList.remove('tour-hl'));if(done)store.set('ll-tour','done')}
 $('#trBack').addEventListener('click',()=>{if(ti>0){ti--;renderTour()}});
 $('#trNext').addEventListener('click',()=>{if(ti===TS.length-1)closeTour(true);else{ti++;renderTour()}});
-$('#trSkip').addEventListener('click',()=>closeTour(true));$('#trX').addEventListener('click',()=>closeTour(false));$('#trGo').addEventListener('click',()=>closeTour(true));
+$('#trX').addEventListener('click',()=>closeTour(false));$('#trGo').addEventListener('click',()=>closeTour(true));
 D.addEventListener('keydown',e=>{if(e.key==='Escape'&&tr.open)closeTour(false)});
 D.addEventListener('click',e=>{if(e.target.closest('[data-tour]'))openTour()});
 
@@ -1257,7 +1313,7 @@ function initPickState(){
 }
 const TX4={de:{
 'hero.sub':'Lerne Deutsch selbstständig und in deinem Tempo, mit interaktiven Aktivitäten für jedes Alter und Level.','cta.level':'Los, entwirren','lv.title2':'Wohin soll dich dein Deutsch führen?','lv.hint':'Wähle dein Ziellevel und folge dem Faden zu deinem nächsten Ziel.',
-'lvConfirm':'Das ist mein Level: {l}','lvTop':'C2 ist das höchste Level','lvStep1':'Rolle das rote Knäuel zu deinem aktuellen Level und bestätige es.','lvStepT':'Rolle das grüne Knäuel zu dem Level, das du erreichen willst.','lvFrom':'Du bist auf {a}. Dein Ziel ist {b}.','lvChange':'Mein aktuelles Level ändern ({l})','lvYou':'Du: {l}','lvTarget':'Ziel: {l}',
+'lvUnsure':'Ich bin mir bei meinem Level nicht sicher.','lvConfirm':'Das ist mein Level: {l}','lvTop':'C2 ist das höchste Level','lvStep1':'Rolle das rote Knäuel zu deinem aktuellen Level und bestätige es.','lvStepT':'Rolle das grüne Knäuel zu dem Level, das du erreichen willst.','lvFrom':'Du bist auf {a}. Dein Ziel ist {b}.','lvChange':'Mein aktuelles Level ändern ({l})','lvYou':'Du: {l}','lvTarget':'Ziel: {l}',
 'gd.title':'Entwirre deinen Lernfaden','gd.sub':'Dein aktuelles Level und dein Ziel stehen fest. Jetzt entscheide, wie viel Zeit du dafür einplanen kannst.','gd.months':'Wie viele Monate hast du?','gd.week':'Wie viele Einheiten pro Woche schaffst du?','gd.res':'Dein Lernpensum','gd.detail':'{s} Einheiten pro Woche · etwa {h} pro Woche','gd.basis':'Grundlage: {h} geschätzte Lernstunden (Platzhalterwerte) plus {b} % Puffer.','gd.warn':'Das ist viel. Plane mehr Monate oder mehr Einheiten pro Woche ein.','gd.e.m':'Gib eine ganze Zahl von 1 bis 60 ein.','gd.e.cfg':'Für diesen Levelbereich ist keine Stundenschätzung hinterlegt.','gd.save':'Ziel speichern',
 'goal.add':'Ziel setzen','unit.min':'Min.','g.lv':'Level','g.mps':'Pro Einheit','g.rem':'Monate übrig','g.stat':'Status','g.act':'Aktiv','g.over':'Frist abgelaufen','goal.note2':'Die Dauer pro Einheit gilt ab heute. Bereits erreichte Tage ändern sich nicht.',
 'cm.t':'Dein Lernpensum','cm.per':'Minuten / Einheit','cm.line':'{s} Einheiten pro Woche · {w} pro Woche · noch {m} Monate','cm.today':'Heute: {a} von {n} Min. in einer Einheit','cm.done':'Heutige Einheit geschafft.','cm.none':'Heute noch keine Lernzeit erfasst.','cm.week':'Diese Woche: {d} von {s} Einheiten','cm.edit':'Pensum ändern','cm.go':'Zu LernLab',
@@ -1268,13 +1324,13 @@ const TX4={de:{
 'chk.desc':'Bereite dich mit strukturierten Aufgaben zu allen vier Fertigkeiten auf deutsche Prüfungen vor. LernLeap ist nicht mit Goethe-Institut, telc oder TestDaF verbunden.',
 'lib.tag':'Deine persönliche Lernbibliothek.','lib.desc':'Dein persönlicher Assistent für die Wörter, die du nicht vergessen willst.','lib.st.new':'Neu','lib.st.hard':'Noch schwer','lib.st.known':'Gewusst',
 'end.text':'<p>LernLeap hilft dir, deinen eigenen Weg durchs Deutschlernen zu bauen.</p><ul class="lv-pts"><li><b>LernLab:</b> Lerne mit interaktiven Grammatik-, Wortschatz- und Diktataktivitäten.</li><li><b>LernLevel:</b> Bereite dich auf deutsche Prüfungen vor und trainiere die vier Fertigkeiten.</li><li><b>LernLib:</b> Speichere unbekannte Wörter und wiederhole sie mit deinen Karteikarten.</li></ul>','end.fine':'MEo hilft dir, dem Faden zu folgen, Lernschritt für Lernschritt.',
-'tour.goal.t':'Ziel setzen','tour.goal.b':'<p>Lege dein Ziel fest und entwirre deinen Lernfaden.</p><ul class="lv-pts"><li>Aktuelles Level wählen.</li><li>Ziellevel wählen.</li><li>Zeitraum in Monaten festlegen.</li><li>Wöchentliche Einheiten wählen.</li><li>Persönlichen Lernplan erhalten.</li></ul>',
+'tour.goal.t':'Ziel setzen','tour.goal.b':'<p>Dein Ziel. Dein Tempo. Dein Lernplan.</p>',
 'tour.lab.t':'LernLab entdecken','tour.lab.b':'<p>Dein interaktives Labor, um dein Deutsch zu erweitern, Aktivität für Aktivität.</p><ul class="lv-pts"><li>Wortschatzspiele.</li><li>Grammatik von A1 bis C2.</li><li>Diktat.</li><li>KI-Aussprachehilfe (bald verfügbar).</li></ul>',
 'tour.lvl.t':'Mit LernLevel vorbereiten','tour.lvl.b':'<p>Bereite dich mit strukturierten Aufgaben auf deutsche Prüfungen vor.</p><ul class="lv-pts"><li>Goethe-Zertifikat, telc, TestDaF.</li><li>Lesen, Hören, Schreiben, Sprechen.</li></ul>',
 'tour.lib.t':'Deine LernLib aufbauen','tour.lib.b':'<p>Speichere Wörter, die dir schwerfallen, und wiederhole sie mit Karteikarten.</p><ul class="lv-pts"><li>Unbekannte Wörter speichern.</li><li>Einträge ordnen.</li><li>Mit Karteikarten wiederholen.</li><li>Als gewusst oder noch schwer markieren.</li></ul>'},
 en:{
 'hero.sub':'Learn German on your own and at your own pace, through interactive activities for every age and level.','cta.level':'Start untangling','lv.title2':'Where do you want your German to take you?','lv.hint':'Choose your target level and follow the thread towards your next destination.',
-'lvConfirm':'This is my level: {l}','lvTop':'C2 is the highest level','lvStep1':'Roll the red yarn to your current level, then confirm it.','lvStepT':'Roll the green yarn to the level you want to reach.','lvFrom':'You are at {a}. Your target is {b}.','lvChange':'Change my current level ({l})','lvYou':'You: {l}','lvTarget':'Target: {l}',
+'lvUnsure':'I\'m not sure about my level.','lvConfirm':'This is my level: {l}','lvTop':'C2 is the highest level','lvStep1':'Roll the red yarn to your current level, then confirm it.','lvStepT':'Roll the green yarn to the level you want to reach.','lvFrom':'You are at {a}. Your target is {b}.','lvChange':'Change my current level ({l})','lvYou':'You: {l}','lvTarget':'Target: {l}',
 'gd.title':'Untangle your learning thread','gd.sub':'Your current level and destination are set. Now decide how much time you can commit to reaching your goal.','gd.months':'How many months do you have?','gd.week':'How many sessions can you commit to each week?','gd.res':'Your study commitment','gd.detail':'{s} sessions per week · about {h} per week','gd.basis':'Based on {h} estimated learning hours (placeholder values) plus a {b}% planning buffer.','gd.warn':'That is a heavy load. Consider more months or more sessions per week.','gd.e.m':'Enter a whole number from 1 to 60.','gd.e.cfg':'No learning-hour estimate is set for this level range.','gd.save':'Save goal',
 'goal.add':'Set goal','unit.min':'min','g.lv':'Levels','g.mps':'Per session','g.rem':'Months left','g.stat':'Status','g.act':'Active','g.over':'Deadline passed','goal.note2':'The session length applies from today. Days you already earned stay as they are.',
 'cm.t':'Your learning commitment','cm.per':'minutes / session','cm.line':'{s} sessions per week · {w} per week · {m} months left','cm.today':'Today: {a} of {n} min in one session','cm.done':'Today’s session is done.','cm.none':'No learning time recorded today yet.','cm.week':'This week: {d} of {s} sessions','cm.edit':'Edit commitment','cm.go':'Go to LernLab',
@@ -1285,7 +1341,7 @@ en:{
 'chk.desc':'Prepare for German exams with structured practice across all four language skills. LernLeap is not affiliated with Goethe-Institut, telc or TestDaF.',
 'lib.tag':'Your personal learning library.','lib.desc':'Your personal assistant for the words you don’t want to forget.','lib.st.new':'New','lib.st.hard':'Still difficult','lib.st.known':'Known',
 'end.text':'<p>LernLeap helps you build your own path through German learning.</p><ul class="lv-pts"><li><b>LernLab:</b> Learn through interactive grammar, vocabulary and dictation activities.</li><li><b>LernLevel:</b> Prepare for German examinations and develop your four language skills.</li><li><b>LernLib:</b> Save unfamiliar vocabulary and review it with your personal flashcard library.</li></ul>','end.fine':'MEo is here to help you follow the thread, one learning step at a time.',
-'tour.goal.t':'Set your goal','tour.goal.b':'<p>Define your destination and start untangling your German learning thread.</p><ul class="lv-pts"><li>Choose your current level.</li><li>Choose your target level.</li><li>Set the timeframe in months.</li><li>Choose your weekly learning commitment.</li><li>Receive a personalised study plan.</li></ul>',
+'tour.goal.t':'Set your goal','tour.goal.b':'<p>Your goal. Your pace. Your learning plan.</p>',
 'tour.lab.t':'Explore LernLab','tour.lab.b':'<p>Your interactive learning lab to broaden your German knowledge, one activity at a time.</p><ul class="lv-pts"><li>Vocabulary games.</li><li>Grammar from A1 to C2.</li><li>Dictation.</li><li>AI pronunciation support (coming soon).</li></ul>',
 'tour.lvl.t':'Prepare with LernLevel','tour.lvl.b':'<p>Get ready for German examinations with structured practice.</p><ul class="lv-pts"><li>Goethe-Zertifikat, telc, TestDaF.</li><li>Reading, listening, writing, speaking.</li></ul>',
 'tour.lib.t':'Build your LernLib','tour.lib.b':'<p>Save the words you struggle with and review them using your personal flashcards.</p><ul class="lv-pts"><li>Save unfamiliar vocabulary.</li><li>Organise saved words.</li><li>Review with flashcards.</li><li>Mark words as known or still difficult.</li></ul>'}};
