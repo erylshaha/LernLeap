@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LernLab – LernLeap mit MEo</title>
+<script>try{var t=localStorage.getItem('ll-theme');if(!t||t==='system')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== tokens (aus index.html übernommen) ===== */
+:root{
+  --bg:#FAF8F3;--surface:#FFFFFF;--text:#252525;--muted:#5C5C5C;--line:#D8D3C8;
+  --blue:#003468;--green:#A5C500;--on-green:#252525;--plum:#810061;--orange:#EC6400;
+  --wm:#003468;--focus:#003468;--yarn:#AA2620;
+  --s1:4px;--s2:8px;--s3:16px;--s4:24px;--s5:32px;--s6:48px;--s7:64px;--s8:96px;
+  --serif:"Libre Baskerville",Baskerville,"Times New Roman",serif;
+  --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);--t1:120ms;--t2:240ms;--hh:64px;--wrap:1320px;--r:2px;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+:root[data-theme="dark"]{
+  --bg:#0B1624;--surface:#12233A;--text:#EEEBE4;--muted:#A7B2C0;--line:#2B3F5A;
+  --blue:#8DB6E8;--plum:#E3A0D2;--orange:#FF8A3D;--wm:#F3EFE6;--focus:#A5C500;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(var(--hh) + 16px)}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,dl,dd,ul{margin:0;padding:0}ul{list-style:none}a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.muted{color:var(--muted)}
+.btn{display:inline-block;padding:12px 24px;background:var(--green);color:var(--on-green);font:600 15px/1.2 var(--sans);border:1px solid var(--text);border-radius:var(--r);cursor:pointer}
+.btn[aria-disabled="true"]{background:transparent;color:var(--muted);border-color:var(--line);cursor:not-allowed}
+.ibtn{display:flex;align-items:center;gap:var(--s2);height:40px;padding:0 12px;background:none;border:1px solid var(--line);color:var(--text);font:500 14px var(--sans);cursor:pointer;border-radius:var(--r)}
+.ibtn:hover{border-color:var(--text)}
+.pop{position:absolute;right:0;top:calc(100% + 12px);width:min(320px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--line);padding:var(--s4);z-index:70}
+.pop[hidden],.ddp[hidden],.hd-more[hidden]{display:none}
+.pop fieldset{border:0;margin:0;padding:0}.pop legend{font:600 13px var(--sans);color:var(--muted);padding:0;margin-bottom:var(--s2)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2)}.seg label{position:relative}
+.seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.seg span{display:block;text-align:center;padding:10px 8px;border:1px solid var(--line);font-weight:500;font-size:15px}
+.seg input:checked+span{border:2px solid var(--blue);font-weight:600;color:var(--blue);padding:9px 7px}
+.seg input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+
+/* ===== header (wie index.html) ===== */
+.hd{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
+.hd-in{max-width:var(--wrap);margin:auto;padding:0 24px;height:var(--hh);display:flex;align-items:center;gap:var(--s3)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-ball{width:28px;height:28px;flex:none}
+.logo-wm{font:700 22px/1 var(--serif);color:var(--wm);letter-spacing:-.01em}
+.logo-sub{font:italic 400 14px/1 var(--serif);color:var(--muted)}
+.gchip{border:1px dashed var(--yarn)}.gchip .dot{width:10px;height:10px;border-radius:50%;background:var(--yarn)}
+.streak{display:inline-flex;align-items:center;gap:6px;font:500 14px var(--sans);color:var(--muted)}.streak svg{color:var(--yarn)}
+.nav{display:flex;gap:var(--s1);margin:0 auto;align-items:center}
+.nav>a,.ddb{padding:8px 12px;text-decoration:none;font:500 15px var(--sans);color:var(--text);border:0;border-bottom:2px solid transparent;background:none;cursor:pointer;display:flex;align-items:center;gap:6px}
+.nav>a:hover,.ddb:hover{border-color:var(--line)}
+.nav [aria-current="true"]{border-color:var(--blue);color:var(--blue)}
+.dd{position:static}
+.ddp{position:absolute;left:50%;top:100%;transform:translateX(-50%);width:min(380px,calc(100vw - 32px));padding:var(--s4);background:var(--surface);border:1px solid var(--line);border-top:0;z-index:70}
+.ddh{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 var(--s2)}
+.ddp a{display:block;padding:12px 0;border-top:1px solid var(--line);text-decoration:none}.ddp a:hover b{color:var(--blue)}
+.ddp b{font-weight:600}.ddp span.d{display:block;font-size:13px;color:var(--muted)}
+.hd-r{display:flex;align-items:center;gap:var(--s2);position:relative}
+.soon-b{display:inline-block;margin-left:8px;padding:1px 8px;border:1px solid var(--yarn);color:var(--yarn);font-size:12px;font-weight:600}
+:root[data-theme="dark"] .soon-b{color:#F0716A;border-color:#F0716A}
+.hd-more{border-top:1px solid var(--line)}.hd-more-in{max-width:var(--wrap);margin:auto;padding:0 24px;min-height:48px;display:flex;align-items:center;justify-content:center;gap:var(--s4);flex-wrap:wrap}
+.hd-more a{font:500 14px var(--sans);text-decoration:none}.hd-more a:hover{text-decoration:underline;text-decoration-color:var(--yarn);text-underline-offset:5px}
+
+/* ===== LernLab layout ===== */
+.lab{max-width:var(--wrap);margin:0 auto;padding:var(--s5) 24px var(--s7);display:grid;grid-template-columns:minmax(0,1fr) 340px;column-gap:var(--s5)}
+.lab-main{min-width:0}
+.crumb{font-size:14px;color:var(--muted)}
+.cats{display:flex;gap:var(--s1);border-bottom:1px solid var(--line);margin-bottom:var(--s4);overflow-x:auto}
+.cats button,.games button{background:none;border:0;border-bottom:2px solid transparent;padding:10px 14px;font:500 15px var(--sans);color:var(--text);cursor:pointer;white-space:nowrap}
+.cats button:hover,.games button:hover{border-color:var(--line)}
+.cats button[aria-selected="true"],.games button[aria-selected="true"]{border-color:var(--blue);color:var(--blue);font-weight:600}
+.cats button:disabled{color:var(--muted);cursor:not-allowed}
+.games{display:flex;gap:var(--s1);margin-bottom:var(--s5);overflow-x:auto}
+.titlebar{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--s3);flex-wrap:wrap}
+.disp{font:700 clamp(32px,4vw,48px)/1.1 var(--serif);letter-spacing:-.01em;color:var(--wm)}
+.disp small{font:400 14px var(--sans);color:var(--muted);letter-spacing:0;margin-left:8px}
+.tag{margin-top:var(--s2);color:var(--blue);font-weight:600}
+.meta{display:flex;align-items:center;gap:var(--s3);font-size:14px;color:var(--muted)}
+.filters{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);align-items:center;margin:var(--s4) 0}
+.fgroup{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap}
+.fl{font-size:13px;font-weight:600;color:var(--muted);margin-right:4px}
+.chip{border:1px solid var(--line);background:none;color:var(--text);padding:6px 14px;font:500 14px var(--sans);cursor:pointer;border-radius:var(--r)}
+.chip:hover{border-color:var(--text)}
+.chip[aria-pressed="true"]{background:var(--green);color:var(--on-green);border-color:var(--on-green);font-weight:600}
+
+/* Spielfläche (Platzhalter) */
+.stage{position:relative;border:1px dashed var(--muted);background:var(--surface);aspect-ratio:16/8;min-height:340px;display:flex;flex-direction:column}
+.st-top{display:flex;justify-content:space-between;padding:var(--s3)}
+.pill{border:1px solid var(--line);padding:4px 12px;font:500 14px var(--sans);background:var(--bg);font-variant-numeric:tabular-nums}
+.st-mid{flex:1;display:grid;place-items:center;text-align:center;padding:0 var(--s3)}
+.st-mid p{max-width:46ch}
+.slots{display:flex;justify-content:space-around;gap:var(--s3);padding:0 var(--s5) var(--s3)}
+.slot{width:min(150px,28%);height:56px;border:1px dashed var(--line);display:grid;place-items:center;font-size:13px;color:var(--muted)}
+.st-hint{margin:0 var(--s3) var(--s3);padding:10px var(--s3);border:1px solid var(--line);background:var(--bg);text-align:center;font-size:15px}
+.answer{display:flex;gap:var(--s2);margin-top:var(--s3)}
+.answer input{flex:1;font:inherit;padding:12px var(--s3);border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:var(--r)}
+.answer input:disabled{opacity:.7}
+.start-row{display:flex;gap:var(--s3);align-items:center;margin-top:var(--s4);flex-wrap:wrap}
+
+/* Sidebar */
+.side{display:flex;flex-direction:column;gap:var(--s5)}
+.panel h2{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:var(--s3)}
+.rings{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3) var(--s2)}
+.ring{text-align:center;font-size:13px;color:var(--muted)}
+.ring i{--p:0;display:grid;place-items:center;width:64px;height:64px;margin:0 auto 4px;border-radius:50%;font:600 14px var(--sans);font-style:normal;color:var(--text);background:conic-gradient(var(--yarn) calc(var(--p)*1%),var(--line) 0);position:relative}
+.ring i::before{content:"";position:absolute;inset:5px;background:var(--bg);border-radius:50%}
+.ring i span{position:relative}
+.words{display:flex;flex-direction:column}
+.words-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s2)}
+.w{padding:var(--s3) 0;border-top:1px solid var(--line)}
+.w-top{display:flex;justify-content:space-between;gap:var(--s2);align-items:baseline}
+.w-top b{font:700 18px var(--serif);color:var(--wm)}.w-top em{font:italic 400 13px var(--serif);color:var(--muted);margin-left:6px}
+.lvl{font-size:12px;font-weight:600;border:1px solid var(--line);padding:1px 8px;color:var(--muted)}
+.w p{font-size:14px;margin-top:4px}.w .ex{font-style:italic;color:var(--muted)}
+.w .act{margin-top:var(--s2);display:flex;gap:var(--s2)}
+.w .act button{border:1px solid var(--line);background:none;color:var(--text);font:500 12px var(--sans);padding:3px 10px;cursor:pointer;border-radius:var(--r)}
+.w .act button:hover{border-color:var(--text)}
+.link{font-weight:600;color:var(--blue);text-underline-offset:6px;text-decoration-thickness:2px;text-decoration-color:var(--yarn);font-size:14px}
+
+.ft{max-width:var(--wrap);margin:0 auto;padding:var(--s5) 24px var(--s6);border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s3);font-size:15px}
+.ft .logo-wm{font-size:20px}
+
+@media(max-width:1020px){.lab{grid-template-columns:1fr}.nav{display:none}.hd-in{gap:var(--s2)}.hd-r{margin-left:auto}.logo-sub{display:none}}
+@media(max-width:600px){.hd-in,.lab{padding-left:16px;padding-right:16px}.logo-wm{display:none}.ibtn span{display:none}.stage{aspect-ratio:auto;min-height:380px}.slots{flex-direction:column;align-items:center}.slot{width:70%}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* ===== v2: gemeinsame Bühne (alles Spielrelevante liegt IN der Bühne) ===== */
+html.nos,html.nos body{overflow:hidden}
+.mod[hidden]{display:none}
+.lab[data-mod]:not([data-mod="vocab"]),.lab.wide{grid-template-columns:minmax(0,1fr)}
+.lab[data-mod]:not([data-mod="vocab"]) .side,.lab.wide .side{display:none}
+.lab.wide{max-width:none}
+.sm{font-size:13px}
+.stg{position:relative;border:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;height:min(720px,calc(100dvh - 190px));min-height:460px;overflow:hidden}
+.stg.full{position:fixed;inset:0;z-index:200;height:100dvh;min-height:0;border:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.sb{display:flex;align-items:center;gap:var(--s2);padding:var(--s2) 12px;border-bottom:1px solid var(--line);min-height:52px;flex:none}
+.sb .t{font:700 16px/1.2 var(--serif);color:var(--wm);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ex{display:flex;gap:var(--s1);flex:none}
+.sbtn{height:40px;min-width:40px;padding:0 10px;background:none;border:1px solid var(--line);color:var(--text);font:500 14px var(--sans);cursor:pointer;border-radius:var(--r);white-space:nowrap}
+.sbtn:hover,.sbtn[aria-pressed="true"],.sbtn[aria-expanded="true"]{border-color:var(--blue);color:var(--blue)}
+.pbar{height:4px;background:var(--line);flex:none}.pbar i{display:block;height:100%;width:0;background:var(--green);transition:width var(--t2) var(--ease)}
+.sbody{flex:1;min-height:0;overflow:auto;padding:var(--s3);-webkit-overflow-scrolling:touch}
+.sfoot{flex:none;display:flex;gap:var(--s2);align-items:center;flex-wrap:wrap;padding:var(--s2) 12px;border-top:1px solid var(--line);background:var(--surface)}
+.sfoot .grow{flex:1;min-width:140px}
+.ans{font:inherit;padding:10px 12px;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:var(--r);min-width:0}
+.chip.ok{background:var(--green);color:var(--on-green);border-color:var(--on-green)}
+.chip.no{border-color:var(--orange);color:var(--orange);text-decoration:line-through}
+.fld{margin-bottom:var(--s4)}.fld>label,.fld>.fl{display:block;font:600 14px var(--sans);margin-bottom:var(--s2)}.fld b{color:var(--blue)}
+.rng{width:100%;height:36px;accent-color:var(--blue);touch-action:pan-y;margin:0}
+.tk{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.cfg{max-width:560px;margin:0 auto}
+.aud{display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s3)}
+.snt{font:400 20px/2.7 var(--serif);max-width:60ch}
+.bl{width:9ch;max-width:100%;font:500 18px var(--sans);padding:2px 6px;border:0;border-bottom:2px solid var(--blue);background:var(--bg);color:var(--text);text-align:center;border-radius:0}
+.bl:disabled{opacity:1}.bl.ok{border-color:#5E7A00;background:rgba(165,197,0,.25)}.bl.no{border-color:var(--orange);background:rgba(236,100,0,.12)}
+.xp{display:inline-block;font:500 13px var(--sans);color:var(--orange);margin:0 6px}
+.fb{min-height:24px;font-size:15px;margin-top:var(--s2)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:var(--s2);margin-bottom:var(--s4)}
+.stats div{border:1px solid var(--line);padding:var(--s3);text-align:center;color:var(--muted);font-size:13px}.stats b{display:block;font:700 26px var(--serif);color:var(--wm)}
+.lst{border-top:1px solid var(--line)}.lst li{padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.vph{display:grid;place-items:center;text-align:center;gap:var(--s3);padding:var(--s4) 0}
+details.d{border-top:1px solid var(--line);padding:var(--s2) 0}details.d summary{cursor:pointer;font-weight:600;min-height:32px}
+/* Grammatik */
+.gbody{flex:1;min-height:0;display:flex;position:relative}
+.glesson{flex:1;min-width:0;overflow:auto;padding:var(--s3) var(--s4)}
+.gnav,.gpanel{position:absolute;top:0;bottom:0;background:var(--surface);overflow:auto;padding:var(--s3);z-index:5;visibility:hidden;transition:transform var(--t2) var(--ease)}
+.gnav{left:0;width:min(340px,92%);border-right:1px solid var(--line);transform:translateX(-100%)}
+.gpanel{right:0;width:min(360px,92%);border-left:1px solid var(--line);transform:translateX(100%)}
+.gnav.open,.gpanel.open{transform:none;visibility:visible}
+@media(min-width:1000px){.gpanel{position:static;transform:none;visibility:visible;width:320px;flex:none}.gpx{display:none}}
+.gnav details{border-bottom:1px solid var(--line)}.gnav summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:15px}
+.gc0{padding:10px 0;color:var(--muted);font-size:15px;border-bottom:1px solid var(--line)}
+.gt{display:flex;width:100%;justify-content:space-between;gap:var(--s2);text-align:left;background:none;border:0;padding:10px 4px;font:400 15px var(--sans);color:var(--text);cursor:pointer;min-height:44px}
+.gt small{color:var(--muted)}.gt[aria-current="true"]{color:var(--blue);font-weight:600}.gt:hover{background:var(--bg)}
+.gtit{font:700 clamp(24px,3vw,32px)/1.15 var(--serif);color:var(--wm);margin:var(--s2) 0}
+.gs{margin-top:var(--s5)}.gs h3{font:700 18px var(--serif);color:var(--wm);margin-bottom:var(--s2)}
+.gs p,.gs li{max-width:68ch}.rule{border-left:3px solid var(--green);padding:var(--s2) var(--s3);background:var(--bg)}
+mark{background:rgba(165,197,0,.35);color:inherit;padding:0 2px}
+.ex2{padding:10px 0;border-top:1px solid var(--line)}.bad{color:var(--orange);text-decoration:line-through}.good{color:#5E7A00;font-weight:600}
+:root[data-theme="dark"] .good{color:var(--green)}
+.q{padding:var(--s3) 0;border-top:1px solid var(--line)}.qo,.qa{display:flex;gap:var(--s2);flex-wrap:wrap;margin-top:var(--s2)}
+.tabs2{display:flex;border-bottom:1px solid var(--line);margin-bottom:var(--s3)}.tabs2 button{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:10px 4px;font:500 14px var(--sans);color:var(--text);cursor:pointer;min-height:44px}
+.tabs2 [aria-selected="true"]{border-color:var(--blue);color:var(--blue);font-weight:600}
+.er,.kw{border-top:1px solid var(--line);padding:var(--s3) 0}.er .badge{font-size:12px;font-weight:600;border:1px solid var(--line);padding:1px 8px;color:var(--muted)}
+.kwb{margin:var(--s2) 0;transition:filter var(--t2)}.kwb.blur{filter:blur(7px);user-select:none}
+/* Aussprache */
+.pl{display:grid;grid-template-columns:260px minmax(0,1fr);gap:var(--s5);margin-top:var(--s4)}
+.pn button{display:flex;gap:var(--s2);width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:10px 4px;font:400 15px var(--sans);color:var(--text);cursor:pointer;min-height:44px}
+.pn button:disabled{color:var(--muted);cursor:not-allowed}.pn button[aria-current="true"]{color:var(--blue);font-weight:600}
+.pn small{color:var(--muted);margin-left:auto;white-space:nowrap}.pnb{display:none;margin-bottom:var(--s3)}
+.pr{min-width:0}.pr p,.pr li{max-width:68ch}.pr ul{list-style:disc;padding-left:var(--s4)}
+.ipa{font-family:"Charis SIL","Gentium Plus","Noto Sans","DejaVu Sans",var(--sans);font-size:1.05em}
+.tw{overflow-x:auto}.tw table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px}.tw th,.tw td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}.tw th{font-size:13px;color:var(--muted);font-weight:600}
+.cards2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--s3)}.cards2>div{border:1px solid var(--line);padding:var(--s3)}
+.big{font:400 40px/1.1 var(--serif)}
+.note{border:1px dashed var(--muted);padding:var(--s3);color:var(--muted);font-size:14px;margin:var(--s3) 0}
+.dec{border:1px solid var(--line);padding:var(--s3);margin-top:var(--s3)}
+@media(max-width:800px){.pl{grid-template-columns:1fr}.pnb{display:inline-flex}.pn{display:none;margin-bottom:var(--s3)}.pn.open{display:block}}
+@media(max-width:700px){.stg{height:calc(100dvh - 150px);min-height:420px}.wbtn{display:none}.glesson{padding:var(--s3)}.snt{font-size:19px}}
+@media(pointer:coarse){.chip,.sbtn,.btn,.ans{min-height:44px}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER: wie index.html (hier ohne Router/i18n; beim Zusammenführen einfach durch den echten Header ersetzen) ===== -->
+<header class="hd"><div class="hd-in">
+  <a class="logo" href="index.html" aria-label="LernLeap mit MEo">
+    <svg class="logo-ball" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="4.3" fill="#B3261E"/><path d="M2.3 3.5c2-1.3 4.1-1 5.6.4M1.6 5.5c2.3-1 4.8-.8 6.8.6M2.7 7.5c1.6-.7 3.4-.6 4.8.2" fill="none" stroke="#7E1410" stroke-width=".8" stroke-linecap="round"/></svg>
+    <span class="logo-wm">LernLeap</span><span class="logo-sub">mit MEo</span>
+  </a>
+  <button class="ibtn gchip" type="button"><i class="dot" aria-hidden="true"></i><span>Ziel hinzufügen</span></button>
+  <span class="streak"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 .3 1.2 1 1.8 1.8 2C10.5 8 11 5.5 12 3z"/></svg>0</span>
+
+  <nav class="nav" aria-label="Hauptnavigation">
+    <a href="index.html">Start</a>
+    <div class="dd">
+      <button type="button" class="ddb" id="labBtn" aria-current="true" aria-expanded="false" aria-controls="labMenu">LernLab
+        <svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
+      <div class="ddp" id="labMenu" hidden>
+        <p class="ddh">Interaktive Aktivitäten</p>
+        <a href="#vocab"><b>Wortschatz</b><span class="d">Wortschatz, Thema für Thema</span></a>
+        <a href="#grammar"><b>Grammatik</b><span class="d">Erklärungen, Beispiele und interaktive Übungen</span></a>
+        <a href="#dictation"><b>Diktat</b><span class="d">Kurze, gezielte Hör- und Tippaufgaben</span></a>
+        <a href="#pronunciation"><b>Aussprache</b><span class="d">IPA, Laute und Betonung Schritt für Schritt</span></a>
+      </div>
+    </div>
+    <a href="index.html#/level">LernLevel</a>
+    <a href="index.html#/lib">LernLib</a>
+  </nav>
+
+  <div class="hd-r">
+    <button class="ibtn" id="moreBtn" type="button" aria-expanded="false" aria-controls="hdMore"><span>Mehr</span>
+      <svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
+    <button class="ibtn" id="setBtn" type="button" aria-expanded="false" aria-controls="setPop" aria-label="Einstellungen"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M19 7h1M4 17h1M11 17h9"/><circle cx="16" cy="7" r="2.2"/><circle cx="8" cy="17" r="2.2"/></svg></button>
+    <div class="pop" id="setPop" role="group" aria-label="Einstellungen" hidden>
+      <fieldset><legend>Darstellung</legend><div class="seg">
+        <label><input type="radio" name="theme" value="light"><span>Hell</span></label>
+        <label><input type="radio" name="theme" value="dark"><span>Dunkel</span></label>
+        <label><input type="radio" name="theme" value="system"><span>System</span></label></div></fieldset>
+    </div>
+    <button class="ibtn" type="button"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg><span>Anmelden</span></button>
+  </div>
+</div>
+<div class="hd-more" id="hdMore" hidden><div class="hd-more-in"><a href="index.html#ueber">Über uns</a><a href="#">Nutzungsbedingungen</a><a href="#">Datenschutz</a><a href="#">Feedback</a></div></div>
+</header>
+
+<main class="lab" id="lab" data-mod="vocab">
+  <div class="lab-main">
+    <p class="crumb">LernLab</p>
+    <div class="cats" role="tablist" aria-label="Kategorie">
+      <button role="tab" data-m="vocab" aria-selected="true">Wortschatz</button>
+      <button role="tab" data-m="grammar" aria-selected="false">Grammatik</button>
+      <button role="tab" data-m="dictation" aria-selected="false">Diktat</button>
+      <button role="tab" data-m="pronunciation" aria-selected="false">Aussprache</button>
+    </div>
+
+    <!-- ===== WORTSCHATZ ===== -->
+    <section class="mod" id="m-vocab">
+      <div class="games" role="tablist" aria-label="Spiel">
+        <button role="tab" aria-selected="true">Wortfischer</button><button role="tab" aria-selected="false">Wortverknüpfer</button><button role="tab" aria-selected="false">Wortknäuel</button>
+      </div>
+      <div class="titlebar" style="margin-bottom:var(--s4)"><div>
+        <h1 class="disp" id="gTitle">Wortfischer<small>29 zu wiederholen</small></h1>
+        <p class="tag" id="gTag">Fange die richtigen Wörter aus dem Netz!</p></div>
+      </div>
+      <section class="stg" id="vStage" aria-label="Spielfläche (Platzhalter)">
+        <div class="sb"><span class="t" id="vT">Wortfischer</span><span class="pill">01:30</span><span class="pill">0 / 10</span><span class="ex"></span></div>
+        <div class="sbody">
+          <div class="filters" style="margin-top:0">
+            <div class="fgroup" id="vLv"><span class="fl">Level</span>
+              <button class="chip" aria-pressed="true">Alle</button><button class="chip" aria-pressed="false">A1</button><button class="chip" aria-pressed="false">A2</button><button class="chip" aria-pressed="false">B1</button><button class="chip" aria-pressed="false">B2</button><button class="chip" aria-pressed="false">C1</button><button class="chip" aria-pressed="false">C2</button></div>
+            <div class="fgroup" id="vMd"><span class="fl">Modus</span>
+              <button class="chip" aria-pressed="true">Tippen</button><button class="chip" aria-pressed="false">Hören</button><button class="chip" aria-pressed="false">Fangen</button></div>
+            <button class="chip" type="button">Fehler (0)</button>
+          </div>
+          <div class="vph"><p class="muted" id="vMsg"></p>
+            <div class="slots" style="padding:0"><div class="slot">Wort 1</div><div class="slot">Wort 2</div><div class="slot">Wort 3</div></div>
+            <div class="st-hint" id="stHint" style="margin:0">Fange das richtige Wort mit dem Netz!</div></div>
+        </div>
+        <div class="sfoot"><input class="ans grow" placeholder="Wort eintippen" aria-label="Antwort" disabled><button class="btn" type="button" aria-disabled="true">Prüfen</button><button class="btn" type="button" aria-disabled="true">Spiel starten</button></div>
+      </section>
+    </section>
+
+    <!-- ===== GRAMMATIK ===== -->
+    <section class="mod" id="m-grammar" hidden>
+      <section class="stg" id="gStage" aria-label="Grammatik-Lernbühne">
+        <div class="sb">
+          <button class="sbtn" id="gNavB" type="button" aria-expanded="false" aria-controls="gNav" aria-label="Grammatikübersicht">☰</button>
+          <span class="t" id="gT">Grammatik</span><span class="pill" id="gLv"></span>
+          <button class="sbtn" id="gPlayB" type="button" aria-pressed="false">Play</button>
+          <button class="sbtn gpx" id="gPanB" type="button" aria-expanded="false" aria-controls="gPan">Wissen</button>
+          <span class="ex"></span>
+        </div>
+        <div class="pbar" title="Lernfortschritt dieser Lektion"><i id="gP"></i></div>
+        <div class="gbody">
+          <nav class="gnav" id="gNav" aria-label="Grammatikübersicht"></nav>
+          <div class="glesson" id="gLes"></div>
+          <aside class="gpanel" id="gPan" aria-label="Grammatik Wissen">
+            <div class="tabs2" role="tablist"><button role="tab" id="gTa" aria-selected="true">Fehleranalyse</button><button role="tab" id="gTb" aria-selected="false">Grammatikwissen</button></div>
+            <div id="gPanC"></div>
+          </aside>
+        </div>
+      </section>
+    </section>
+
+    <!-- ===== DIKTAT ===== -->
+    <section class="mod" id="m-dictation" hidden>
+      <section class="stg" id="dStage" aria-label="Diktat-Spielbühne">
+        <div class="sb"><span class="t">Diktat</span><span class="pill" id="dInfo"></span><span class="ex"></span></div>
+        <div class="pbar"><i id="dP"></i></div>
+        <div class="sbody" id="dBody"></div>
+        <div class="sfoot" id="dFoot"></div>
+      </section>
+    </section>
+
+    <!-- ===== AUSSPRACHE ===== -->
+    <section class="mod" id="m-pronunciation" hidden>
+      <div class="titlebar"><div><h1 class="disp">Aussprache</h1><p class="tag" id="pCr">Buchstabenkombinationen · CH</p></div>
+        <div class="fgroup" role="group" aria-label="Modus"><button class="chip" id="pMl" aria-pressed="true">Lern</button><button class="chip" id="pMp" aria-pressed="false">Play</button></div></div>
+      <div class="pl" id="pLern">
+        <div>
+          <button class="chip pnb" id="pNb" type="button" aria-expanded="false" aria-controls="pN">Lehrplan</button>
+          <nav class="pn" id="pN" aria-label="Aussprache-Lehrplan"></nav>
+          <p class="muted sm" style="margin-top:12px">Fortschritt: <span id="pPr">0 / 9</span></p>
+        </div>
+        <div class="pr">
+          <article id="pS-ch">
+            <p class="muted">Niveau A1–A2 · Standarddeutsch</p>
+            <h2 class="gtit">CH: Ach-Laut und Ich-Laut</h2>
+            <div class="gs"><h3>Lernziel</h3><p>Du entscheidest bei jedem Wort mit <b>ch</b>, ob es /x/ oder /ç/ heißt, und sprichst beide Laute sauber.</p></div>
+            <div class="gs"><h3>Phonetische Erklärung</h3><p>Beide Laute sind stimmlose Reibelaute. Die Wahl hängt vom Laut davor ab. In vielen Analysen sind /x/ und /ç/ Allophone eines Phonems.</p>
+              <div class="cards2" style="margin-top:12px"><div><p class="big ipa">/x/</p><b>Ach-Laut</b><p class="sm">Rückzunge nähert sich dem weichen Gaumen. Luft strömt durch die Enge, kein Stimmton.</p></div>
+              <div><p class="big ipa">/ç/</p><b>Ich-Laut</b><p class="sm">Zungenmitte nähert sich dem harten Gaumen. Mundwinkel eher entspannt, kein Stimmton.</p></div></div></div>
+            <div class="gs"><h3>Schreibweise</h3><div class="tw"><table><thead><tr><th>Position</th><th>Laut</th></tr></thead><tbody>
+              <tr><td>nach a, o, u, au</td><td class="ipa">/x/</td></tr>
+              <tr><td>nach e, i, ä, ö, ü, ei, eu und nach l, n, r</td><td class="ipa">/ç/</td></tr>
+              <tr><td>Endung -chen</td><td class="ipa">/ç/</td></tr>
+              <tr><td>chs (Ausnahme)</td><td class="ipa">/ks/</td></tr>
+              <tr><td>manche Fremdwörter (Chor)</td><td class="ipa">/k/</td></tr></tbody></table></div>
+              <p class="sm muted">Das sind Tendenzen mit Ausnahmen, keine Algorithmen. Bei Fremdwörtern lohnt der Blick ins Wörterbuch.</p></div>
+            <div class="gs"><h3>Beispiele</h3><div class="tw"><table id="pEx"></table></div>
+              <p class="note">Hören: Die Knöpfe nutzen die Sprachsynthese deines Geräts. Es sind keine Aufnahmen von Muttersprachlern.</p></div>
+            <div class="gs"><h3>Häufige Fehler</h3><ul><li>ch überall gleich sprechen. Prüfe immer den Laut davor.</li><li>Ich-Laut als /ʃ/ sprechen (wie sch). Die Zunge bleibt weiter vorn am Gaumen und die Lippen werden nicht gerundet.</li><li>chs als /xs/ lesen. Richtig ist /ks/.</li></ul></div>
+            <div class="gs"><h3>Übung: Welcher Laut?</h3><div id="pQ1"></div></div>
+            <div class="gs"><h3>Wissenstest</h3><div id="pQ2"></div></div>
+          </article>
+          <article id="pS-dec" hidden>
+            <h2 class="gtit">IPA-Decoder</h2>
+            <p>Gib ein deutsches Wort ein. Es wird nur ausgegeben, was im Lexikon steht.</p>
+            <div class="qa"><input class="ans" id="decI" list="decL" placeholder="z. B. Schule" aria-label="Wort" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn" id="decB" type="button">Analysieren</button></div><datalist id="decL"></datalist>
+            <div id="decR" aria-live="polite"></div>
+          </article>
+        </div>
+      </div>
+      <div id="pPlay" hidden class="vph"><div><h2 class="gtit">Aussprache Play</h2><span class="soon-b" style="margin:0">Bald</span>
+        <p class="muted" style="max-width:52ch;margin-top:12px">Noch kein Spiel verfügbar. Geplant: Laut erkennen, Minimalpaare, Wortbetonung, IPA-Decoder-Challenge, Hörverständnis, Aussprachevergleich und Satzmelodie. Jedes Spiel bekommt eigene Einstellungen und läuft in der Vollbild-Bühne.</p></div></div>
+    </section>
+  </div>
+  <aside class="side" aria-label="Lernfortschritt">
+    <section class="panel">
+      <h2>Aktivitäts-Tracker</h2>
+      <div class="rings">
+        <div class="ring"><i style="--p:0"><span>0%</span></i>A1 0/500</div>
+        <div class="ring"><i style="--p:0"><span>0%</span></i>A2 0/530</div>
+        <div class="ring"><i style="--p:1"><span>1%</span></i>B1 5/490</div>
+        <div class="ring"><i style="--p:2"><span>2%</span></i>B2 8/490</div>
+        <div class="ring"><i style="--p:1"><span>1%</span></i>C1 7/490</div>
+        <div class="ring"><i style="--p:0"><span>0%</span></i>C2 0/490</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="words-h"><h2 style="margin:0">Gefangene Wörter (3)</h2><a class="link" href="index.html#/lib">LernLib</a></div>
+      <div class="words">
+        <article class="w">
+          <div class="w-top"><div><b>lernen</b><em>Verb</em></div><span class="lvl">A1</span></div>
+          <p>sich Wissen oder Fähigkeiten aneignen</p><p class="ex">Ich lerne jeden Tag Deutsch.</p>
+          <div class="act"><button type="button">+ LernLib</button><button type="button">Hören</button></div>
+        </article>
+        <article class="w">
+          <div class="w-top"><div><b>Freund</b><em>Nomen, m.</em></div><span class="lvl">A1</span></div>
+          <p>eine Person, die man gut kennt und mag</p><p class="ex">Mein Freund wohnt in Berlin.</p>
+          <div class="act"><button type="button">+ LernLib</button><button type="button">Hören</button></div>
+        </article>
+        <article class="w">
+          <div class="w-top"><div><b>arbeiten</b><em>Verb</em></div><span class="lvl">A1</span></div>
+          <p>eine Tätigkeit ausüben, meist für Geld</p><p class="ex">Sie arbeitet in einem Büro.</p>
+          <div class="act"><button type="button">+ LernLib</button><button type="button">Hören</button></div>
+        </article>
+      </div>
+    </section>
+  </aside>
+</main>
+
+
+<footer class="ft"><span class="logo-wm">LernLeap</span><span class="muted">© 2026 LernLeap</span></footer>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+  function toggle(btn,panel){btn.addEventListener('click',function(e){e.stopPropagation();var o=panel.hidden;closeAll();panel.hidden=!o;btn.setAttribute('aria-expanded',String(o))})}
+  function closeAll(){[['labBtn','labMenu'],['moreBtn','hdMore'],['setBtn','setPop']].forEach(function(p){$('#'+p[0]).setAttribute('aria-expanded','false');$('#'+p[1]).hidden=true})}
+  toggle($('#labBtn'),$('#labMenu'));toggle($('#moreBtn'),$('#hdMore'));toggle($('#setBtn'),$('#setPop'));
+  document.addEventListener('click',function(e){if(!e.target.closest('.pop,.ddp,.hd-more'))closeAll()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll()});
+
+  /* Theme */
+  var cur='system';try{cur=localStorage.getItem('ll-theme')||'system'}catch(e){}
+  $$('input[name=theme]').forEach(function(r){r.checked=r.value===cur;r.addEventListener('change',function(){
+    try{localStorage.setItem('ll-theme',r.value)}catch(e){}
+    document.documentElement.dataset.theme=r.value==='system'?(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'):r.value})});
+
+})();
+</script>
+<script>
+(function(){
+var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+var lab=$('#lab'),LV=['A1','A2','B1','B2','C1','C2'],DF=['Leicht','Mittel','Schwer','Sehr schwer'];
+var TTS='speechSynthesis' in window&&!!window.SpeechSynthesisUtterance;
+function ls(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function slug(s){return s.toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function norm(s){return s.normalize('NFC').trim().replace(/\s+/g,' ')}
+function single(sel,fn){$$(sel).forEach(function(b){b.addEventListener('click',function(){$$(sel).forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');fn&&fn(b)})})}
+
+/* ===== Bühne: Breit + Vollbild (alles liegt in der Bühne) ===== */
+function sync(st){var on=st.classList.contains('full'),f=$('.fbtn',st);f.textContent=on?'✕ Schließen':'⤢ Vollbild';f.setAttribute('aria-label',on?'Vollbild beenden':'Vollbild öffnen')}
+function fullOn(st){st.classList.add('full');document.documentElement.classList.add('nos');var r=st.requestFullscreen||st.webkitRequestFullscreen;if(r)try{var p=r.call(st);p&&p.catch&&p.catch(function(){})}catch(e){}sync(st)}
+function fullOff(st){st.classList.remove('full');document.documentElement.classList.remove('nos');if(document.fullscreenElement||document.webkitFullscreenElement){var x=document.exitFullscreen||document.webkitExitFullscreen;try{var p=x.call(document);p&&p.catch&&p.catch(function(){})}catch(e){}}sync(st)}
+['fullscreenchange','webkitfullscreenchange'].forEach(function(e){document.addEventListener(e,function(){if(!(document.fullscreenElement||document.webkitFullscreenElement))$$('.stg.full').forEach(fullOff)})});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')$$('.stg.full').forEach(fullOff)});
+$$('.stg').forEach(function(st){$('.ex',st).innerHTML='<button type="button" class="sbtn wbtn" aria-pressed="false">↔ Breit</button><button type="button" class="sbtn fbtn"></button>';sync(st);
+  $('.wbtn',st).onclick=function(){var on=lab.classList.toggle('wide');$$('.wbtn').forEach(function(b){b.setAttribute('aria-pressed',on)})};
+  $('.fbtn',st).onclick=function(){st.classList.contains('full')?fullOff(st):fullOn(st)}});
+
+/* ===== Navigation ===== */
+var MODS=['vocab','grammar','dictation','pronunciation'];
+function go(m){if(MODS.indexOf(m)<0)m='vocab';$$('.stg.full').forEach(fullOff);stopA();lab.dataset.mod=m;
+  $$('.cats button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.m===m)});$$('.mod').forEach(function(s){s.hidden=s.id!=='m-'+m})}
+$$('.cats button').forEach(function(b){b.onclick=function(){go(b.dataset.m);history.replaceState(null,'','#'+b.dataset.m)}});
+window.addEventListener('hashchange',function(){go(location.hash.slice(1))});
+$$('#labMenu a').forEach(function(a){a.addEventListener('click',function(){$('#labMenu').hidden=true;$('#labBtn').setAttribute('aria-expanded','false')})});
+
+/* ===== Audio (Browser-Sprachsynthese, Satz in kontrollierten Segmenten) ===== */
+var A={s:[],all:[],i:0,id:0,t:0,r:0,cur:0,rate:null},RATE=[1,.85,.7],RI=0;
+function setP(on){var b=$('#aP');if(b){b.textContent=on?'⏸ Pause':'▶ Abspielen';b.setAttribute('aria-pressed',String(!!on))}}
+function stopA(){A.id++;clearTimeout(A.t);if(TTS)speechSynthesis.cancel();setP(0)}
+function play(arr,from,rate){if(!TTS)return;stopA();A.s=arr;A.i=from||0;A.rate=rate||null;var id=++A.id;setP(arr===A.all);step(id)}
+function step(id){if(id!==A.id)return;var full=A.s===A.all;
+  if(A.i>=A.s.length){setP(0);if(full)A.r=0;return}
+  var s=A.s[A.i];if(full)A.r=A.i;
+  if(s.pause){A.t=setTimeout(function(){A.i++;step(id)},s.pause);return}
+  var u=new SpeechSynthesisUtterance(s.t);u.lang='de-DE';u.rate=A.rate||RATE[RI];
+  var v=speechSynthesis.getVoices().filter(function(x){return /^de/i.test(x.lang)})[0];if(v)u.voice=v;
+  var nx=function(){if(id===A.id){A.i++;step(id)}};u.onend=nx;u.onerror=nx;speechSynthesis.speak(u)}
+document.addEventListener('click',function(e){var h=e.target.closest('.hr');if(h)play([{t:h.dataset.w}],0,.85)});
+
+/* ===== WORTSCHATZ (Spiel folgt; Optionen liegen jetzt in der Bühne) ===== */
+var VG={Wortfischer:'Fange die richtigen Wörter aus dem Netz!','Wortverknüpfer':'Verbinde Wörter mit ihren Beziehungen!','Wortknäuel':'Entwirre das Knäuel und finde die Phrase!'};
+function vMsg(){var l=$('#vLv [aria-pressed=true]').textContent,m=$('#vMd [aria-pressed=true]').textContent;$('#vMsg').textContent='Spielfläche – hier kommt später das Spiel hin. Level: '+l+' · Modus: '+m}
+single('#vLv .chip',vMsg);single('#vMd .chip',vMsg);vMsg();
+$$('.games button').forEach(function(b){b.addEventListener('click',function(){$$('.games button').forEach(function(x){x.setAttribute('aria-selected','false')});b.setAttribute('aria-selected','true');
+  var n=b.textContent.trim();$('#gTitle').firstChild.nodeValue=n;$('#vT').textContent=n;$('#gTag').textContent=VG[n];$('#stHint').textContent=VG[n]})});
+
+/* ===== Quiz-Baustein (MC + Eingabe), von Grammatik und Aussprache genutzt ===== */
+function quiz(el,qs,cb){var tr={};
+  el.innerHTML=qs.map(function(q,i){return '<div class="q" data-i="'+i+'"><p><b>'+(i+1)+'.</b> '+q.q+'</p>'+(q.t==='fill'?'<div class="qa"><input class="ans" aria-label="Antwort '+(i+1)+'" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="chip" type="button" data-k="1">Prüfen</button></div>':'<div class="qo">'+q.o.map(function(o,j){return '<button class="chip'+(q.ipa?' ipa':'')+'" type="button" data-j="'+j+'">'+esc(o)+'</button>'}).join('')+'</div>')+'<p class="fb" role="status" aria-live="polite"></p></div>'}).join('');
+  function ans(box,given,ok){var i=+box.dataset.i,q=qs[i];tr[i]=(tr[i]||0)+1;var fb=$('.fb',box);
+    if(ok){fb.textContent='✓ Richtig. '+(q.w||'');box.dataset.done=1;$$('.chip,.ans',box).forEach(function(x){x.disabled=true})}else fb.textContent='✗ Noch nicht. '+(q.w||'')+' Versuche es noch einmal.';
+    cb(q,ok,given,tr[i])}
+  el.onclick=function(e){var b=e.target.closest('button');if(!b)return;var box=b.closest('.q');if(!box||box.dataset.done)return;var q=qs[+box.dataset.i];
+    if(b.dataset.j!==undefined){var j=+b.dataset.j,ok=j===q.a;b.classList.add(ok?'ok':'no');ans(box,q.o[j],ok)}
+    else if(b.dataset.k){var v=$('.ans',box).value;if(!v.trim())return;ans(box,v.trim(),norm(v).toLowerCase()===q.a.toLowerCase())}};
+  el.onkeydown=function(e){if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('ans')){e.preventDefault();var b=$('[data-k]',e.target.closest('.q'));b&&b.click()}}}
+function toLib(item){var lib=ls('ll-lib',[]);if(lib.some(function(x){return x.k===item.k}))return 0;lib.push(item);sv('ll-lib',lib);return 1}
+
+/* ===== DIKTAT ===== */
+var BR=`0|1|[Ich] heiße Anna und [wohne] in Berlin.
+0|1|Das [ist] mein [Bruder].
+0|1|Wir [trinken] jeden Morgen [Kaffee].
+0|1|Der [Zug] kommt um acht [Uhr].
+0|2|Ich habe [heute] keine [Zeit] für den Sport.
+0|2|Am Wochenende [besuche] ich meine [Großmutter].
+0|2|Die [Kinder] spielen im [Garten].
+0|2|Er [kauft] ein Brot und [Milch].
+1|2|Gestern [habe] ich einen neuen Film [gesehen].
+1|2|Ich [möchte] ein Zimmer für zwei [Nächte] buchen.
+1|3|Weil es [regnet], bleiben wir [heute] zu Hause.
+1|3|Er [muss] früh aufstehen, [denn] der Bus fährt um sechs.
+1|2|Meine Schwester [wohnt] seit einem [Jahr] in Wien.
+1|3|Ich [freue] mich auf den [Urlaub] am Meer.
+1|2|Kannst du mir bitte [helfen], die [Tasche] zu tragen?
+2|3|Wenn ich mehr [Zeit] hätte, würde ich öfter [reisen].
+2|3|Der Mann, [dessen] Auto vor dem Haus steht, ist mein [Nachbar].
+2|3|Ich weiß noch nicht, [ob] ich die [Stelle] annehme.
+2|4|Obwohl er [erkältet] war, ging er zur [Arbeit].
+2|3|Das Buch, das ich [gelesen] habe, hat mich sehr [beeindruckt].
+2|2|Sie [interessiert] sich für moderne [Kunst].
+2|4|Nachdem wir [gegessen] hatten, sind wir [spazieren] gegangen.
+3|4|Die Ergebnisse der Studie [wurden] gestern in einer [Zeitschrift] veröffentlicht.
+3|4|Hätte ich das [gewusst], wäre ich [rechtzeitig] gekommen.
+3|3|Er behauptet, er [habe] nichts von dem [Vorfall] gewusst.
+3|4|Trotz der hohen [Kosten] entschied sich die Firma für eine [Erweiterung].
+3|3|Es ist [wichtig], dass alle Beteiligten [rechtzeitig] informiert werden.
+3|4|Je [länger] man darüber nachdenkt, desto [schwieriger] wird die Entscheidung.
+4|4|Die [zunehmende] Digitalisierung stellt viele Unternehmen vor [erhebliche] Herausforderungen.
+4|4|Dem Vorschlag wurde nach [langer] Diskussion [schließlich] zugestimmt.
+4|4|Angesichts der [angespannten] Lage sah sich die Regierung zum [Handeln] gezwungen.
+4|3|Er [hätte] es besser [wissen] müssen.
+4|4|Die [Verhandlungen], die sich über Monate hinzogen, scheiterten [letztlich] an Details.
+5|4|Dass er sich [anmaßt], darüber zu urteilen, ist [befremdlich].
+5|4|Die [Unterscheidung] zwischen beiden Begriffen ist [keineswegs] trivial.
+5|4|Wer [dergleichen] behauptet, [verkennt] die Komplexität der Sache.
+5|4|Es [bedarf] keiner weiteren [Erläuterung].
+5|3|Seine [Ausführungen] waren zwar [ausführlich], aber wenig überzeugend.`.split('\n').map(function(r){var p=r.split('|');return{l:+p[0],d:+p[1],t:p[2],c:(p[2].match(/\[/g)||[]).length}});
+var D={lvl:1,n:10,diff:1,mode:'whole'},S=null;
+function pool(){var d=D.diff+1;return BR.filter(function(s){return s.l<=D.lvl&&s.l>=D.lvl-2&&Math.abs(s.d-d)<=2})}
+function cap(){var per=D.diff+2;return pool().reduce(function(a,s){return a+Math.min(s.c,per)},0)}
+function dFoot(h){$('#dFoot').innerHTML=h}
+function dCfg(){S=null;stopA();$('#dInfo').textContent='Einstellungen';$('#dP').style.width='0';
+  $('#dBody').innerHTML=`<div class="cfg">
+  <div class="fld"><label for="dL">Niveau: <b id="dLv"></b></label><input class="rng" id="dL" type="range" min="0" max="5" step="1" value="${D.lvl}"><div class="tk" aria-hidden="true">${LV.map(function(x){return'<span>'+x+'</span>'}).join('')}</div></div>
+  <div class="fld"><label for="dN">Wörter zum Einsetzen: <b id="dNv"></b></label><input class="rng" id="dN" type="range" min="5" max="40" step="5" value="${D.n}"><div class="tk" aria-hidden="true"><span>5</span><span>40</span></div></div>
+  <div class="fld"><span class="fl">Schwierigkeit</span><div class="fgroup" id="dDf">${DF.map(function(x,i){return'<button class="chip" type="button" data-df="'+i+'" aria-pressed="'+(i===D.diff)+'">'+x+'</button>'}).join('')}</div></div>
+  <div class="fld"><span class="fl">Hörmodus</span><div class="fgroup" id="dMd"><button class="chip" type="button" data-md="whole" aria-pressed="${D.mode==='whole'}">Ganze Sätze</button><button class="chip" type="button" data-md="part" aria-pressed="${D.mode==='part'}">Teilweise hören</button></div>
+  <p class="muted sm" style="margin-top:8px">Teilweise: Du hörst nur die Satzteile um die Lücken, an den Lücken ist Pause. Die Stimme kommt von der Sprachsynthese deines Geräts.</p></div></div>`;
+  dFoot('<button class="btn" id="dGo" type="button">Diktat starten</button><span class="muted sm" id="dMsg" role="status"></span>');dUpd()}
+function dUpd(){var c=cap(),ok=TTS&&c>=D.n;$('#dLv').textContent=LV[D.lvl];$('#dL').setAttribute('aria-valuetext',LV[D.lvl]);$('#dNv').textContent=D.n;
+  $('#dMsg').textContent=!TTS?'Dieser Browser kann kein Deutsch vorlesen. Das Diktat ist hier nicht möglich.':c<D.n?'Für diese Auswahl gibt es nur '+c+' Lücken. Wähle weniger Wörter oder ein anderes Niveau bzw. eine andere Schwierigkeit.':c+' Lücken verfügbar.';
+  $('#dGo').setAttribute('aria-disabled',String(!ok))}
+function segs(it){if(D.mode==='whole')return[{t:it.plain}];var o=[],cur='';it.parts.forEach(function(p){if(p.b){if(cur.trim())o.push({t:cur.trim()});cur='';if(o.length)o.push({pause:900})}else cur+=p.w});if(cur.trim())o.push({t:cur.trim()});return o}
+function dStart(){var per=D.diff+2,left=D.n,items=[];
+  pool().map(function(s){return{s:s,k:Math.abs(s.d-D.diff-1)+Math.random()*.9}}).sort(function(a,b){return a.k-b.k}).forEach(function(o){if(left<=0)return;var s=o.s,take=Math.min(left,per,s.c),idx=[],ci=0,parts=[],plain='';
+    for(var i=0;i<s.c;i++)idx.push(i);idx.sort(function(){return Math.random()-.5});var pick=idx.slice(0,take);
+    s.t.split(/(\[[^\]]+\])/).forEach(function(tk){if(!tk)return;if(tk[0]==='['){var w=tk.slice(1,-1);parts.push(pick.indexOf(ci)>=0?{b:1,e:w}:{w:w});plain+=w;ci++}else{parts.push({w:tk});plain+=tk}});
+    items.push({parts:parts,plain:plain});left-=take});
+  items.sort(function(){return Math.random()-.5});S={items:items,i:0,ans:[],checked:false};dPlay()}
+function dPlay(){var it=S.items[S.i],k=0;stopA();A.all=segs(it);A.s=A.all;A.r=0;A.cur=0;
+  var inp=it.parts.map(function(p){if(!p.b)return esc(p.w);k++;return'<input class="bl" data-k="'+k+'" aria-label="Lücke '+k+'" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">'}).join('');
+  $('#dBody').innerHTML='<div class="aud"><button class="btn" id="aP" type="button" data-a="p" aria-pressed="false">▶ Abspielen</button><button class="sbtn" type="button" data-a="r">↻ Von vorn</button>'+(D.mode==='part'?'<button class="sbtn" type="button" data-a="s">↻ Segment</button>':'')+'<button class="sbtn" type="button" data-a="v" aria-label="Tempo">'+RATE[RI]+'×</button></div><p class="snt">'+inp+'</p><p class="fb" id="dFb" role="status" aria-live="polite"></p>';
+  dInfo();dFoot('<button class="btn grow" id="dChk" type="button">Prüfen</button>')}
+function dInfo(){$('#dInfo').textContent=LV[D.lvl]+' · '+DF[D.diff]+' · Satz '+(S.i+1)+'/'+S.items.length+' · '+S.ans.length+'/'+D.n+' Lücken';$('#dP').style.width=(S.ans.length/D.n*100)+'%'}
+function lev(a,b){var m=[],i,j;for(i=0;i<=a.length;i++)m[i]=[i];for(j=1;j<=b.length;j++)m[0][j]=j;for(i=1;i<=a.length;i++)for(j=1;j<=b.length;j++)m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return m[a.length][b.length]}
+function judge(exp,sub,first){sub=norm(sub);if(sub===exp)return{ok:1};if(!sub)return{t:'Nicht beantwortet'};
+  var a=sub.toLowerCase(),b=exp.toLowerCase();if(a===b)return first?{ok:1}:{t:'Groß-/Kleinschreibung'};return{t:lev(a,b)<=2?'Rechtschreibung':'Hörfehler'}}
+function dCheck(){if(S.checked)return dNext();var it=S.items[S.i],ins=$$('.bl',$('#dBody')),k=0,good=0,n=0;
+  it.parts.forEach(function(p,pi){if(!p.b)return;var inp=ins[k++],r=judge(p.e,inp.value,pi===0);n++;if(r.ok)good++;inp.disabled=true;inp.classList.add(r.ok?'ok':'no');
+    S.ans.push({exp:p.e,sub:norm(inp.value),ok:!!r.ok,t:r.t||'',sent:it.plain});
+    if(!r.ok)inp.insertAdjacentHTML('afterend','<small class="xp">'+esc(p.e)+(r.t?' · '+r.t:'')+'</small>')});
+  S.checked=true;$('#dFb').textContent=good+' von '+n+' richtig.';dInfo();
+  dFoot('<button class="btn grow" id="dChk" type="button">'+(S.i+1>=S.items.length?'Ergebnis anzeigen':'Weiter')+'</button>');$('#dChk').focus()}
+function dNext(){S.i++;S.checked=false;S.i>=S.items.length?dRes():dPlay()}
+function dRes(){stopA();var ok=S.ans.filter(function(a){return a.ok}).length,n=S.ans.length,bad=S.ans.filter(function(a){return!a.ok}),acc=n?Math.round(ok/n*100):0;
+  var ss=ls('ll-diktat',[]);ss.push({id:Date.now(),level:LV[D.lvl],difficulty:DF[D.diff],requested:D.n,mode:D.mode,correct:ok,total:n,at:new Date().toISOString()});sv('ll-diktat',ss);
+  $('#dInfo').textContent='Ergebnis';$('#dP').style.width='100%';
+  $('#dBody').innerHTML='<div class="stats"><div><b>'+n+'</b>Lücken</div><div><b>'+ok+'</b>richtig</div><div><b>'+bad.length+'</b>falsch</div><div><b>'+acc+'%</b>Genauigkeit</div></div>'+
+   (bad.length?'<h3 class="gtit" style="font-size:18px">Falsche Wörter</h3><ul class="lst">'+bad.map(function(a){return'<li><span class="bad">'+esc(a.sub||'–')+'</span> → <b class="good">'+esc(a.exp)+'</b> <span class="muted sm">'+a.t+'</span></li>'}).join('')+'</ul>':'<p>Alles richtig.</p>')+
+   '<details class="d"><summary>Richtiger Text</summary><ol style="padding-left:20px">'+S.items.map(function(i){return'<li>'+esc(i.plain)+'</li>'}).join('')+'</ol></details><p class="fb" id="dFb" role="status" aria-live="polite"></p>';
+  dFoot('<button class="btn" id="dAg" type="button">Nochmal</button><button class="sbtn" id="dCf" type="button">Anders einstellen</button><button class="sbtn" id="dHr" type="button">▶ Alle Sätze hören</button>'+(bad.length?'<button class="sbtn" id="dSv" type="button">Falsche in LernLib (lokal)</button>':''))}
+$('#dBody').addEventListener('input',function(e){if(e.target.id==='dL'){D.lvl=+e.target.value;dUpd()}if(e.target.id==='dN'){D.n=+e.target.value;dUpd()}});
+$('#dBody').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+  if(b.dataset.df){D.diff=+b.dataset.df;$$('[data-df]').forEach(function(x){x.setAttribute('aria-pressed',x===b)});dUpd()}
+  if(b.dataset.md){D.mode=b.dataset.md;$$('[data-md]').forEach(function(x){x.setAttribute('aria-pressed',x===b)})}
+  var a=b.dataset.a;if(a==='p')A.id&&$('#aP').getAttribute('aria-pressed')==='true'?stopA():play(A.all,A.r);
+  if(a==='r')play(A.all,0);if(a==='s'){var j=A.cur;while(j>0&&A.all[j].pause)j--;play([A.all[j]],0)}
+  if(a==='v'){RI=(RI+1)%3;b.textContent=RATE[RI]+'×'}});
+$('#dBody').addEventListener('keydown',function(e){if(e.key!=='Enter'||!e.target.classList.contains('bl'))return;e.preventDefault();var ins=$$('.bl:not(:disabled)',$('#dBody')),i=ins.indexOf(e.target);i<ins.length-1?ins[i+1].focus():dCheck()});
+$('#dFoot').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+  if(b.id==='dGo'&&b.getAttribute('aria-disabled')!=='true')dStart();if(b.id==='dChk')dCheck();if(b.id==='dAg')dStart();if(b.id==='dCf')dCfg();
+  if(b.id==='dHr')play(S.items.map(function(i){return{t:i.plain}}),0);
+  if(b.id==='dSv'){var c=0,bad=S.ans.filter(function(a){return!a.ok});bad.forEach(function(a){c+=toLib({k:'diktat:'+a.exp,src:'Diktat',word:a.exp,wrong:a.sub,kind:a.t||'Hörfehler',level:LV[D.lvl],ts:Date.now()})});
+    $('#dFb').textContent=c+' neu gespeichert, '+(bad.length-c)+' schon vorhanden. Die Einträge liegen lokal auf diesem Gerät.'}});
+dCfg();
+
+/* ===== GRAMMATIK ===== */
+var CATS=['Wortarten','Artikel und Determinative','Nominalgrammatik','Pronomen','Verbgrammatik','Adjektivgrammatik','Adverbien','Präpositionen','Konjunktionen und Konnektoren','Satzgrammatik und Wortstellung','Nebensatzgrammatik','Infinitiv- und Partizipialkonstruktionen','Negation','Zahlen, Mengen und Zeitangaben','Wortbildung','Partikeln und Interjektionen','Rechtschreibung und Zeichensetzung','Textgrammatik und Pragmatik'];
+var TP=`1|0|Wortarten im Überblick|Tổng quan từ loại|parts of speech
+1|1|Inhalts- und Funktionswörter|Từ nội dung và từ chức năng|content and function words
+1|3|Wortartenwechsel|Chuyển đổi từ loại|word class conversion
+2|0|Bestimmter Artikel|Mạo từ xác định|definite article
+2|0|Unbestimmter Artikel|Mạo từ không xác định|indefinite article
+2|1|Possessivartikel|Mạo từ sở hữu|possessive determiners
+2|1|Nullartikel|Lược bỏ mạo từ|zero article
+3|0|Genus|Giống danh từ|gender
+3|0|Pluralbildung|Số nhiều|plural formation
+3|0|Nominativ und Akkusativ|Chủ cách và đối cách|nominative and accusative
+3|1|Dativ|Tặng cách|dative
+3|2|Genitiv|Sở hữu cách|genitive
+3|2|N-Deklination|Danh từ yếu|weak nouns
+4|0|Personalpronomen|Đại từ nhân xưng|personal pronouns
+4|1|Reflexivpronomen|Đại từ phản thân|reflexive pronouns
+4|2|Relativpronomen|Đại từ quan hệ|relative pronouns
+4|3|Indefinitpronomen|Đại từ bất định|indefinite pronouns
+5|0|Präsens|Hiện tại|present tense
+5|0|Modalverben|Động từ khuyết thiếu|modal verbs
+5|1|Perfekt|Quá khứ hội thoại|present perfect
+5|1|Trennbare Verben|Động từ tách|separable verbs
+5|2|Präteritum|Quá khứ đơn|simple past
+5|2|Konjunktiv II|Thức giả định II|subjunctive II
+5|2|Passiv|Bị động|passive voice
+5|3|Konjunktiv I|Thức giả định I|subjunctive I
+6|1|Adjektivdeklination|Biến cách tính từ|adjective endings
+6|1|Komparativ und Superlativ|So sánh|comparison
+6|3|Erweiterte Adjektivattribute|Cụm tính từ mở rộng|extended adjective attributes
+7|0|Temporaladverbien|Trạng từ thời gian|time adverbs
+7|1|Pronominaladverbien|Trạng từ đại từ (da-, wo-)|pronominal adverbs
+7|3|Konjunktionaladverbien|Trạng từ liên kết|conjunctional adverbs
+8|0|Lokale Präpositionen|Giới từ nơi chốn|place prepositions
+8|1|Wechselpräpositionen|Giới từ hai chiều|two-way prepositions
+8|2|Genitivpräpositionen|Giới từ + Genitiv|genitive prepositions
+9|0|Und, oder, aber, denn|Liên từ đẳng lập|coordinating conjunctions
+9|1|Weil, dass, wenn|Liên từ phụ thuộc|subordinating conjunctions
+9|3|Zweiteilige Konnektoren|Liên từ kép|correlative conjunctions
+10|0|Aussage- und Fragesätze|Câu trần thuật và câu hỏi|statements and questions
+10|0|Verbzweitstellung|Động từ ở vị trí thứ 2|verb-second order
+10|1|Satzklammer|Khung câu|sentence bracket
+10|1|TeKaMoLo|Thứ tự trạng ngữ|adverbial order
+10|4|Informationsstruktur|Cấu trúc thông tin|information structure
+11|1|Nebensätze mit weil und dass|Mệnh đề phụ weil/dass|weil and dass clauses
+11|2|Relativsätze|Mệnh đề quan hệ|relative clauses
+11|3|Konzessivsätze|Mệnh đề nhượng bộ|concessive clauses
+11|4|Verkürzte Nebensätze|Mệnh đề rút gọn|reduced clauses
+12|1|Infinitiv mit zu|Nguyên mẫu với zu|infinitive with zu
+12|1|Um … zu|Để (mục đích)|in order to
+12|3|Partizipialattribute|Phân từ bổ nghĩa|participial attributes
+12|4|Umformung von Nebensätzen|Chuyển mệnh đề thành cụm phân từ|clause to participle
+13|0|Nicht und kein|Phủ định nicht/kein|nicht and kein
+13|1|Stellung von nicht|Vị trí của nicht|position of nicht
+13|2|Negationswörter|Từ phủ định|negation words
+14|0|Kardinalzahlen|Số đếm|cardinal numbers
+14|0|Uhrzeit|Giờ|telling time
+14|1|Ordinalzahlen und Datum|Số thứ tự và ngày tháng|ordinals and dates
+14|2|Prozent- und Mengenangaben|Phần trăm và số lượng|percentages and quantities
+15|1|Komposita|Từ ghép|compounds
+15|2|Präfixe und Suffixe|Tiền tố và hậu tố|prefixes and suffixes
+15|3|Nominalisierung|Danh từ hóa|nominalization
+16|1|Modalpartikeln|Tiểu từ tình thái (doch, mal, ja)|modal particles
+16|2|Fokuspartikeln|Tiểu từ nhấn mạnh|focus particles
+16|3|Interjektionen|Thán từ|interjections
+17|0|Großschreibung|Viết hoa|capitalization
+17|1|Kommasetzung|Dấu phẩy|comma rules
+17|2|Getrennt- und Zusammenschreibung|Viết liền hay tách|joint and separate spelling
+18|2|Textverknüpfung|Liên kết văn bản|text cohesion
+18|3|Register und Stil|Phong cách và văn phong|register and style
+18|4|Argumentative Strukturen|Cấu trúc lập luận|argumentation
+18|5|Stilistische Feinheiten|Sắc thái phong cách|stylistic nuance`.split('\n').map(function(r){var p=r.split('|');return{c:+p[0]-1,l:+p[1],de:p[2],vi:p[3],en:p[4],id:slug(p[2])}});
+var LES={perfekt:{goal:'Du bildest das Perfekt mit haben oder sein und erzählst damit im Gespräch von Vergangenem.',
+ expl:'Das Perfekt ist die übliche Vergangenheit im Gespräch. Das Hilfsverb steht auf Position 2, das <b>Partizip II</b> am Satzende. <span class="muted">(Vi: dùng khi kể chuyện quá khứ trong hội thoại.)</span>',
+ rule:'<b>haben / sein</b> (konjugiert) + … + <b>Partizip II</b><br>regelmäßig: ge- + Stamm + -t → gemacht<br>unregelmäßig: ge- + … + -en → gegangen<br>trennbar: auf<b>ge</b>standen · untrennbar: besucht (ohne ge-)<br><b>sein</b> bei Bewegung und Zustandswechsel: gehen, fahren, aufstehen; auch bleiben, sein, passieren',
+ ex:[['Ich <mark>habe</mark> gestern Pizza <mark>gegessen</mark>.','Hôm qua tôi đã ăn pizza.'],['Wir <mark>sind</mark> nach Hanoi <mark>gefahren</mark>.','Chúng tôi đã đi Hà Nội.'],['Sie <mark>hat</mark> ihre Oma <mark>besucht</mark>.','Cô ấy đã thăm bà.']],
+ exc:'Verben auf -ieren und untrennbare Präfixe (be-, ge-, er-, ver-, zer-, ent-) bilden das Partizip ohne ge-: studiert, erzählt.',
+ err:[['Ich habe gestern ins Kino gehen.','Ich bin gestern ins Kino gegangen.','gehen braucht sein und das Partizip II gegangen.'],['Ich habe gegangen.','Ich bin gegangen.','Bewegungsverben bilden das Perfekt mit sein.']],
+ q:[{id:'q1',t:'mc',q:'Wir ___ gestern nach Hanoi gefahren.',o:['haben','sind','werden'],a:1,w:'fahren drückt Bewegung aus und bildet das Perfekt mit sein.'},
+ {id:'q2',t:'fill',q:'Sie hat das Buch ___ . (lesen)',a:'gelesen',w:'lesen ist unregelmäßig: ge-les-en.'},
+ {id:'q3',t:'fill',q:'Er ist früh ___ . (aufstehen)',a:'aufgestanden',w:'trennbar: auf + ge + standen.'}]}};
+var REF={perfekt:{q:'Wie bildet man das Perfekt?',a:'haben/sein (Position 2) + Partizip II (Satzende)',m:'regelmäßig ge-…-t · unregelmäßig ge-…-en · sein bei Bewegung und Zustandswechsel',e:'Ich bin gestern ins Kino gegangen.'},
+ dativ:{q:'Wie lauten die Artikel im Dativ?',a:'dem (m) · der (f) · dem (n) · den + -n (Plural)',m:'Nach aus, bei, mit, nach, seit, von, zu steht immer der Dativ.',e:'Ich helfe dem Mann.'},
+ verbzweitstellung:{q:'Wo steht das finite Verb im Aussagesatz?',a:'Immer auf Position 2.',m:'Auf Position 1 kann Subjekt oder ein anderes Satzglied stehen (Inversion).',e:'Heute gehe ich ins Kino.'}};
+var G={lvl:1,q:'',cur:'perfekt',play:false,tab:'a',open:{},recent:[],rv:{}},errs=ls('ll-gerr',[]),prog=ls('ll-gprog',{});
+function gVis(t){return t.l<=G.lvl}
+function gNavInit(){$('#gNav').innerHTML='<div class="fgroup" role="group" aria-label="Niveau, kumulativ">'+LV.map(function(x,i){return'<button class="chip" type="button" data-gl="'+i+'" aria-pressed="'+(i===G.lvl)+'">'+x+'</button>'}).join('')+'</div><p class="muted sm" id="gLn" style="margin:8px 0"></p><input class="ans" id="gQ" type="search" style="width:100%;margin-bottom:8px" placeholder="Thema suchen (DE, VI, EN)" aria-label="Thema suchen"><div id="gList"></div>';gList()}
+function gList(){var q=G.q.trim().toLowerCase(),h='';$('#gLn').textContent='Zeigt A1 bis '+LV[G.lvl];
+  CATS.forEach(function(cn,c){var ts=TP.filter(function(t){return t.c===c&&gVis(t)&&(!q||(t.de+' '+t.vi+' '+t.en+' '+cn).toLowerCase().indexOf(q)>=0)});
+    if(!ts.length){h+='<p class="gc0">'+esc(cn)+' (0)</p>';return}
+    h+='<details data-c="'+c+'"'+((q||G.open[c])?' open':'')+'><summary>'+esc(cn)+' ('+ts.length+')</summary>'+ts.map(function(t){var d=(prog[t.id]&&LES[t.id]&&Object.keys(prog[t.id]).length>=LES[t.id].q.length);return'<button class="gt" type="button" data-t="'+t.id+'"'+(t.id===G.cur?' aria-current="true"':'')+'><span>'+esc(t.de)+(d?' ✓':'')+'<br><small>'+esc(t.vi)+'</small></span><small>'+LV[t.l]+'</small></button>'}).join('')+'</details>'});
+  $('#gList').innerHTML=h;$$('#gList details').forEach(function(d){d.addEventListener('toggle',function(){G.open[d.dataset.c]=d.open})})}
+function gProg(){var L=LES[G.cur],n=L?L.q.length:0,d=L&&prog[G.cur]?Object.keys(prog[G.cur]).length:0;$('#gP').style.width=(n?d/n*100:0)+'%'}
+function gLes(){var t=TP.find(function(x){return x.id===G.cur}),L=LES[t.id],el=$('#gLes');$('#gT').textContent=t.de;$('#gLv').textContent=LV[t.l];
+  var h='<p class="muted sm">'+esc(CATS[t.c])+' · '+['Leicht','Mittel','Schwer'][t.l>>1]+' · '+esc(t.vi)+'</p><h2 class="gtit">'+esc(t.de)+'</h2>';
+  if(G.play){el.innerHTML=h+'<div class="note">Play-Modus: Bald. Es gibt hier noch kein Spiel.</div>';return gProg()}
+  if(!L){el.innerHTML=h+'<div class="note">Die Lektion zu diesem Thema ist noch in Vorbereitung. Verfügbar ist bisher: <button class="link" type="button" data-t="perfekt" style="background:none;border:0;cursor:pointer;padding:0">Perfekt</button>.</div>';return gProg()}
+  el.innerHTML=h+'<div class="gs"><h3>Lernziel</h3><p>'+L.goal+'</p></div><div class="gs"><h3>Erklärung</h3><p>'+L.expl+'</p></div><div class="gs"><h3>Regeln und Bildung</h3><p class="rule">'+L.rule+'</p></div>'+
+   '<div class="gs"><h3>Beispiele</h3>'+L.ex.map(function(x){return'<div class="ex2"><p>'+x[0]+'</p><p class="muted sm">'+x[1]+'</p></div>'}).join('')+'</div>'+
+   '<div class="gs"><h3>Besonderheiten</h3><p>'+L.exc+'</p></div><div class="gs"><h3>Häufige Fehler</h3>'+L.err.map(function(x){return'<div class="ex2"><p class="bad">'+x[0]+'</p><p class="good">'+x[1]+'</p><p class="muted sm">'+x[2]+'</p></div>'}).join('')+'</div><div class="gs"><h3>Übung</h3><div id="gQz"></div></div>';
+  quiz($('#gQz'),L.q,gAns);gProg()}
+function gAns(q,ok,given){var t=TP.find(function(x){return x.id===G.cur}),id=G.cur+':'+q.id,e=errs.find(function(x){return x.id===id}),cor=q.t==='fill'?q.a:q.o[q.a];
+  if(!ok){if(e){e.tries++;e.wrong=given;e.fixed=0}else errs.push({id:id,topic:G.cur,ex:q.id,lvl:LV[t.l],wrong:given,correct:cor,wrongSent:q.q.replace('___',given),sent:q.q.replace('___',cor),why:q.w,ts:Date.now(),tries:1,fixed:0,saved:0})}
+  else{var p=prog[G.cur]=prog[G.cur]||{};p[q.id]=1;sv('ll-gprog',prog);if(e)e.fixed=1}
+  sv('ll-gerr',errs);gProg();if(G.tab==='a')gPan()}
+function gPan(){var el=$('#gPanC'),h='';$('#gTa').setAttribute('aria-selected',G.tab==='a');$('#gTb').setAttribute('aria-selected',G.tab==='b');
+  if(G.tab==='a'){if(!errs.length)h='<p><b>Noch keine Fehler!</b></p><p class="muted">Deine Grammatikkenntnisse entwickeln sich. Hier erscheinen deine Fehler, sobald du Übungen bearbeitest.</p>';
+    else h=errs.slice().reverse().map(function(e){var b=e.saved?'Gespeichert':e.fixed?'Richtig nach Wiederholung':e.tries>1?'Wiederholter Fehler':'Erster Fehler';
+      return'<div class="er"><p><span class="badge">'+b+'</span> <span class="muted sm">'+e.lvl+' · '+e.tries+'× falsch</span></p><p class="bad">'+esc(e.wrongSent)+'</p><p class="good">'+esc(e.sent)+'</p><p class="sm">'+esc(e.why)+'</p><div class="qa"><button class="chip" type="button" data-sv="'+e.id+'"'+(e.saved?' disabled':'')+'>'+(e.saved?'In LernLib gespeichert':'In meine LernLib speichern')+'</button><button class="chip" type="button" data-t="'+e.topic+'">Zur Lektion</button></div></div>'}).join('')}
+  else{var ids=[G.cur].concat(G.recent).filter(function(x,i,a){return REF[x]&&a.indexOf(x)===i});Object.keys(REF).forEach(function(k){if(ids.indexOf(k)<0)ids.push(k)});
+    ids=ids.filter(function(k){var t=TP.find(function(x){return x.id===k});return t&&gVis(t)});
+    h=ids.length?ids.map(function(k){var r=REF[k],t=TP.find(function(x){return x.id===k}),on=G.rv[k];return'<div class="kw"><b>'+esc(t.de)+'</b><p>'+r.q+'</p><div class="kwb'+(on?'':' blur')+'" id="kw-'+k+'"><p><b>'+r.a+'</b></p><p class="sm">'+r.m+'</p><p class="sm"><i>'+r.e+'</i></p></div><button class="chip" type="button" data-rv="'+k+'" aria-expanded="'+!!on+'" aria-controls="kw-'+k+'">'+(on?'Verbergen':'Wissen aufdecken')+'</button></div>'}).join(''):'<p class="muted">Für dieses Niveau gibt es noch keine Wissenskarten.</p>'}
+  el.innerHTML=h}
+function gOpen(id){G.cur=id;G.recent=[id].concat(G.recent.filter(function(x){return x!==id})).slice(0,5);G.play=false;$('#gPlayB').setAttribute('aria-pressed','false');
+  $('#gNav').classList.remove('open');$('#gNavB').setAttribute('aria-expanded','false');gList();gLes();gPan();$('#gLes').scrollTop=0}
+$('#gNavB').onclick=function(){var o=$('#gNav').classList.toggle('open');this.setAttribute('aria-expanded',o)};
+$('#gPanB').onclick=function(){var o=$('#gPan').classList.toggle('open');this.setAttribute('aria-expanded',o)};
+$('#gPlayB').onclick=function(){G.play=!G.play;this.setAttribute('aria-pressed',G.play);gLes()};
+$('#gTa').onclick=function(){G.tab='a';gPan()};$('#gTb').onclick=function(){G.tab='b';gPan()};
+$('#gNav').addEventListener('input',function(e){if(e.target.id==='gQ'){G.q=e.target.value;gList()}});
+$('#gStage').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+  if(b.dataset.gl){G.lvl=+b.dataset.gl;$$('[data-gl]').forEach(function(x){x.setAttribute('aria-pressed',x===b)});gList();gPan()}
+  if(b.dataset.t)gOpen(b.dataset.t);
+  if(b.dataset.rv){G.rv[b.dataset.rv]=!G.rv[b.dataset.rv];gPan()}
+  if(b.dataset.sv){var x=errs.find(function(q){return q.id===b.dataset.sv});if(x){toLib({k:'gram:'+x.id,src:'Grammatik',topic:x.topic,wrong:x.wrongSent,correct:x.sent,why:x.why,level:x.lvl,ts:Date.now()});x.saved=1;sv('ll-gerr',errs);gPan()}}});
+gNavInit();gLes();gPan();
+
+/* ===== AUSSPRACHE ===== */
+var LEX=`Bach|Bach|/bax/|suối|nach a → /x/
+Buch|Buch|/buːx/|sách|nach u → /x/
+machen|ma-chen|/ˈma.xən/|làm|nach a → /x/
+doch|doch|/dɔx/|nhưng, thế mà|nach o → /x/
+auch|auch|/aʊ̯x/|cũng|nach au → /x/
+ich|ich|/ɪç/|tôi|nach i → /ç/
+nicht|nicht|/nɪçt/|không|nach i → /ç/
+echt|echt|/ɛçt/|thật, đúng|nach e → /ç/
+Mädchen|Mäd-chen|/ˈmɛːtçən/|cô bé|-chen → /ç/
+Küche|Kü-che|/ˈkʏçə/|nhà bếp|nach ü → /ç/
+Kuchen|Ku-chen|/ˈkuːxən/|bánh|nach u → /x/
+München|Mün-chen|/ˈmʏnçən/|München|nach n → /ç/
+sechs|sechs|/zɛks/|sáu|chs → /ks/
+Schule|Schu-le|/ˈʃuːlə/|trường học|sch → /ʃ/, langes u
+sprechen|spre-chen|/ˈʃpʁɛçən/|nói|sp → /ʃp/, ch nach e
+Straße|Stra-ße|/ˈʃtʁaːsə/|đường phố|st → /ʃt/, ß → /s/
+Wasser|Was-ser|/ˈva.sɐ/|nước|w → /v/, -er → /ɐ/
+wichtig|wich-tig|/ˈvɪçtɪç/|quan trọng|w → /v/, ch nach i
+Universität|U-ni-ver-si-tät|/univɛʁziˈtɛːt/|đại học|Betonung auf der letzten Silbe
+einkaufen|ein-kau-fen|/ˈaɪ̯nˌkaʊ̯fən/|đi mua sắm|trennbares Präfix betont
+besuchen|be-su-chen|/bəˈzuːxən/|thăm|be- unbetont, ch nach u
+verstehen|ver-ste-hen|/fɛɐ̯ˈʃteːən/|hiểu|ver- unbetont, st → /ʃt/
+Hund|Hund|/hʊnt/|con chó|Auslautverhärtung d → /t/
+Haus|Haus|/haʊ̯s/|nhà|au → /aʊ̯/`.split('\n').map(function(r){var p=r.split('|');return{w:p[0],s:p[1],i:p[2],v:p[3],r:p[4]}});
+function hr(w){return'<button class="chip hr" type="button" data-w="'+esc(w)+'" aria-label="'+esc(w)+' anhören"'+(TTS?'':' disabled title="Nicht verfügbar"')+'>🔊</button>'}
+$('#pEx').innerHTML='<thead><tr><th>Wort</th><th>Silben</th><th>IPA</th><th>Bedeutung</th><th>Regel</th><th><span class="sr">Hören</span></th></tr></thead><tbody>'+['Bach','Buch','machen','doch','auch','ich','nicht','echt','Mädchen','Küche','Kuchen','München','sechs'].map(function(w){var x=LEX.find(function(l){return l.w===w});return'<tr><td><b>'+x.w+'</b></td><td>'+x.s+'</td><td class="ipa">'+x.i+'</td><td>'+x.v+'</td><td>'+x.r+'</td><td>'+hr(x.w)+'</td></tr>'}).join('')+'</tbody>';
+$('#decL').innerHTML=LEX.map(function(l){return'<option value="'+l.w+'">'}).join('');
+var PM=[['IPA Grundlagen','A1'],['Deutsches Alphabet','A1'],['Vokale','A1'],['Vokallänge und Rechtschreibung','A2'],['Diphthonge','A1'],['Konsonanten','A1'],['Buchstabenkombinationen','A1–A2','ch'],['Besondere Konsonanten','A2'],['Silbenstruktur','B1'],['Wortbetonung','A2–B2'],['Satzakzent und Intonation','B1'],['Natürliches Sprechen','B2'],['IPA-Decoder','A2–C2','dec'],['Minimalpaare','B1'],['Phonetische Analyse','C1–C2']];
+function pNav(cur){$('#pN').innerHTML=PM.map(function(m,i){var n=('0'+(i+1)).slice(-2);return'<button type="button"'+(m[2]?' data-p="'+m[2]+'"':' disabled')+(m[2]===cur?' aria-current="true"':'')+'><span>'+n+'</span><span>'+m[0]+'</span><small>'+(m[2]?m[1]:'bald')+'</small></button>'}).join('')}
+pNav('ch');
+$('#pN').onclick=function(e){var b=e.target.closest('button[data-p]');if(!b)return;var p=b.dataset.p;$('#pS-ch').hidden=p!=='ch';$('#pS-dec').hidden=p!=='dec';pNav(p);
+  $('#pCr').textContent=p==='ch'?'Buchstabenkombinationen · CH':'IPA-Decoder';$('#pN').classList.remove('open');$('#pNb').setAttribute('aria-expanded','false')};
+$('#pNb').onclick=function(){var o=$('#pN').classList.toggle('open');this.setAttribute('aria-expanded',o)};
+$('#pMl').onclick=function(){$('#pLern').hidden=false;$('#pPlay').hidden=true;$('#pMl').setAttribute('aria-pressed','true');$('#pMp').setAttribute('aria-pressed','false')};
+$('#pMp').onclick=function(){$('#pLern').hidden=true;$('#pPlay').hidden=false;$('#pMp').setAttribute('aria-pressed','true');$('#pMl').setAttribute('aria-pressed','false')};
+var pp=ls('ll-pprog',{});function pPr(){$('#pPr').textContent=Object.keys(pp).length+' / 9'}pPr();
+function pCb(q,ok){if(ok){pp[q.id]=1;sv('ll-pprog',pp);pPr()}}
+var X=function(id,w,a,e){return{id:id,q:'<b class="ipa">'+w+'</b>',o:['/x/','/ç/'],a:a,ipa:1,w:e}};
+quiz($('#pQ1'),[X('p1','ich',1,'Nach i steht der Ich-Laut /ç/.'),X('p2','Buch',0,'Nach u steht der Ach-Laut /x/.'),X('p3','nicht',1,'Nach i: /ç/.'),X('p4','Küche',1,'Nach ü: /ç/.'),X('p5','machen',0,'Nach a: /x/.'),X('p6','Mädchen',1,'Die Endung -chen hat immer /ç/.')],pCb);
+quiz($('#pQ2'),[{id:'p7',q:'Wie wird <b>chs</b> in <i>sechs</i> gesprochen?',o:['/ks/','/xs/','/ʃ/'],a:0,ipa:1,w:'chs wird meist /ks/.'},{id:'p8',q:'Welche Aussage über <i>Chor</i> stimmt?',o:['ch = /k/','ch = /ç/','ch = /x/'],a:0,w:'In manchen Fremdwörtern wird ch zu /k/.'},{id:'p9',q:'Welches Wort hat den Ich-Laut /ç/?',o:['Kuchen','Küche'],a:1,w:'Nach ü steht /ç/, nach u /x/.'}],pCb);
+function dec(){var w=norm($('#decI').value),x=LEX.find(function(l){return l.w.toLowerCase()===w.toLowerCase()}),el=$('#decR');
+  if(!w){el.innerHTML='';return}
+  el.innerHTML=x?'<div class="dec"><p class="big">'+x.w+' '+hr(x.w)+'</p><p>Silben: <b>'+x.s+'</b></p><p>IPA: <b class="ipa">'+x.i+'</b></p><p>Bedeutung: '+x.v+'</p><p>Regel: '+x.r+'</p><p class="muted sm">Status: Lexikon-Eintrag aus dem Kursmaterial. ˈ = Hauptakzent, ˌ = Nebenakzent, ː = lang.</p></div>':
+  '<div class="note">„'+esc(w)+'“ steht nicht im Lexikon ('+LEX.length+' Wörter). Es wird keine IPA erzeugt, weil eine automatische Näherung nicht verlässlich wäre. Prüfe das Wort im Duden. Ein größeres Lexikon mit Regelwerk für unbekannte Wörter ist noch nicht angebunden.</div>'}
+$('#decB').onclick=dec;$('#decI').addEventListener('keydown',function(e){if(e.key==='Enter')dec()});
+
+go(location.hash.slice(1));
+})();
+</script>
+</body>
+</html>
